@@ -145,37 +145,38 @@ window.FloorView = Backbone.View.extend({
             this.$el.append(view.el);
 
             // If there are connections, record them for adding after
-            // if(job.get('source_ids').length > 0){
-            //     connections.push({
-            //         "target":job.id,
-            //         "sources":job.get('source_ids')});
-            // }
+            var dependencies = job.get("source_ids") || [job.get("buys_from")];
+            if(dependencies.length > 0){
+                connections.push({
+                    "target":job.id,
+                    "sources":dependencies});
+            }
         }, this);
 
-        // // Add the connections
-        // _.each(connections, function(connection){
+        // Add the connections
+        _.each(connections, function(connection){
 
-        //     // Go through each source and hook it up
-        //     _.each(connection.sources,function(source){
-        //         var source_view = id_view_map[source],
-        //             target_view = id_view_map[connection.target];
+            // Go through each source and hook it up
+            _.each(connection.sources,function(source){
+                var source_view = id_view_map[source],
+                    target_view = id_view_map[connection.target];
 
-        //             // Create the endpoints
-        //             source_view.outEP = jsPlumb.addEndpoint(source_view.el, {
-        //                 endpoint: ["Dot", {radius: 7}],
-        //                 anchor: [ "Perimeter", { shape:"circle" }]});
-        //             target_view.inEP = jsPlumb.addEndpoint(target_view.el, {
-        //                 endpoint:["Dot", {radius: 7}],
-        //                 anchor: [ "Perimeter", { shape:"circle" }]});
-        //             // Connect them!
-        //             jsPlumb.connect({
-        //                 source: source_view.outEP,
-        //                 target: target_view.inEP,
-        //                 connector:[ "Bezier", {curviness:20}]});
+                    // Create the endpoints
+                    source_view.outEP = jsPlumb.addEndpoint(source_view.el, {
+                        endpoint: ["Dot", {radius: 7}],
+                        anchor: [ "Perimeter", { shape:"circle" }]});
+                    target_view.inEP = jsPlumb.addEndpoint(target_view.el, {
+                        endpoint:["Dot", {radius: 7}],
+                        anchor: [ "Perimeter", { shape:"circle" }]});
+                    // Connect them!
+                    jsPlumb.connect({
+                        source: source_view.outEP,
+                        target: target_view.inEP,
+                        connector:[ "Flowchart", {stub:5}]});
 
-        //         console.log(connection.target + " depends on " + source);
-        //     }, this);
-        // }, this);
+                console.log(connection.target + " depends on " + source);
+            }, this);
+        }, this);
 
         return this;
     },
