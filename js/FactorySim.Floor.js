@@ -139,7 +139,10 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
 
         defaults:{
             id: null,
-            demand: 0
+            demand: 0,
+            produced: 0,
+            buy_price: 0,
+            revenue: 0
         },
 
         findSource: function(collection){
@@ -153,10 +156,13 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
         },
 
         doTimeStep: function(){
-            if(this.get("demand") > 0 && this.has("source") && this.get("source").hasInventory()){
-                this.set("demand", this.get("demand") - 1);
+            if(this.has("source") && this.get("source").hasInventory()){
                 this.get("source").takeInventory();
-                factory.deposit(this.get("buy_price"));
+                this.set("produced", this.get("produced") + 1);
+                if(this.get("produced") <= this.get("demand")){
+                    App.bank.deposit(this.get("buy_price"));
+                    this.set("revenue", this.get("revenue") + this.get("buy_price"));
+                }
             }
         }
     });
@@ -173,7 +179,8 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
             price: 1,
             source_ids: [],
             sources: [],
-            inventory: 0
+            inventory: 0,
+            purchased: 0
         },
 
         mapSources: function(collection){
@@ -187,8 +194,12 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
         buy: function(amount){
             var value = this.get('price') * amount;
             if(App.bank.withdraw(value)){
+                // Add to inventory
                 var current_inventory = this.get("inventory");
                 this.set("inventory", current_inventory + amount);
+                // Add to purchased
+                var current_purchased = this.get("purchased");
+                this.set("purchased", current_purchased + amount);
                 return true;
             }
             else{
@@ -355,9 +366,27 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
         id: function(){ return this.model.cid; },
         className: "market clearfix",
 
+        ui:{
+            produced: ".produced",
+            revenue: ".revenue"
+        },
+
+        modelEvents: {
+            "change:produced": "_updateProduced",
+            "change:revenue": "_updateRevenue"
+        },
+
         onRender: function(){
             this.$el.css('left', this.model.get('x'));
             this.$el.css('top', this.model.get('y'));
+        },
+
+        _updateProduced: function(){
+            this.ui.produced.text(this.model.get("produced"));
+        },
+
+        _updateRevenue: function(){
+            this.ui.revenue.text("$" + this.model.get("revenue"));
         }
     });
 
@@ -369,10 +398,13 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
         id: function(){ return this.model.cid; },
 
         ui: {
-            inventory: ".inventory"
+            inventory: ".inventory",
+            purchased: ".purchased"
         },
+
         modelEvents:{
-            "change:inventory": "_updateInventory"
+            "change:inventory": "_updateInventory",
+            "change:purchased": "_updatePurchased"
         },
 
         events:{
@@ -393,6 +425,10 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
 
         _updateInventory: function(){
             this.ui.inventory.text(this.model.get("inventory"));
+        },
+
+        _updatePurchased: function(){
+            this.ui.purchased.text(this.model.get("purchased"));
         }
     });
 

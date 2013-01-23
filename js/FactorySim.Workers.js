@@ -69,6 +69,13 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
                 if(this.has("job")){
                     // Check if we were dropped on the same job
                     if(this.get("job").id == job.id) return false;
+                    // Are we working on a task?
+                    if(this.get("status") === worker_status.working){
+                        if(!confirm("Removing worker, will interup their current task. Still move worker")){
+                            return;
+                        }
+                    }
+
                     // Otherwise, remove ourselves from the old one
                     this.get("job").remove_worker(this);
                 }

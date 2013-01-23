@@ -201,16 +201,28 @@ span.status{
 }
 
 /* Resource styles */
- .resource{
+.resource{
     width: 150px;
     padding: 5px;
  }
 
-.resource .name{
-    float: left;
+.market{
+    width: 170px;
+    padding: 5px;
 }
-.resource .stats{
+
+.market .info{
     float: right;
+    font-size: 12px;
+}
+
+.market .stats{
+    float: left;
+    font-size: 12px;
+}
+
+.resource .stats{
+    float: left;
     font-size: 12px;
 }
 .resource .controls{

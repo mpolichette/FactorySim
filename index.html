@@ -107,10 +107,10 @@
                 <div class="workers"></div>
             </div>
             <div class="toggle pull-right">
-                <a class="btn btn-small" href="#">
+                <button class="btn btn-small">
                     <i class="wf-icon icon-chevron-up"></i>
                     <span class="wf-text"> Hide Workforce</span>
-                </a>
+                </button>
             </div>
         </script>
 
@@ -164,29 +164,37 @@
         </script>
 
         <script type="text/template" id="market_template">
-            <div class="info">
-                <div>Market</div>
-                <div>Pays: $<%=buy_price%></div>
-                <div>Demand: <%=demand%></div>
+            <div><%=name%></div>
+            <div class="clearfix">
+                <div class="stats">
+                    <div>Demand: <%=demand%></div>
+                    <div>Produced: <span class="produced"><%=produced%></span></div>
+                </div>
+                <div class="info">
+                    <div>Pays: $<%=buy_price%></div>
+                    <div>Revenue: <span class="revenue">$0</span></div>
+                </div>
             </div>
         </script>
 
         <script type="text/template" id="resource_template">
+            <div><%=name%></div>
             <div class="clearfix">
-                <div class="name">Resource</div>
                 <div class="stats">
                     <div>Price: $<%=price%></div>
+                    <div>Purchased: <span class="purchased"><%= purchased %></span></div>
                     <div>Inventory: <span class="inventory"><%= inventory %></span></div>
                 </div>
+                <div class="controls">
+                    <div>Buy:</div>
+                    <span class="btn-group">
+                        <button class="btn btn-mini btn-primary" data-amount="1">1</button>
+                        <button class="btn btn-mini btn-primary" data-amount="5">5</button>
+                        <button class="btn btn-mini btn-primary" data-amount="10">10</button>
+                    </span>
+                </div>
             </div>
-            <div class="controls">
-                <span>Buy:</span>
-                <span class="btn-group">
-                    <button class="btn btn-mini btn-primary" data-amount="1">1</button>
-                    <button class="btn btn-mini btn-primary" data-amount="5">5</button>
-                    <button class="btn btn-mini btn-primary" data-amount="10">10</button>
-                </span>
-            </div>
+
         </script>
 
 
