@@ -29,7 +29,7 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
     };
 
     var worker_status = Workers.worker_status = {
-        "unassigned": "",
+        "unassigned": "Unassigned",
         "settingup": "Setting Up",
         "working": "Working",
         "waiting": "Idle",
@@ -100,7 +100,7 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
         doTimeStep: function(){
             switch(this.get("status")){
                 case worker_status.unassigned:
-                    return;  //Give me something to do!
+                    break;  //Give me something to do!
                 case worker_status.settingup:
                 case worker_status.working:
                     // Update progress
@@ -120,8 +120,9 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
                 case worker_status.waiting:
                     // Get a new task
                     this.getNewTask();
-                    return;
+                    break;
             }
+            App.Stats.trigger("worker:status",this);
         },
 
         completeTask: function(){

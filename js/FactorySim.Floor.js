@@ -40,7 +40,6 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
             source_ids: [],
             taskTime: 5, // should be overwritten
             type: 'job',
-            limit: 0,
             inventory: 0,
 
             // Starting position
@@ -61,7 +60,6 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
             this.trigger("change");
             this.trigger("change:workers");
             this.listenTo(worker, "taskCompleted", this.taskCompleted);
-            console.log("Job"+this.id+" added "+worker.get("name")+ " to its workforce.");
         },
 
         remove_worker: function(worker){
@@ -91,7 +89,11 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
             }
             else{
                 // Check if a limit has been set
-
+                if(this.has("limit")){
+                    if(this.get("limitCount") >= this.get("limit")){
+                        return {type:App.Workers.task_type.stop};
+                    }
+                }
                 // Check if it can create a new task
                 var sourcesHaveInventory = true;
                 _.each(this.get("sources"), function(source){
@@ -102,6 +104,13 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
                     _.each(this.get("sources"), function(source){
                         source.takeInventory();
                     }, this);
+
+                    // Update limit count
+                    if(this.has("limitCount")){
+                        this.set("limitCount", this.get("limitCount") + 1);
+                    }
+
+                    // Return the task
                     return {type: App.Workers.task_type.fresh, taskTime: this.get("taskTime")};
                 }
                 else{
@@ -318,37 +327,56 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
             return this.model.cid;
         },
 
+        ui: {
+            limitLink: ".limit"
+        },
+
         modelEvents: {
             "change:inventory": "_updateInventory",
-            "change:limit": "_updateLimit"
+            "change:limit change:limitCount": "_updateLimit"
         },
 
         events: {
             "drop":"dropped_on",
-            "spin .limit .value": "changeLimit"
+            "click .set": "_setLimit",
+            "click .cancel": "_dismissPopover"
         },
 
         onRender: function(){
             this.$el.css('left', this.model.get('x'));
             this.$el.css('top', this.model.get('y'));
             this.$el.droppable({accept: "." + this.model.get("type_class")});
+            this.ui.limitLink.popover({
+                html: true,
+                title: "Set a limit",
+                content: $("#limit-popover_template").html(),
+                trigger: "click"
+            });
         },
 
-        // render:function (eventName) {
-        //     this.$(".limit .value").spinner({min:0, max:99});
-        //     return this;
-        // },
+        _setLimit: function(){
+            var newLimit = this.$(".limit-popover input").val();
+            this.model.set("limitCount", 0);
+            this.model.set("limit", newLimit);
+            this.ui.limitLink.popover("hide");
+        },
 
-        _updateLimit: function(){
-            this.$(".limit input").val(this.model.get("limit"));
+        _dismissPopover: function(){
+            this.ui.limitLink.popover("hide");
+        },
+
+        _updateLimit: function(event, ui){
+            if(this.model.get("limit") === 0){
+                this.ui.limitLink.text("Set limit");
+            } else {
+                this.ui.limitLink.text(
+                    "Limit: " + this.model.get("limitCount") + "/" + this.model.get("limit")
+                    );
+            }
         },
 
         _updateInventory: function(){
             this.$(".inventory .value").text(this.model.get("inventory"));
-        },
-
-        changeLimit: function(event, ui){
-            this.model.set("limit", ui.value);
         },
 
         dropped_on:function(event, ui){

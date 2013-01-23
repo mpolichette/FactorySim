@@ -170,7 +170,7 @@ textarea {
 }
 
 .job{
-    width: 176px;
+    width: 180px;
 }
 .job .skill{
     float: left;
@@ -188,7 +188,6 @@ textarea {
 
 .job, .market, .resource{
     position: absolute;
-    z-index: 2;
     border: 1px solid gray;
     padding: 5px;
  }
@@ -229,8 +228,17 @@ span.status{
     float: right;
 }
 
+.limit-popover input{
+    width: 100px;
+}
 
-
+span.limit{
+    color: blue;
+}
+span.limit:hover{
+    color: darkblue;
+    text-decoration: underline;
+}
 
 .wrktyp1{
     background: #C2F56E;

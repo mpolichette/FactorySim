@@ -20,6 +20,9 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
             hour: 0,
             minute: 0,
 
+            //For logging
+            totalSteps: 0,
+
             // Settings
             dayLength: 8,
             dayCount: 5
@@ -56,6 +59,10 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
         _doTimeStep: function(){
             App.vent.trigger("clock:timestep");
             this._increment_clock();
+
+            // Keep track of timesteps
+            this.set("totalSteps", this.get("totalSteps") + 1);
+
             // Setup next timestep
             if(this.get("running")){
                 var that = this;
@@ -84,7 +91,7 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
 
         _increment_day: function(){
             this.pause();
-            App.vent.trigger("clock:dayOver");
+            App.vent.trigger("clock:dayOver", this.get("day"));
 
             var day =this.get("day");
             if(day < this.get("dayCount")){
@@ -96,6 +103,15 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
                 App.vent.trigger("clock:weekOver");
                 alert("You have reached the end of the week!");
             }
+        },
+
+        getTimeStamp: function(){
+            return {
+                day: this.get("day"),
+                hour: this.get("hour"),
+                minute: this.get("minute"),
+                totalMin: this.get("totalSteps")
+            };
         }
     });
 

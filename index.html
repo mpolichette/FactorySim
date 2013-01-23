@@ -52,6 +52,7 @@
         <div id="content" class="container">
         </div> <!-- /container -->
 
+        <div id="modal" class="modal hide fade"></div>
 
         <script type="text/template" id="welcome_template">
             <div id="welcome">
@@ -114,19 +115,15 @@
             </div>
         </script>
 
-
-
-
-
         <script type="text/template" id="worker_template">
             <div class="worker <%= type_class %> clearfix" >
                 <div class="person">
                     <div class="icon"></div>
                     <div class="name"><%= name %></div>
                 </div>
-                <div class="info" <% if(status=="")print('style="display:none;"') %>>
+                <div class="info" <% if(status=="Unassigned")print('style="display:none;"') %>>
                     <div>
-                        <strong>Status:</strong>
+                        <span>Status:</span>
                         <span class="status"><%= status %></span>
                     </div>
                     <div class="progressbar">
@@ -138,20 +135,23 @@
             </div>
         </script>
 
-
-
-
-
-
-
+        <script type="text/template" id="limit-popover_template">
+            <form class="limit-popover">
+                <div class="input-append">
+                    <input class="span2" type="text">
+                    <button class="set btn" type="button">Set</button>
+                </div>
+                <button class="cancel btn btn-small" type="button">Cancel</button>
+            </form>
+        </script>
 
         <script type="text/template" id="job_template">
             <div class="info">
                 <div class="skill"><%= skill_required %></div>
                 <div class="stats">
-                    <!--<div class="limit">
-                        <a href=#>Set Limit</a>
-                    </div>-->
+                    <div>
+                        <span class="limit">Set Limit</span>
+                    </div>
                     <div class="inventory">
                         <strong>Inventory: </strong>
                         <span class="value"><%= inventory %></span>
@@ -194,7 +194,19 @@
                     </span>
                 </div>
             </div>
+        </script>
 
+        <script type="text/template" id="dayOver_template">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3>Day <%=day% is over!></h3>
+            </div>
+            <div class="modal-body">
+                <p>You have reached the end of day <%=day%>.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn">Close</a>
+            </div>
         </script>
 
 
@@ -210,6 +222,7 @@
 
         <!-- Application core (Order matters) -->
         <script type="text/javascript" src="js/FactorySim.js"></script>
+        <script type="text/javascript" src="js/FactorySim.Stats.js"></script>
         <script type="text/javascript" src="js/FactorySim.Sim.js"></script>
         <script type="text/javascript" src="js/FactorySim.Factory.js"></script>
         <script type="text/javascript" src="js/FactorySim.Layout.js"></script>

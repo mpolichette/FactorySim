@@ -8,13 +8,20 @@ FactorySim.module("Sim", function(Sim, App, Backbone, Marionette, $, _){
 
     Sim.Controller = Marionette.Controller.extend({
         initialize: function(){
-            // Create our stuff
+
+            // Create the clock
             App.clock = new App.Factory.Clock();
+
+            // Start collecting stats
+            App.stats = new App.Stats.StatKeeper({}, {clock: App.clock});
+
+            // Create our stuff
             App.bank = new App.Factory.BankAccount();
             App.workforce = new App.Workers.WorkForce();
             App.workforce.fetch();
             App.floor = new App.Floor.Floor();
             App.floor.fetch();
+
         },
 
         main:function(){
