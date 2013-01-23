@@ -93,9 +93,15 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+
 .simulation{
     position: relative;
-    min-height: 800px;
+    min-height: 1200px;
+}
+
+#workforce .toggle{
+    padding: 0 5px 5px;
+    background: whitesmoke;
 }
 
 .wf-container{
@@ -116,6 +122,11 @@ textarea {
 
 .worker-group .muted{
     font-size: 12px;
+}
+
+.worker-group .setuptime{
+    font-size: 12px;
+    color: #666;
 }
 
 .worker_holder{

@@ -42,12 +42,13 @@ FactorySim.module("Sim", function(Sim, App, Backbone, Marionette, $, _){
             var optionsView = new App.Factory.OptionsView();
             App.optionsRegion.show(optionsView);
 
-            // // Show the workforce
+            var floorView = new App.Floor.FloorView({collection: App.floor});
+            App.mainRegion.show(floorView);
+
+            // Show the workforce
             var WFview = new App.Workers.WorkforceView({collection: App.workforce});
             App.workforceRegion.show(WFview);
 
-            var floorView = new App.Floor.FloorView({collection: App.floor});
-            App.mainRegion.show(floorView);
         }
 
     });

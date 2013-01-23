@@ -244,9 +244,10 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
             if(this.ui.container.css("display") == "none"){
                 this.ui.text.text("Hide Workforce");
                 this.ui.icon.toggleClass("icon-chevron-up icon-chevron-down");
-                $("#factory").animate({"margin-top": "143px"});
+                $("body").animate({"padding-top": (60 + this.height) + "px"});
             } else {
-                $("#factory").animate({"margin-top": "0"});
+                if(!this.height) this.height = this.$el.height();
+                $("body").animate({"padding-top": "90px"});
                 this.ui.icon.toggleClass("icon-chevron-up icon-chevron-down");
                 this.ui.text.text("Show Workforce");
             }
@@ -260,12 +261,16 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
             }, this);
         },
 
+        onRender: function(){
+            $("body").css({"padding-top": "220px"});
+        },
+
         // This need to be broken out into... a template and... a different view?
         _createWorkerGroupEl: function(skill){
             var type = worker_types[skill];
             var parent = $("<div>", {"class":"worker-group " + skill});
             parent.append($("<h5>", {text: skill}))
-            .append($("<div>", {"class": "setuptime", text: "Setup Time: " + type.setupTime}));
+            .append($("<div>", {"class": "setuptime", text: "Setup Time: " + type.setupTime + " min"}));
             return parent;
         },
 

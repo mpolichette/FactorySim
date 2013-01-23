@@ -10,7 +10,7 @@ var ReplaceRegion = Marionette.Region.extend({
 });
 
 FactorySim.addRegions({
-    mainRegion: "#factory",
+    mainRegion: "#content",
     clockRegion: {
         selector: "#clock",
         regionType: ReplaceRegion
