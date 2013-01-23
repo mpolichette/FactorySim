@@ -98,7 +98,7 @@ textarea {
     min-height: 800px;
 }
 
-#workforce{
+.wf-container{
     padding: 0 10px 10px;
     background: whitesmoke;
     color: #333;
@@ -107,7 +107,7 @@ textarea {
 .worker-group{
  float: left;
  margin-right: 10px;
- width: 178px;
+ width: 170px;
 }
 
 .worker-group h5{
@@ -121,7 +121,6 @@ textarea {
 .worker_holder{
     float: left;
     margin: 0 5px 5px 0;
-    border: 1px dashed blue;
 }
 
 .worker{
@@ -230,14 +229,14 @@ span.status{
 }
 
 
-#controls .speed{
+#options .slider-holder{
     padding: 3px 20px;
 }
-#controls .speed .slider{
+#options .slider{
     margin: 5px 0;
     height: 8px;
 }
-#controls .speed .slider a{
+#options .slider a{
     height: 15px;
 }
 
