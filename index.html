@@ -148,19 +148,18 @@
         <script type="text/template" id="job_template">
             <div class="info">
                 <div class="skill"><%= skill_required %></div>
-                <div class="stats">
-                    <div>
-                        <span class="limit">Set Limit</span>
-                    </div>
-                    <div class="inventory">
-                        <strong>Inventory: </strong>
-                        <span class="value"><%= inventory %></span>
-                    </div>
+                <div>Task time: <%= taskTime %></div>
+            </div>
+            <div class="stats">
+                <div>
+                    <span class="limit">Set Limit</span>
+                </div>
+                <div class="inventory">
+                    <span>Inventory: </span>
+                    <span class="value"><%= inventory %></span>
                 </div>
             </div>
-            <div class="workers">
-
-            </div>
+            <div class="workers"></div>
         </script>
 
         <script type="text/template" id="market_template">

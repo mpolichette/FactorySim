@@ -56,6 +56,17 @@ FactorySim.module("Sim", function(Sim, App, Backbone, Marionette, $, _){
             var WFview = new App.Workers.WorkforceView({collection: App.workforce});
             App.workforceRegion.show(WFview);
 
+            // Listen for end of the week event
+            this.listenTo(App.vent, "clock:weekOver", this._showEndOfWeek);
+        },
+
+        _showEndOfWeek: function(){
+            // Close other views
+            App.clockRegion.close();
+            App.bankRegion.close();
+            App.workforceRegion.close();
+            // Show Stats
+            //App.mainRegion
         }
 
     });

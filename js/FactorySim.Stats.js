@@ -19,4 +19,5 @@ FactorySim.module("Stats", function(Stats, App, Backbone, Marionette, $, _){
             });
         }
     });
+
 });

@@ -171,15 +171,18 @@ textarea {
 
 .job{
     width: 180px;
-}
-.job .skill{
-    float: left;
-}
-
-.job .stats{
-    float: right;
     font-size: 12px;
 }
+.job .skill{
+    font-size: 14px;
+}
+.job .info{
+    float: left;
+}
+.job .stats{
+    float: right;
+}
+
 .job .limit input{
     font-size: 12px;
     line-height: 12px;
