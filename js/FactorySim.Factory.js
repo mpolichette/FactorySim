@@ -268,21 +268,32 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
 
     Factory.WelcomeView = Marionette.ItemView.extend({
         template: "#welcome_template",
-
-        ui: {
-            inputs: "input"
-        },
+        id: "welcome",
+        className: "row",
 
         events: {
-            "click button": "submitForm"
+            "click .submit": "submitForm",
+            "click .add": "addUserInput"
+        },
+
+        numberOfUsers: 1,
+
+        addUserInput: function(){
+            this.numberOfUsers = this.numberOfUsers + 1;
+            var input = this.$(".control-group").first().clone();
+            input.find("input").val("");
+            input.find("input").attr("placeholder", "What is thier name?");
+            input.find("label").text("Person " + this.numberOfUsers);
+            input.insertAfter($(".control-group").last());
         },
 
         submitForm: function(event){
             event.preventDefault();
             var names = [];
-            _.each(this.ui.inputs, function(input){
-                names.push($(input).val());
-            }, this);
+            this.$("input").each(function(index, input){
+                var name = $(input).val();
+                if(name.length > 0) names.push(name);
+            });
             this.trigger("login", names);
         }
     });

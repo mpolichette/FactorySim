@@ -55,16 +55,22 @@
         <div id="modal" class="modal hide fade"></div>
 
         <script type="text/template" id="welcome_template">
-            <div id="welcome">
-                <h1>Welcome to the factory simulation</h1>
-                <p>To get credit for this activity, you must enter your name.</p>
-                <form>
-                    <label>Name:</label>
-                    <input type="text" placeholder="What's your name?"/>
-                    <span class="help-block">If you have one, use your school login.</span>
-                    <button class="btn">Submit</button>
-                </form>
-            </div>
+            <h1>Welcome to the factory simulation</h1>
+            <p>Please identify yourself in order to get credit.  If you have a school login, use that.
+            <br/>If you are working in a group, enter additional names by clicking on the "add another person" button.
+            </p>
+            <form class="form-horizontal span7">
+                <div class="control-group">
+                    <label class="control-label">Names:</label>
+                    <div class="controls">
+                        <input type="text" placeholder="What's your name?"/>
+                    </div>
+                </div>
+                <button class="btn btn-primary add" type="button">
+                    <i class="icon-plus icon-white"></i> Add another person
+                </button>
+                <button class="btn submit pull-right" type="button">Submit</button>
+            </form>
         </script>
 
         <script type="text/template" id="clock_template">
