@@ -1,5 +1,75 @@
 FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
 
+    // Application Factory
+    // -------------------
+    // The application factory is the main application object, it its responsible
+    // for holding the application objects and the application stats
+
+    Factory.Factory = Backbone.Model.extend({
+
+        initialize: function(attributes, options){
+            _.bindAll(this);
+            // Set the users
+            if(options && options.users){
+                this.users =options.users;
+            } else {
+                this.users = [];
+            }
+
+
+            // Start up the clock
+            this.clock = new Factory.Clock();
+
+            // Initialize the bank account
+            this.bank = new App.Factory.BankAccount({cash:this.get("startingCash")});
+            App.reqres.addHandler("purchase", this.makePurchase);
+            App.commands.addHandler("sell", this.makeSale);
+
+            // Hire the labor
+            this.workforce = new App.Workers.WorkForce();
+
+            // Create the positions
+            this.floor = new App.Floor.Floor();
+
+            // Create a place to store stats
+            this.stats = new App.Stats.StatKeeper({}, {clock: this.clock});
+
+        },
+
+        defaults: {
+            startingCash: 10000,
+
+            // Local basic stats
+            revenue: 0,
+            profit: 0,
+            spent: 0,
+            totalOperatingExpenses: 10000
+        },
+
+        makePurchase: function(request){
+            if (this.bank.withdraw(request.cost)){
+                // Track locally
+                this.set("spent", this.get("spent") + request.cost);
+                // Log in stats
+                this.stats.addPurchase(request);
+                return true;
+            } else {
+                return false;
+            }
+
+        },
+
+        makeSale: function(sale){
+            this.bank.deposit(sale.revenue);
+            // Track locally
+            this.set("profit", this.get("profit") + sale.profit);
+            this.set("revenue", this.get("revenue") + sale.revenue);
+            // Log in stats
+            this.stats.addSale(sale);
+        }
+
+    });
+
     // Application Clock
     // -----------------
     // A very simple implementation of a ticking clock
@@ -84,6 +154,7 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
                 }
                 else{
                     this.set("hour", 0);
+                    App.vent.trigger("clock:hourOver");
                     this._increment_day();
                 }
             }
@@ -279,12 +350,16 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
         numberOfUsers: 1,
 
         addUserInput: function(){
-            this.numberOfUsers = this.numberOfUsers + 1;
-            var input = this.$(".control-group").first().clone();
-            input.find("input").val("");
-            input.find("input").attr("placeholder", "What is thier name?");
-            input.find("label").text("Person " + this.numberOfUsers);
-            input.insertAfter($(".control-group").last());
+            if (this.numberOfUsers < 4){
+                this.numberOfUsers = this.numberOfUsers + 1;
+                var input = this.$(".control-group").first().clone();
+                input.find("input").val("");
+                input.find("input").attr("placeholder", "What is thier name?");
+                input.find("label").text("Person " + this.numberOfUsers);
+                input.insertAfter($(".control-group").last());
+                if (this.numberOfUsers === 3) this.$(".add").remove();
+            }
+
         },
 
         submitForm: function(event){

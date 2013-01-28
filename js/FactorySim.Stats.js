@@ -17,6 +17,17 @@ FactorySim.module("Stats", function(Stats, App, Backbone, Marionette, $, _){
                 status: worker.get("status"),
                 worker: worker
             });
+        },
+
+
+        addPurchase: function(purchase){
+            console.log("A purchas was made:");
+            console.log(purchase);
+        },
+
+        addSale: function(sale){
+            console.log("A sale was made:");
+            console.log(sale);
         }
     });
 

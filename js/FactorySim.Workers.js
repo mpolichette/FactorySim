@@ -81,7 +81,6 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
                 }
                 // Assign job
                 this.set("job", job);
-                console.log(this.get("name")+" now works at job " + job.id+".");
 
                 // Update status
                 this.set({
@@ -153,6 +152,10 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
 
 
     Workers.WorkForce = Backbone.Collection.extend({
+        initialize: function(){
+            this.fetch();
+        },
+
         model: Workers.Worker,
         url: "../FactorySim/data/workers.json",
 

@@ -7,20 +7,9 @@ FactorySim.module("Sim", function(Sim, App, Backbone, Marionette, $, _){
     });
 
     Sim.Controller = Marionette.Controller.extend({
-        initialize: function(){
+        initialize: function(options){
 
-            // Create the clock
-            App.clock = new App.Factory.Clock();
-
-            // Start collecting stats
-            App.stats = new App.Stats.StatKeeper({}, {clock: App.clock});
-
-            // Create our stuff
-            App.bank = new App.Factory.BankAccount();
-            App.workforce = new App.Workers.WorkForce();
-            App.workforce.fetch();
-            App.floor = new App.Floor.Floor();
-            App.floor.fetch();
+            App.factory = new App.Factory.Factory(options);
 
         },
 
@@ -38,22 +27,22 @@ FactorySim.module("Sim", function(Sim, App, Backbone, Marionette, $, _){
         _showLayout:function(){
 
             // Show the clock
-            var clockView = new App.Factory.ClockView({model:App.clock});
+            var clockView = new App.Factory.ClockView({model:App.factory.clock});
             App.clockRegion.show(clockView);
 
             // Show the bank
-            var bankView = new App.Factory.BankAccountView({model: App.bank});
+            var bankView = new App.Factory.BankAccountView({model: App.factory.bank});
             App.bankRegion.show(bankView);
 
             // Show the options
             var optionsView = new App.Factory.OptionsView();
             App.optionsRegion.show(optionsView);
 
-            var floorView = new App.Floor.FloorView({collection: App.floor});
+            var floorView = new App.Floor.FloorView({collection: App.factory.floor});
             App.mainRegion.show(floorView);
 
             // Show the workforce
-            var WFview = new App.Workers.WorkforceView({collection: App.workforce});
+            var WFview = new App.Workers.WorkforceView({collection: App.factory.workforce});
             App.workforceRegion.show(WFview);
 
             // Listen for end of the week event

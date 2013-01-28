@@ -4,6 +4,10 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
     // ----------------
 
     Floor.Floor = Backbone.Collection.extend({
+        initialize: function(){
+            this.fetch();
+        },
+
         model: function(attrs, options){
             switch(attrs.type){
                 case "market":
@@ -150,7 +154,8 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
             id: null,
             demand: 0,
             produced: 0,
-            buy_price: 0,
+            unitPrice: 0,
+            unitProfit: 0,
             revenue: 0
         },
 
@@ -169,8 +174,13 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
                 this.get("source").takeInventory();
                 this.set("produced", this.get("produced") + 1);
                 if(this.get("produced") <= this.get("demand")){
-                    App.bank.deposit(this.get("buy_price"));
-                    this.set("revenue", this.get("revenue") + this.get("buy_price"));
+                    var sale = {
+                        market: this,
+                        revenue: this.get("unitPrice"),
+                        profit: this.get("unitProfit")
+                    };
+                    App.execute("sell", sale);
+                    this.set("revenue", this.get("revenue") + this.get("unitPrice"));
                 }
             }
         }
@@ -202,7 +212,17 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
 
         buy: function(amount){
             var value = this.get('price') * amount;
-            if(App.bank.withdraw(value)){
+
+            // Create the purchase request
+            var request = {
+                resource: this,
+                quantity: amount,
+                cost: value
+            };
+
+            var purchaseMade = App.request("purchase", request);
+
+            if(purchaseMade){
                 // Add to inventory
                 var current_inventory = this.get("inventory");
                 this.set("inventory", current_inventory + amount);
@@ -380,7 +400,7 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
         },
 
         dropped_on:function(event, ui){
-            worker = App.workforce.get(ui.draggable.data('cid'));
+            worker = App.factory.workforce.get(ui.draggable.data('cid'));
 
             // Make sure to validate
             ui.draggable.trigger('assign', [this, this.model]);
