@@ -41,7 +41,7 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
         },
 
         defaults: {
-            startingCash: 10000,
+            startingCash: 12725,
 
             // Local basic stats
             revenue: 0,
