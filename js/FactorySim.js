@@ -19,6 +19,10 @@ FactorySim.addRegions({
         selector: "#bank",
         regionType: ReplaceRegion
     },
+    profitRegion: {
+        selector: "#profit",
+        regionType: ReplaceRegion
+    },
     optionsRegion: {
         selector: "#options",
         regionType: ReplaceRegion

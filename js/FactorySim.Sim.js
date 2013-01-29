@@ -34,6 +34,10 @@ FactorySim.module("Sim", function(Sim, App, Backbone, Marionette, $, _){
             var bankView = new App.Factory.BankAccountView({model: App.factory.bank});
             App.bankRegion.show(bankView);
 
+            // Show the profit
+            var profitView = new App.Factory.ProfitView({model: App.factory});
+            App.profitRegion.show(profitView);
+
             // Show the options
             var optionsView = new App.Factory.OptionsView();
             App.optionsRegion.show(optionsView);

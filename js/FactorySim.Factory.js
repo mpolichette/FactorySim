@@ -17,8 +17,12 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
             }
 
 
-            // Start up the clock
+            // Start up the clock, and listen to clock events
             this.clock = new Factory.Clock();
+            this.listenTo(App.vent, "clock:hourOver", this.hourlyPay, this);
+            // Bind once to the clock start, to remove the first payment
+            App.vent.once("clock:started", this.hourlyPay, this);
+
 
             // Initialize the bank account
             this.bank = new App.Factory.BankAccount({cash:this.get("startingCash")});
@@ -42,14 +46,15 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
             // Local basic stats
             revenue: 0,
             profit: 0,
-            spent: 0,
+            purchases: 0, // Spent on resources
+            expenses: 0, // Spent on operating expenses
             totalOperatingExpenses: 10000
         },
 
         makePurchase: function(request){
             if (this.bank.withdraw(request.cost)){
                 // Track locally
-                this.set("spent", this.get("spent") + request.cost);
+                this.set("purchases", this.get("purchases") + request.cost);
                 // Log in stats
                 this.stats.addPurchase(request);
                 return true;
@@ -66,8 +71,51 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
             this.set("revenue", this.get("revenue") + sale.revenue);
             // Log in stats
             this.stats.addSale(sale);
+        },
+
+        hourlyPay: function(){
+            // Cheating here with set numbers
+            var hourlyWage = this.get("totalOperatingExpenses") / (40); // = 5 days * 8 hours
+            // Check if we can remove the moneys!
+            if(this.bank.withdraw(hourlyWage)){
+                this.set("expenses", this.get("expenses") + hourlyWage);
+                this.set("profit", this.get("profit") - hourlyWage);
+            } else {
+                // Can't pay employees! Sorry, you're bankrupt!
+                alert("Sorry, you're bankrupt");
+                App.vent.trigger("clock:pause");
+                App.vent.trigger("bankrupt");
+            }
         }
 
+    });
+
+    // Profit View
+    // -----------
+    Factory.ProfitView = Marionette.ItemView.extend({
+        template: "#factory_template",
+        id: "clock",
+        tagName: "ul",
+        className: "nav",
+
+        ui: {
+            profit: ".profit"
+        },
+
+        modelEvents: {
+            "change:profit": "_updateProfit"
+        },
+
+        _updateProfit: function(){
+            var profit = this.model.get("profit");
+            if (profit >= 0){
+                this.ui.profit.text("$" + this.model.get("profit"));
+            } else {
+                this.ui.profit.text("$(" + Math.abs(this.model.get("profit")) + ")");
+
+            }
+
+        }
     });
 
     // Application Clock
@@ -148,13 +196,13 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
             }
             else{
                 this.set("minute", 0);
+                App.vent.trigger("clock:hourOver");
                 var hour = this.get("hour");
                 if(hour < this.get("dayLength") - 1){
                     this.set("hour", hour + 1);
                 }
                 else{
                     this.set("hour", 0);
-                    App.vent.trigger("clock:hourOver");
                     this._increment_day();
                 }
             }

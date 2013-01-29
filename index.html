@@ -38,6 +38,7 @@
                     <a class="brand" href="#">Factory Sim</a>
                     <ul id="clock"></ul>
                     <ul id="control-bar" class="nav pull-right">
+                        <ul id="profit"></ul>
                         <ul id="bank"></ul>
                         <ul id="options"></ul>
                     </ul>
@@ -86,8 +87,31 @@
 
         <script type="text/template" id="bank_template">
             <li class="divider-vertical"></li>
-            <li class="navbar-text">
-                <strong>Cash: </strong><span class="cash">$<%= cash %></span>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <strong>Cash: </strong><span class="cash">$<%= cash %> </span><b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><span tabindex="-1" href="#">-100</span></li>
+                  <li><span tabindex="-1" href="#">+100</span></li>
+                  <li class="divider"></li>
+                  <li><span tabindex="-1" href="#">0</span></li>
+                </ul>
+            </li>
+        </script>
+
+        <script type="text/template" id="factory_template">
+            <li class="divider-vertical"></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <strong>Profit: </strong><span class="profit">$<%= profit %> </span><b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><span tabindex="-1" href="#">-100</span></li>
+                  <li><span tabindex="-1" href="#">+100</span></li>
+                  <li class="divider"></li>
+                  <li><span tabindex="-1" href="#">0</span></li>
+                </ul>
             </li>
         </script>
 
