@@ -270,70 +270,37 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
                 default:
                     return Floor.JobView;
             }
+        },
+
+        onItemviewShow: function(targetView){
+
+            // Get the source list
+            var sourceViewList = [];
+            if(targetView.model.has("sources")){
+                _.each(targetView.model.get("sources"), function(sourceModel){
+                    sourceViewList.push(this.children.findByModel(sourceModel));
+                }, this);
+            } else if(targetView.model.has("source")){
+                sourceViewList.push(this.children.findByModel(targetView.model.get("source")));
+            }
+
+            // Make the enpoints and connections
+            _.each(sourceViewList, function(sourceView){
+                var inEP = jsPlumb.addEndpoint(targetView.el, {
+                                endpoint: ["Dot", {radius: 7}],
+                                anchor: [ "Perimeter", { shape:"circle" }]
+                            });
+                var outEP = jsPlumb.addEndpoint(sourceView.el, {
+                                endpoint: ["Dot", {radius: 7}],
+                                anchor: [ "Perimeter", { shape:"circle" }]
+                            });
+                jsPlumb.connect({
+                    source: inEP,
+                    target: outEP,
+                    connector:[ "Flowchart", {stub:5}]
+                });
+            }, this);
         }
-
-        // render:function (eventName) {
-
-        //     var id_view_map = {},
-        //         connections = [];
-
-        //     _.each(this.model.models, function (job) {
-        //         var view;
-        //         switch(job.get('type')){
-        //             case "market":
-        //                 view = new MarketView({model:job}).render();
-        //                 break;
-        //             case "resource":
-        //                 view = new ResourceView({model:job}).render();
-        //                 break;
-        //             default:
-        //                 view = new JobView({model:job}).render();
-        //         }
-
-        //         // Include the element in the mapping
-        //         id_view_map[job.id] = view;
-
-        //         // Set the position of the element and add it to the DOM
-        //         view.$el.css('left', job.get('x'));
-        //         view.$el.css('top', job.get('y'));
-        //         this.$el.append(view.el);
-
-        //         // If there are connections, record them for adding after
-        //         var dependencies = job.get("source_ids") || [job.get("buys_from")];
-        //         if(dependencies.length > 0){
-        //             connections.push({
-        //                 "target":job.id,
-        //                 "sources":dependencies});
-        //         }
-        //     }, this);
-
-        //     // Add the connections
-        //     _.each(connections, function(connection){
-
-        //         // Go through each source and hook it up
-        //         _.each(connection.sources,function(source){
-        //             var source_view = id_view_map[source],
-        //                 target_view = id_view_map[connection.target];
-
-        //                 // Create the endpoints
-        //                 source_view.outEP = jsPlumb.addEndpoint(source_view.el, {
-        //                     endpoint: ["Dot", {radius: 7}],
-        //                     anchor: [ "Perimeter", { shape:"circle" }]});
-        //                 target_view.inEP = jsPlumb.addEndpoint(target_view.el, {
-        //                     endpoint:["Dot", {radius: 7}],
-        //                     anchor: [ "Perimeter", { shape:"circle" }]});
-        //                 // Connect them!
-        //                 jsPlumb.connect({
-        //                     source: source_view.outEP,
-        //                     target: target_view.inEP,
-        //                     connector:[ "Flowchart", {stub:5}]});
-
-        //             console.log(connection.target + " depends on " + source);
-        //         }, this);
-        //     }, this);
-
-        //     return this;
-        // }
     });
 
     Floor.JobView = Marionette.ItemView.extend({
@@ -427,6 +394,7 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
         onRender: function(){
             this.$el.css('left', this.model.get('x'));
             this.$el.css('top', this.model.get('y'));
+
         },
 
         _updateProduced: function(){
