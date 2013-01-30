@@ -3,7 +3,7 @@
 var FactorySim = new Backbone.Marionette.Application();
 FactorySim.settings = {};
 
-var ReplaceRegion = Marionette.Region.extend({
+FactorySim.ReplaceRegion = Marionette.Region.extend({
     open: function(view){
         this.$el.replaceWith(view.el);
     }
@@ -13,23 +13,23 @@ FactorySim.addRegions({
     mainRegion: "#content",
     clockRegion: {
         selector: "#clock",
-        regionType: ReplaceRegion
+        regionType: FactorySim.ReplaceRegion
     },
     bankRegion: {
         selector: "#bank",
-        regionType: ReplaceRegion
+        regionType: FactorySim.ReplaceRegion
     },
     profitRegion: {
         selector: "#profit",
-        regionType: ReplaceRegion
+        regionType: FactorySim.ReplaceRegion
     },
     optionsRegion: {
         selector: "#options",
-        regionType: ReplaceRegion
+        regionType: FactorySim.ReplaceRegion
     },
     workforceRegion: {
         selector: "#workforce",
-        regionType: ReplaceRegion
+        regionType: FactorySim.ReplaceRegion
     }
 });
 

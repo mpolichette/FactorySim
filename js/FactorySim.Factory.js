@@ -45,6 +45,7 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
 
             // Local basic stats
             revenue: 0,
+            inventory_sold: 0, // This is purchases as counted after a sell
             profit: 0,
             purchases: 0, // Spent on resources
             expenses: 0, // Spent on operating expenses
@@ -69,6 +70,8 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
             // Track locally
             this.set("profit", this.get("profit") + sale.profit);
             this.set("revenue", this.get("revenue") + sale.revenue);
+            this.set("inventory_sold", this.get("inventory_sold") + (sale.revenue - sale.profit));
+
             // Log in stats
             this.stats.addSale(sale);
         },
@@ -93,17 +96,23 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
     // Profit View
     // -----------
     Factory.ProfitView = Marionette.ItemView.extend({
-        template: "#factory_template",
+        template: "#profit_template",
         id: "clock",
         tagName: "ul",
         className: "nav",
 
         ui: {
-            profit: ".profit"
+            profit: ".profit",
+            revenue: ".revenue",
+            inventory_sold: ".inventory-sold",
+            expenses: ".expenses"
         },
 
         modelEvents: {
-            "change:profit": "_updateProfit"
+            "change:profit": "_updateProfit",
+            "change:revenue": "_updateRevenue",
+            "change:inventory_sold": "_updateInventorySold",
+            "change:expenses": "_updateExpenses"
         },
 
         _updateProfit: function(){
@@ -114,8 +123,20 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
                 this.ui.profit.text("$(" + Math.abs(this.model.get("profit")) + ")");
 
             }
+        },
 
+        _updateRevenue: function(){
+            this.ui.revenue.text(this.model.get("revenue"));
+        },
+
+        _updateInventorySold: function(){
+            this.ui.inventory_sold.text(this.model.get("inventory_sold"));
+        },
+
+        _updateExpenses: function(){
+            this.ui.expenses.text(this.model.get("expenses"));
         }
+
     });
 
     // Application Clock
@@ -319,7 +340,7 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
     // Bank Account View
     // -----------------
 
-    Factory.BankAccountView = Marionette.ItemView.extend({
+    Factory.BankAccountView = Marionette.Layout.extend({
         template: "#bank_template",
         id: "bank",
         tagName: "ul",
@@ -327,6 +348,13 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
 
         modelEvents: {
             "change:cash": "_updateCash"
+        },
+
+        regions: {
+            dropdown: {
+                selector: ".dropdown-menu",
+                regionType: App.ReplaceRegion
+            }
         },
 
         _updateCash: function(){

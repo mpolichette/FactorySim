@@ -90,29 +90,34 @@
             <li class="divider-vertical"></li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <strong>Cash: </strong><span class="cash">$<%= cash %> </span><b class="caret"></b>
+                    <strong>Cash: </strong><span class="cash">$<%= cash %> </span> <b class="caret"></b>
                 </a>
-                <!--<ul class="dropdown-menu">
-                  <li><span tabindex="-1" href="#">-100</span></li>
-                  <li><span tabindex="-1" href="#">+100</span></li>
-                  <li class="divider"></li>
-                  <li><span tabindex="-1" href="#">0</span></li>
-                </ul>-->
+                <ul class="dropdown-menu pull-right"></ul>
             </li>
         </script>
 
-        <script type="text/template" id="factory_template">
+        <script type="text/template" id="bank-dropdown_template">
+            <li><i class="icon-plus"></i>Starting Cash: <span class="starting-cash"><%=startingCash%></span></li>
+            <li><i class="icon-plus"></i>Revenue: <span class="revenue"><%=revenue%></span></li>
+            <li><i class="icon-minus"></i>Purchases: <span class="purchases"><%=purchases%></span></li>
+            <li><i class="icon-minus"></i>Operations: <span class="expenses"><%=expenses%></span></li>
+            <li class="divider"></li>
+            <li><span class="cash"></span><%=cash%></li>
+        </script>
+
+        <script type="text/template" id="profit_template">
             <li class="divider-vertical"></li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <strong>Profit: </strong><span class="profit">$<%= profit %> </span><b class="caret"></b>
+                    <strong>Profit: </strong><span class="profit">$<%= profit %></span> <b class="caret"> </b>
                 </a>
-                <!--<ul class="dropdown-menu">
-                  <li><span tabindex="-1" href="#">-100</span></li>
-                  <li><span tabindex="-1" href="#">+100</span></li>
-                  <li class="divider"></li>
-                  <li><span tabindex="-1" href="#">0</span></li>
-                </ul>-->
+                <ul class="dropdown-menu pull-right">
+                    <li><i class="icon-plus"></i>Revenue: <span class="revenue"><%=revenue%></span></li>
+                    <li><i class="icon-minus"></i>Inventory Sold: <span class="inventory-sold"><%=inventory_sold%></span></li>
+                    <li><i class="icon-minus"></i>Operations: <span class="expenses"><%=expenses%></span></li>
+                    <li class="divider"></li>
+                    <li><span class="profit"><%=profit%></span></li>
+                </ul>
             </li>
         </script>
 
