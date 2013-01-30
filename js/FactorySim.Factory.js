@@ -363,6 +363,41 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
 
     });
 
+    Factory.BankAccountDropdown = Marionette.ItemView.extend({
+        template: "#bank-dropdown_template",
+        tagName: "ul",
+        className: "dropdown-menu pull-right",
+        ui:{
+            revenue: ".revenue",
+            purchases: ".purchases",
+            expenses: ".expenses",
+            cash: ".cash"
+        },
+        modelEvents: {
+            "change:revenue": "_updateRevenue",
+            "change:purchases": "_updatePurchases",
+            "change:expenses": "_updateExpenses",
+            "change": "_updateCash"
+        },
+
+        _updateRevenue: function(){
+            this.ui.revenue.text(this.model.get("revenue"));
+        },
+
+        _updatePurchases: function(){
+            this.ui.purchases.text(this.model.get("purchases"));
+        },
+
+        _updateExpenses: function(){
+            this.ui.expenses.text(this.model.get("expenses"));
+        },
+
+        _updateCash: function(){
+            this.ui.cash.text(this.model.bank.get("cash"));
+        }
+
+    });
+
 
     // Factory Options View
     // --------------------

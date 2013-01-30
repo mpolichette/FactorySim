@@ -97,12 +97,12 @@
         </script>
 
         <script type="text/template" id="bank-dropdown_template">
-            <li><i class="icon-plus"></i>Starting Cash: <span class="starting-cash"><%=startingCash%></span></li>
+            <li><i class="icon-plus"></i>Starting Cash: <span><%=startingCash%></span></li>
             <li><i class="icon-plus"></i>Revenue: <span class="revenue"><%=revenue%></span></li>
             <li><i class="icon-minus"></i>Purchases: <span class="purchases"><%=purchases%></span></li>
             <li><i class="icon-minus"></i>Operations: <span class="expenses"><%=expenses%></span></li>
             <li class="divider"></li>
-            <li><span class="cash"></span><%=cash%></li>
+            <li><span class="cash">$<%=startingCash%></span></li>
         </script>
 
         <script type="text/template" id="profit_template">
@@ -116,7 +116,7 @@
                     <li><i class="icon-minus"></i>Inventory Sold: <span class="inventory-sold"><%=inventory_sold%></span></li>
                     <li><i class="icon-minus"></i>Operations: <span class="expenses"><%=expenses%></span></li>
                     <li class="divider"></li>
-                    <li><span class="profit"><%=profit%></span></li>
+                    <li><span class="profit">$<%=profit%></span></li>
                 </ul>
             </li>
         </script>
