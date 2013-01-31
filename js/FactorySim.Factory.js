@@ -239,7 +239,6 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
                 return;
             }
             else{
-                this.pause();
                 App.vent.trigger("clock:weekOver");
                 alert("You have reached the end of the week!");
             }
@@ -461,13 +460,20 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
         numberOfUsers: 1,
 
         addUserInput: function(){
+            // Only allow a maximum of 3 to work in a group
             if (this.numberOfUsers < 4){
                 this.numberOfUsers = this.numberOfUsers + 1;
-                var input = this.$(".control-group").first().clone();
-                input.find("input").val("");
-                input.find("input").attr("placeholder", "What is thier name?");
-                input.find("label").text("Person " + this.numberOfUsers);
-                input.insertAfter($(".control-group").last());
+
+                // Get the name group
+                var nameGroup = this.$(".name").first().clone();
+                // Clear the cloned inputs
+                nameGroup.find("input").val();
+                // Create a heading for this new user
+                var heading = $("<h4>", {text:"Person " + this.numberOfUsers});
+                // Put them on the DOM
+                heading.insertAfter($(".name").last());
+                nameGroup.insertAfter(heading);
+                // Remove the button after 3
                 if (this.numberOfUsers === 3) this.$(".add").remove();
             }
 
@@ -476,11 +482,44 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
         submitForm: function(event){
             event.preventDefault();
             var names = [];
-            this.$("input").each(function(index, input){
-                var name = $(input).val();
-                if(name.length > 0) names.push(name);
+            this.$(".name").each(function(index, nameEl){
+                var name = {
+                    firstName: $(nameEl).find(".firstName input").val(),
+                    lastName: $(nameEl).find(".lastName input").val(),
+                    schoolID: $(nameEl).find(".school input").val()
+                };
+                if(name.firstName.length > 0) names.push(name);
             });
             this.trigger("login", names);
         }
     });
+
+    // Stats View
+    // ----------
+
+    Factory.StatsView = Marionette.ItemView.extend({
+        template: "#stats_template",
+        id: "statistics",
+        className: "row",
+
+        templateHelpers: {
+            getFinalHeading: function(){
+                if(this.profit > 0){
+                    return "<h1>Congratulations!</h1><h2>You're profitable!</h2>";
+                } else {
+                    return "<h1>Sorry...</h1><h2>You've gone bankrupt...</h2>";
+                }
+            },
+
+            getFinalMessage: function(){
+                if(this.profit > 0){
+                    return "Way to go! Check out some of your statistics, maybe write them down for a future resume!";
+                } else {
+                    return "Oh no!  Where did we go wrong? Look into these statistics and figure out what you can do better next time.";
+                }
+            }
+          }
+
+    });
+
 });

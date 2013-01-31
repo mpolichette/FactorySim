@@ -55,23 +55,34 @@
         <div id="modal" class="modal hide fade"></div>
 
         <script type="text/template" id="welcome_template">
-            <h1>Welcome to the factory simulation</h1>
-            <p>As a producer of widgets, you will apply concepts learned from the class and readings. Keep in mind that you need to think carefully about what you need to do to successfully product enough widgets to make a positive profit. As this game is in beta form, please call Alysse over as you are playing if you  have any questions about the program.</p>
-            <p><b>Please identify yourself in order to get credit.</b>  If you have a school login, use that.
-            <br/>If you are working in a group, enter additional names by clicking on the "add another person" button.
-            </p>
-            <form class="form-horizontal span7">
-                <div class="control-group">
-                    <label class="control-label">Names:</label>
-                    <div class="controls">
-                        <input type="text" placeholder="What's your name?"/>
+            <div class="hero-unit">
+                <h2>Welcome to the factory simulation</h2>
+                <p>As a producer of widgets, you will apply concepts learned from the class and readings. Keep in mind that you need to think carefully about what you need to do to successfully product enough widgets to make a positive profit. As this game is in beta form, please call Alysse over as you are playing if you  have any questions about the program.</p>
+            </div>
+            <div class="names span12">
+                <p><strong>Please identify yourself in order to get credit.</strong> Include your school login if you have one.</p>
+                <div class="name clearfix">
+                    <div class="firstName control-group">
+                        <label>First name:</label>
+                        <input type="text" placeholder="First name"/>
+                    </div>
+                    <div class="lastName control-group">
+                        <label>Last name:</label>
+                        <input type="text" placeholder="Last name"/>
+                    </div>
+                    <div class="school control-group">
+                        <label>School ID:</label>
+                        <input type="text" placeholder="School ID"/>
                     </div>
                 </div>
+            </div>
+            <div class="span9">
+                <p>If you are working in a group, enter additional names by clicking on the "add another person" button.</p>
                 <button class="btn btn-primary add" type="button">
                     <i class="icon-plus icon-white"></i> Add another person
                 </button>
                 <button class="btn submit pull-right" type="button">Submit</button>
-            </form>
+            </div>
         </script>
 
         <script type="text/template" id="clock_template">
@@ -171,13 +182,13 @@
         </script>
 
         <script type="text/template" id="limit-popover_template">
-            <form class="limit-popover">
+            <div class="limit-popover">
                 <div class="input-append">
                     <input class="span2" type="text">
                     <button class="set btn" type="button">Set</button>
                 </div>
                 <button class="cancel btn btn-small" type="button">Cancel</button>
-            </form>
+            </div>
         </script>
 
         <script type="text/template" id="job_template">
@@ -243,6 +254,12 @@
             </div>
         </script>
 
+        <script type="text/template" id="stats_template">
+            <div class="hero-unit">
+                <%= getFinalHeading() %>
+                <p> <%= getFinalMessage() %></p>
+            </div>
+        </script>
 
         <!-- Thirt-Party Libraries (Order matters) -->
         <script type="text/javascript" src="js/vendor/jquery-1.8.3.js"></script>

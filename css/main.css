@@ -93,10 +93,17 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+/* Welcome area */
+.names .control-group{
+    margin-right: 10px;
+    float: left;
+}
+
+
 
 .simulation{
     position: relative;
-    min-height: 1200px;
+    min-height: 970px;
 }
 
 #workforce .toggle{

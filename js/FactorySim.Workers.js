@@ -276,6 +276,10 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
             $("body").css({"padding-top": "220px"});
         },
 
+        onClose: function(){
+            $("body").css({"padding-top": "90px"});
+        },
+
         // This need to be broken out into... a template and... a different view?
         _createWorkerGroupEl: function(skill){
             var type = worker_types[skill];

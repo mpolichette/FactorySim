@@ -61,7 +61,8 @@ FactorySim.module("Sim", function(Sim, App, Backbone, Marionette, $, _){
             App.bankRegion.close();
             App.workforceRegion.close();
             // Show Stats
-            //App.mainRegion
+            var statsView = new App.Factory.StatsView({model: App.factory});
+            App.mainRegion.show(statsView);
         }
 
     });
