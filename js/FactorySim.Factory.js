@@ -177,7 +177,7 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
 
             // Settings
             dayLength: 8,
-            dayCount: 1
+            dayCount: 5
         },
 
         start: function(){
