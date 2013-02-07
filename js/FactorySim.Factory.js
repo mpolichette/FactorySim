@@ -22,7 +22,8 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
             this.listenTo(App.vent, "clock:hourOver", this.hourlyPay, this);
             // Bind once to the clock start, to remove the first payment
             App.vent.once("clock:started", this.hourlyPay, this);
-
+            // Listen for the end of week to push stats
+            //this.listenTo(App.vent, "clock:endOfWeek", this.passStats, this);
 
             // Initialize the bank account
             this.bank = new App.Factory.BankAccount({cash:this.get("startingCash")});
@@ -37,6 +38,7 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
 
             // Create a place to store stats
             this.stats = new App.Stats.StatKeeper({}, {clock: this.clock});
+
 
         },
 
@@ -89,6 +91,17 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
                 App.vent.trigger("clock:pause");
                 App.vent.trigger("bankrupt");
             }
+        },
+
+        passStats: function(){
+            var endOfWeekStats = {
+                revenue: this.get("revenue"),
+                profit: this.get("profit"),
+                cash: this.bank.get("cash"),
+                purchases: this.get("purchases"),
+                expenses: this.get("expenses")
+            };
+            this.stats.endOfWeek(endOfWeekStats);
         }
 
     });
@@ -164,7 +177,7 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
 
             // Settings
             dayLength: 8,
-            dayCount: 5
+            dayCount: 1
         },
 
         start: function(){
@@ -444,63 +457,16 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
         }
     });
 
-    // Welcome View
-    // ------------
-
-    Factory.WelcomeView = Marionette.ItemView.extend({
-        template: "#welcome_template",
-        id: "welcome",
-        className: "row",
-
-        events: {
-            "click .submit": "submitForm",
-            "click .add": "addUserInput"
-        },
-
-        numberOfUsers: 1,
-
-        addUserInput: function(){
-            // Only allow a maximum of 3 to work in a group
-            if (this.numberOfUsers < 4){
-                this.numberOfUsers = this.numberOfUsers + 1;
-
-                // Get the name group
-                var nameGroup = this.$(".name").first().clone();
-                // Clear the cloned inputs
-                nameGroup.find("input").val();
-                // Create a heading for this new user
-                var heading = $("<h4>", {text:"Person " + this.numberOfUsers});
-                // Put them on the DOM
-                heading.insertAfter($(".name").last());
-                nameGroup.insertAfter(heading);
-                // Remove the button after 3
-                if (this.numberOfUsers === 3) this.$(".add").remove();
-            }
-
-        },
-
-        submitForm: function(event){
-            event.preventDefault();
-            var names = [];
-            this.$(".name").each(function(index, nameEl){
-                var name = {
-                    firstName: $(nameEl).find(".firstName input").val(),
-                    lastName: $(nameEl).find(".lastName input").val(),
-                    schoolID: $(nameEl).find(".school input").val()
-                };
-                if(name.firstName.length > 0) names.push(name);
-            });
-            this.trigger("login", names);
-        }
-    });
-
-    // Stats View
+    // GamveOverView
     // ----------
-
-    Factory.StatsView = Marionette.ItemView.extend({
-        template: "#stats_template",
-        id: "statistics",
+    Factory.GamveOverView = Marionette.Layout.extend({
+        template: "#gameover_template",
+        id: "gameover",
         className: "row",
+
+        regions: {
+            statsRegion: "#statistics"
+        },
 
         templateHelpers: {
             getFinalHeading: function(){
@@ -519,7 +485,5 @@ FactorySim.module("Factory", function(Factory, App, Backbone, Marionette, $, _){
                 }
             }
           }
-
     });
-
 });

@@ -200,6 +200,13 @@ textarea {
     position: absolute;
     border: 1px solid gray;
     padding: 5px;
+    -moz-box-shadow:    3px 3px 5px 3px #ccc;
+    -webkit-box-shadow: 3px 3px 5px 3px #ccc;
+    box-shadow:         3px 3px 5px 3px #ccc;
+
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
  }
 
 span.skill{
@@ -281,7 +288,9 @@ span.limit:hover{
     height: 15px;
 }
 
-
+.modal-inner{
+    padding: 10px 20px 0;
+}
 
 /* ==========================================================================
    Helper classes

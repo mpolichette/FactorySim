@@ -261,6 +261,11 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
         id:'factory',
         className:'simulation',
 
+        collectionEvents:{
+            "change:sources": "updatePipe",
+            "change:source": "updatePipe"
+        },
+
         getItemView: function(item){
             switch(item.get("type")){
                 case "market":
@@ -273,7 +278,10 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
         },
 
         onItemviewShow: function(targetView){
+            this.connectItemView(targetView);
+        },
 
+        connectItemView: function(targetView){
             // Get the source list
             var sourceViewList = [];
             if(targetView.model.has("sources")){
@@ -300,6 +308,10 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
                     connector:[ "Flowchart", {stub:5}]
                 });
             }, this);
+        },
+
+        updatePipe: function(model){
+            this.connectItemView(this.children.findByModel(model));
         }
     });
 
@@ -431,7 +443,6 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
             this.$el.css('left', this.model.get('x'));
             this.$el.css('top', this.model.get('y'));
         },
-
         buy: function(event){
             var amount = $(event.target).data("amount");
             if(!this.model.buy(amount)){

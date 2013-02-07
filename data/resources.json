@@ -1,0 +1,6 @@
+[
+    {"type":"resource", "id":20, "x":35, "y":0, "name":"Raw Material A", "price":30, "purchased": 25},
+    {"type":"resource", "id":21, "x":270, "y":0,"name":"Raw Material B", "price":35, "purchased": 25},
+    {"type":"resource", "id":22, "x":535, "y":0, "name":"Raw Material C", "price":30, "purchased": 15},
+    {"type":"resource", "id":23, "x":780, "y":0, "name":"Raw Material D", "price":65, "purchased": 10}
+]

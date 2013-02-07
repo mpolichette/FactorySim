@@ -2,30 +2,30 @@ FactorySim.module("Sim", function(Sim, App, Backbone, Marionette, $, _){
 
     Sim.Router = Marionette.AppRouter.extend({
         appRoutes:{
-            "": "main"
+            "": "start"
         }
     });
 
     Sim.Controller = Marionette.Controller.extend({
         initialize: function(options){
+            _.bindAll(this);
+            App.users = new App.Startup.Users({}, {model: App.Startup.user});
+        },
 
+        start:function(){
+            // Attach to startup screen and listen for start game button
+            $("button.startGame").on("click", this.signIn);
+        },
+
+        signIn: function(){
+            // Allow the user to identify themselves
+            var view = new App.Startup.WelcomeView({collection: App.users});
+            App.modalRegion.show(view);
+            this.listenTo(view, "startGame", this._newGame);
+        },
+
+        _newGame:function(){
             App.factory = new App.Factory.Factory(options);
-
-        },
-
-        main:function(){
-            var view = new App.Factory.WelcomeView();
-            this.listenTo(view, "login", this._login);
-            App.mainRegion.show(view);
-        },
-
-        _login: function(users){
-            App.settings.users = users;
-            this._showLayout();
-        },
-
-        _showLayout:function(){
-
             // Show the clock
             var clockView = new App.Factory.ClockView({model:App.factory.clock});
             App.clockRegion.show(clockView);
@@ -60,9 +60,14 @@ FactorySim.module("Sim", function(Sim, App, Backbone, Marionette, $, _){
             App.clockRegion.close();
             App.bankRegion.close();
             App.workforceRegion.close();
+            App.profitRegion.close();
             // Show Stats
-            var statsView = new App.Factory.StatsView({model: App.factory});
-            App.mainRegion.show(statsView);
+            App.factory.passStats(); // TODO fix this timing problem (the factory needs to put stats over before showing hte view)
+            var gameoverView = new App.Factory.GamveOverView({model: App.factory});
+            App.mainRegion.show(gameoverView);
+            var statsView = new App.Stats.StatisticsView({ model: App.factory.stats});
+            gameoverView.statsRegion.show(statsView);
+
         }
 
     });

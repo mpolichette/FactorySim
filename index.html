@@ -50,38 +50,45 @@
         </div>
 
         <div id="content" class="container">
+            <div class="hero-unit">
+                <h2>Welcome to the factory simulation</h2>
+                <p>As a producer of widgets, you will apply concepts learned from the class and readings. Keep in mind that you need to think carefully about what you need to do to successfully product enough widgets to make a positive profit. As this game is in beta form, please call Alysse over as you are playing if you  have any questions about the program.</p>
+                <p><button class="btn btn-large btn-primary pull-right startGame">Start Simulator</button></p>
+            </div>
         </div> <!-- /container -->
 
         <div id="modal" class="modal hide fade"></div>
 
         <script type="text/template" id="welcome_template">
-            <div class="hero-unit">
-                <h2>Welcome to the factory simulation</h2>
-                <p>As a producer of widgets, you will apply concepts learned from the class and readings. Keep in mind that you need to think carefully about what you need to do to successfully product enough widgets to make a positive profit. As this game is in beta form, please call Alysse over as you are playing if you  have any questions about the program.</p>
+            <div class="modal-header">
+                <h3>Before we get started...</h3>
             </div>
-            <div class="names span12">
-                <p><strong>Please identify yourself in order to get credit.</strong> Include your school login if you have one.</p>
-                <div class="name clearfix">
-                    <div class="firstName control-group">
-                        <label>First name:</label>
-                        <input type="text" placeholder="First name"/>
-                    </div>
-                    <div class="lastName control-group">
-                        <label>Last name:</label>
-                        <input type="text" placeholder="Last name"/>
-                    </div>
-                    <div class="school control-group">
-                        <label>School ID:</label>
-                        <input type="text" placeholder="School ID"/>
-                    </div>
-                </div>
+            <div class="modal-body">
+                <p><strong>Please identify yourself in order to get credit.</strong></p>
+                <P>Enter a first and last name <strong>or</strong> a school ID.</p>
+                <div class="names"></div>
+                <p class="add-msg muted">If you are working in a group, enter up to three names by clicking on the "add another person" button.</p>
             </div>
-            <div class="span9">
-                <p>If you are working in a group, enter additional names by clicking on the "add another person" button.</p>
-                <button class="btn btn-primary add" type="button">
+            <div class="modal-footer">
+                <button class="btn btn-primary pull-left add" type="button">
                     <i class="icon-plus icon-white"></i> Add another person
                 </button>
-                <button class="btn submit pull-right" type="button">Submit</button>
+                <button class="btn startGame" type="button">Skip</button>
+            </div>
+        </script>
+
+        <script type="text/template" id="user_tempalte">
+            <div class="firstName control-group">
+                <label>First name:</label>
+                <input class="span2" type="text" value="<%=FName%>" placeholder="First name"/>
+            </div>
+            <div class="lastName control-group">
+                <label>Last name:</label>
+                <input class="span2" type="text" value="<%=LName%>" placeholder="Last name"/>
+            </div>
+            <div class="school control-group">
+                <label>School ID:</label>
+                <input class="span2" type="text" value="<%=School%>" placeholder="School ID"/>
             </div>
         </script>
 
@@ -143,7 +150,7 @@
                         <span>Speed: </span><span class="speed">1x</span>
                         <div class="slider"></div>
                     </li>
-                    <li><a href="#" class="reset">Reset</a></li>
+                    <!--<li><a href="#" class="reset">Reset</a></li>-->
                 </ul>
             </li>
         </script>
@@ -254,11 +261,39 @@
             </div>
         </script>
 
-        <script type="text/template" id="stats_template">
+        <script type="text/template" id="gameover_template">
             <div class="hero-unit">
                 <%= getFinalHeading() %>
                 <p> <%= getFinalMessage() %></p>
             </div>
+            <div id="statistics"></div>
+        </script>
+
+        <script type="text/template" id="stats_template">
+            <h3>Statistics</h3>
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#">Stats</a>
+                </li>
+            </ul>
+            <table class="table">
+                <tr>
+                    <th>#</th>
+                    <th>Profit</th>
+                    <th>Ending Cash</th>
+                    <th>Revenue from widget 1</th>
+                    <th>Revenue from widget 2</th>
+                    <th>Revenue from widget 3</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>$<%=weekEnd.profit%></td>
+                    <td>$<%=weekEnd.cash%></td>
+                    <td><%=widgetRevenue("Widget 1")%></td>
+                    <td><%=widgetRevenue("Widget 2")%></td>
+                    <td><%=widgetRevenue("Widget 3")%></td>
+                </tr>
+            </table>
         </script>
 
         <!-- Thirt-Party Libraries (Order matters) -->
@@ -273,6 +308,7 @@
 
         <!-- Application core (Order matters) -->
         <script type="text/javascript" src="js/FactorySim.js"></script>
+        <script type="text/javascript" src="js/FactorySim.Startup.js"></script>
         <script type="text/javascript" src="js/FactorySim.Stats.js"></script>
         <script type="text/javascript" src="js/FactorySim.Sim.js"></script>
         <script type="text/javascript" src="js/FactorySim.Factory.js"></script>

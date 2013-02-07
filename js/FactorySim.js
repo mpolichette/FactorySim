@@ -9,6 +9,20 @@ FactorySim.ReplaceRegion = Marionette.Region.extend({
     }
 });
 
+FactorySim.ModalRegion = Marionette.Region.extend({
+    initialize: function(){
+        _.bindAll(this);
+    },
+    open: function(view){
+        this.$el.html(view.el);
+        this.$el.modal('show');
+    },
+
+    dismiss: function(){
+        this.$el.modal('hide');
+    }
+});
+
 FactorySim.addRegions({
     mainRegion: "#content",
     clockRegion: {
@@ -30,6 +44,10 @@ FactorySim.addRegions({
     workforceRegion: {
         selector: "#workforce",
         regionType: FactorySim.ReplaceRegion
+    },
+    modalRegion: {
+        selector: "#modal",
+        regionType: FactorySim.ModalRegion
     }
 });
 
