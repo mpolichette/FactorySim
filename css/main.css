@@ -94,11 +94,10 @@ textarea {
    ========================================================================== */
 
 /* Welcome area */
-.names .control-group{
+.signin .control-group{
     margin-right: 10px;
     float: left;
 }
-
 
 
 .simulation{

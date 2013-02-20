@@ -29,12 +29,6 @@
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-
                     <a class="brand" href="#">Factory Sim</a>
                     <ul id="clock"></ul>
                     <ul id="control-bar" class="nav pull-right">
@@ -53,17 +47,17 @@
             <div class="hero-unit">
                 <h2>Welcome to the factory simulation</h2>
                 <p>As a producer of widgets, you will apply concepts learned from the class and readings. Keep in mind that you need to think carefully about what you need to do to successfully product enough widgets to make a positive profit. As this game is in beta form, please call Alysse over as you are playing if you  have any questions about the program.</p>
-                <p><button class="btn btn-large btn-primary pull-right startGame">Start Simulator</button></p>
+                <p><button class="btn btn-large btn-primary pull-right begin">Start Simulator</button></p>
             </div>
         </div> <!-- /container -->
 
         <div id="modal" class="modal hide fade"></div>
 
-        <script type="text/template" id="welcome_template">
+        <script type="text/template" id="signin_template">
             <div class="modal-header">
                 <h3>Before we get started...</h3>
             </div>
-            <div class="modal-body">
+            <div class="modal-body authenticate">
                 <p><strong>Please identify yourself in order to get credit.</strong></p>
                 <P>Enter a first and last name <strong>or</strong> a school ID.</p>
                 <div class="names"></div>
@@ -78,17 +72,17 @@
         </script>
 
         <script type="text/template" id="user_tempalte">
-            <div class="firstName control-group">
+            <div class="first-name control-group pull-left">
                 <label>First name:</label>
-                <input class="span2" type="text" value="<%=FName%>" placeholder="First name"/>
+                <input class="span2" type="text" value="" placeholder="First name"/>
             </div>
-            <div class="lastName control-group">
+            <div class="last-name control-group pull-left">
                 <label>Last name:</label>
-                <input class="span2" type="text" value="<%=LName%>" placeholder="Last name"/>
+                <input class="span2" type="text" value="" placeholder="Last name"/>
             </div>
-            <div class="school control-group">
+            <div class="school-id control-group pull-left">
                 <label>School ID:</label>
-                <input class="span2" type="text" value="<%=School%>" placeholder="School ID"/>
+                <input class="span2" type="text" value="" placeholder="School ID"/>
             </div>
         </script>
 
@@ -281,17 +275,25 @@
                     <th>#</th>
                     <th>Profit</th>
                     <th>Ending Cash</th>
-                    <th>Revenue from widget 1</th>
-                    <th>Revenue from widget 2</th>
-                    <th>Revenue from widget 3</th>
+                    <th>Widget 1 Sold</th>
+                    <th>Widget 1 Revenue</th>
+                    <th>Widget 2 Sold</th>
+                    <th>Widget 2 Revenue</th>
+                    <th>Widget 3 Sold</th>
+                    <th>Widget 3 Revenue</th>
+                    <th>Submit Scores</th>
                 </tr>
                 <tr>
                     <td>1</td>
                     <td>$<%=weekEnd.profit%></td>
                     <td>$<%=weekEnd.cash%></td>
+                    <td><%=widgetSold("Widget 1")%></td>
                     <td><%=widgetRevenue("Widget 1")%></td>
+                    <td><%=widgetSold("Widget 2")%></td>
                     <td><%=widgetRevenue("Widget 2")%></td>
+                    <td><%=widgetSold("Widget 3")%></td>
                     <td><%=widgetRevenue("Widget 3")%></td>
+                    <td><button class="submit-score">submit</button></div></td>
                 </tr>
             </table>
         </script>
@@ -308,7 +310,7 @@
 
         <!-- Application core (Order matters) -->
         <script type="text/javascript" src="js/FactorySim.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Startup.js"></script>
+        <script type="text/javascript" src="js/FactorySim.Account.js"></script>
         <script type="text/javascript" src="js/FactorySim.Stats.js"></script>
         <script type="text/javascript" src="js/FactorySim.Sim.js"></script>
         <script type="text/javascript" src="js/FactorySim.Factory.js"></script>
@@ -317,7 +319,10 @@
         <script type="text/javascript" src="js/FactorySim.Floor.js"></script>
 
         <script type="text/javascript">
-            FactorySim.start();
+            FactorySim.start({
+
+
+            });
         </script>
 
 

@@ -7,21 +7,21 @@ FactorySim.module("Sim", function(Sim, App, Backbone, Marionette, $, _){
     });
 
     Sim.Controller = Marionette.Controller.extend({
+
         initialize: function(options){
-            _.bindAll(this);
-            App.users = new App.Startup.Users({}, {model: App.Startup.user});
+            App.users = new App.Account.Users({});
+            this.singinRegion = options.welcomeRegion;
         },
 
         start:function(){
-            // Attach to startup screen and listen for start game button
-            $("button.startGame").on("click", this.signIn);
+            this.signIn = _.bind(this.signIn, this);
+            $(".begin").on("click", this.signIn);
         },
 
         signIn: function(){
-            // Allow the user to identify themselves
-            var view = new App.Startup.WelcomeView({collection: App.users});
-            App.modalRegion.show(view);
-            this.listenTo(view, "startGame", this._newGame);
+            var signInView = new App.Account.SignInView({collection: App.users});
+            this.singinRegion.show(signInView);
+            this.listenTo(signInView, "startGame", this._newGame);
         },
 
         _newGame:function(){
@@ -72,8 +72,13 @@ FactorySim.module("Sim", function(Sim, App, Backbone, Marionette, $, _){
 
     });
 
-    Sim.addInitializer(function(){
-        App.controller = new Sim.Controller();
+    Sim.addInitializer(function(options){
+
+        App.controller = new Sim.Controller({
+            welcomeRegion: App.modalRegion,
+            region: App.mainRegion
+        });
+
         App.router = new Sim.Router({controller: App.controller});
     });
 

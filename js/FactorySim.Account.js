@@ -1,24 +1,24 @@
-FactorySim.module("Startup", function(Startup, App, Backbone, Marionette, $, _){
+FactorySim.module("Account", function(Account, App, Backbone, Marionette, $, _){
 
-    Startup.User = Backbone.Model.extend({
+    Account.User = Backbone.Model.extend({
         defaults:{
-            FName: "",
-            LName: "",
-            School: ""
+            firstName: "",
+            lastName: "",
+            schoolID: ""
         },
 
         isValid: function(){
-            if((this.has("FName") && this.get("FName").length > 0 &&
-                this.has("LName")) && this.get("LName").length > 0 ||
-                (this.has("School") && this.get("School").length >0)){
+            if((this.has("firstName") && this.get("firstName").length > 0 &&
+                this.has("lastName")) && this.get("lastName").length > 0 ||
+                (this.has("schoolID") && this.get("schoolID").length >0)){
                 return true;
             }
             return false;
         }
     });
 
-    Startup.Users = Backbone.Collection.extend({
-        model: Startup.User,
+    Account.Users = Backbone.Collection.extend({
+        model: Account.User,
 
         hasValidUser: function(){
             var validUser = false;
@@ -34,25 +34,26 @@ FactorySim.module("Startup", function(Startup, App, Backbone, Marionette, $, _){
     // User View
     // ---------
 
-    Startup.UserView = Marionette.ItemView.extend({
+    Account.UserView = Marionette.ItemView.extend({
         template: "#user_tempalte",
         className: "name clearfix",
+        model: Account.User,
 
         events: {
             "keyup input": "saveFields"
         },
 
         ui: {
-            fName: ".firstName input",
-            lName: ".lastName input",
-            school: ".school input"
+            fName: ".first-name input",
+            lName: ".last-name input",
+            school: ".school-id input"
         },
 
         saveFields: function(){
             this.model.set({
-                "FName": this.ui.fName.val(),
-                "LName": this.ui.lName.val(),
-                "School": this.ui.school.val()
+                "firstName": this.ui.fName.val(),
+                "lastName": this.ui.lName.val(),
+                "schoolID": this.ui.school.val()
             }, {validate:true});
         }
     });
@@ -60,12 +61,12 @@ FactorySim.module("Startup", function(Startup, App, Backbone, Marionette, $, _){
     // Welcome View
     // ------------
 
-    Startup.WelcomeView = Marionette.CompositeView.extend({
-        template: "#welcome_template",
-        className: "modal-inner",
-        itemView: Startup.UserView,
-        emptyView: Startup.UserView,
+    Account.SignInView = Marionette.CompositeView.extend({
+        template: "#signin_template",
+        className: "modal-inner signin",
+        itemView: Account.UserView,
         itemViewContainer: ".names",
+        emptyView: Account.UserView,
 
         ui: {
             startGameButton: ".startGame"
