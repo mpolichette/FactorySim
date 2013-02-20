@@ -1,7 +1,6 @@
 
 // Main Application Declaration
 var FactorySim = new Backbone.Marionette.Application();
-FactorySim.settings = {};
 
 FactorySim.ReplaceRegion = Marionette.Region.extend({
     open: function(view){
