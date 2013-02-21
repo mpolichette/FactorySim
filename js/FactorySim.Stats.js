@@ -162,7 +162,7 @@ FactorySim.module("Stats", function(Stats, App, Backbone, Marionette, $, _){
 
             $.ajax({
                 type: "POST",
-                url: "http://www.westminstercollege.edu/apps/factory_simulation/",
+                url: "record_scores.cfm",
                 data: data,
                 success: function(data, status, jqXHR){
                     alert("Data submitted Succesfully");
