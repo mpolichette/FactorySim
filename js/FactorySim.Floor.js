@@ -18,7 +18,7 @@ FactorySim.module("Floor", function(Floor, App, Backbone, Marionette, $, _){
                     return new Floor.Job(attrs, options);
             }
         },
-        url: "../FactorySim/data/floor.json"
+        url: "data/floor.json"
     });
 
 

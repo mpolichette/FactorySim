@@ -157,7 +157,7 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
         },
 
         model: Workers.Worker,
-        url: "../FactorySim/data/workers.json",
+        url: "data/workers.json",
 
         comparator: function(worker){
             return worker.get('sort_order');
