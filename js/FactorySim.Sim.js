@@ -74,12 +74,12 @@ FactorySim.module("Sim", function(Sim, App, Backbone, Marionette, $, _){
 
     Sim.addInitializer(function(options){
 
-        App.controller = new Sim.Controller({
-            welcomeRegion: App.modalRegion,
-            region: App.mainRegion
-        });
+        // App.controller = new Sim.Controller({
+        //     welcomeRegion: App.modalRegion,
+        //     region: App.mainRegion
+        // });
 
-        App.router = new Sim.Router({controller: App.controller});
+        // App.router = new Sim.Router({controller: App.controller});
     });
 
 });

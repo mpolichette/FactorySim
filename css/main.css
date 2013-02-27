@@ -287,9 +287,17 @@ span.limit:hover{
     height: 15px;
 }
 
-.modal-inner{
-    padding: 10px 20px 0;
+.new-user{
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
 }
+
+.save-user-btn{
+    float: right;
+    margin-top: 25px;
+}
+
 
 /* ==========================================================================
    Helper classes

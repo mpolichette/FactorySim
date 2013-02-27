@@ -26,20 +26,11 @@
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <div id="header" class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
                     <a class="brand" href="#">Factory Sim</a>
-                    <ul id="clock"></ul>
-                    <ul id="control-bar" class="nav pull-right">
-                        <ul id="profit"></ul>
-                        <ul id="bank"></ul>
-                        <ul id="options"></ul>
-                    </ul>
-
                 </div>
-            </div>
-            <div id="workforce">
             </div>
         </div>
 
@@ -47,43 +38,63 @@
             <div class="hero-unit">
                 <h2>Welcome to the factory simulation</h2>
                 <p>As a producer of widgets, you will apply concepts learned from the class and readings. Keep in mind that you need to think carefully about what you need to do to successfully produce enough widgets to make a positive profit. As this game is in beta form, please call Alysse over as you are playing if you  have any questions about the program.</p>
-                <p><button class="btn btn-large btn-primary pull-right begin">Start Simulator</button></p>
+                <p><button class="btn btn-large btn-primary pull-right js-start">Start Simulator</button></p>
             </div>
         </div> <!-- /container -->
 
-        <div id="modal" class="modal hide fade"></div>
+        <div id="modal"></div>
 
-        <script type="text/template" id="signin_template">
+
+        <!-- TEMPLATES -->
+
+        <script type="text/template" id="login_template">
             <div class="modal-header">
                 <h3>Before we get started...</h3>
             </div>
             <div class="modal-body authenticate">
-                <p><strong>Please identify yourself in order to get credit.</strong></p>
-                <P>Enter a first and last name <strong>or</strong> a school ID.</p>
-                <div class="names"></div>
-                <p class="add-msg muted">If you are working in a group, enter up to three names by clicking on the "add another person" button.</p>
+                <span>Please identify yourselves in order to get credit.</span>
+
+                <div class="row login-users">
+                    <div class="span7">
+                        <h3>Players <%= showAddButton() ? '<button type="button" class="btn btn-link js-new-user">add player</button>' : "" %></h3>
+                        <div class="user-list"></div>
+                    </div>
+                </div>
+
+                <div class="new-user-holder"></div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary pull-left add" type="button">
-                    <i class="icon-plus icon-white"></i> Add another person
-                </button>
-                <button class="btn startGame" type="button">Skip</button>
+                <button class="btn js-start-game <%= hasUser() ? 'btn-primary' : ''%>" type="button"><%= hasUser() ? "Start Game" : "Skip" %></button>
             </div>
         </script>
 
+
+        <script type="text/template" id="new_user_template">
+            <div class="row">
+                <span class="help-block span7">Enter <strong>both</strong> a first and last name <strong>OR</strong> a school ID.</span>
+                <div class="first-name control-group span2">
+                    <label>First name:</label>
+                    <input class="span2" type="text" value="" placeholder="First name"/>
+                </div>
+                <div class="last-name control-group span2">
+                    <label>Last name:</label>
+                    <input class="span2" type="text" value="" placeholder="Last name"/>
+                </div>
+                <div class="school-id control-group span2">
+                    <label>School ID:</label>
+                    <input class="span2" type="text" value="" placeholder="School ID"/>
+                </div>
+                <button type="button" class="btn btn-primary save-user-btn js-save-user">Save</button>
+            </div>
+
+        </script>
+
+         <script type="text/template" id="no-users-template">
+            No players, no credit... add someone!
+        </script>
+
         <script type="text/template" id="user_tempalte">
-            <div class="first-name control-group pull-left">
-                <label>First name:</label>
-                <input class="span2" type="text" value="" placeholder="First name"/>
-            </div>
-            <div class="last-name control-group pull-left">
-                <label>Last name:</label>
-                <input class="span2" type="text" value="" placeholder="Last name"/>
-            </div>
-            <div class="school-id control-group pull-left">
-                <label>School ID:</label>
-                <input class="span2" type="text" value="" placeholder="School ID"/>
-            </div>
+            <%= displayUser() %> <button type="button" class="btn btn-link js-remove-user">remove</button>
         </script>
 
         <script type="text/template" id="clock_template">
@@ -310,7 +321,9 @@
 
         <!-- Application core (Order matters) -->
         <script type="text/javascript" src="js/FactorySim.js"></script>
+        <script type="text/javascript" src="js/FactorySim.Util.js"></script>
         <script type="text/javascript" src="js/FactorySim.Account.js"></script>
+        <script type="text/javascript" src="js/FactorySim.Game.js"></script>
         <script type="text/javascript" src="js/FactorySim.Stats.js"></script>
         <script type="text/javascript" src="js/FactorySim.Sim.js"></script>
         <script type="text/javascript" src="js/FactorySim.Factory.js"></script>
