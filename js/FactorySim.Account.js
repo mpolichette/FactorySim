@@ -253,7 +253,7 @@ FactorySim.module("Account", function(Account, App, Backbone, Marionette, $, _){
 
         onStartGame: function(){
             this.loginRegion.dismiss();
-            App.trigger("startGame");
+            App.Game.start(App.settings);
         }
     });
 

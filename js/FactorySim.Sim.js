@@ -1,10 +1,5 @@
-FactorySim.module("Sim", function(Sim, App, Backbone, Marionette, $, _){
+FactorySim.module("Game", function(Game, App, Backbone, Marionette, $, _){
 
-    Sim.Router = Marionette.AppRouter.extend({
-        appRoutes:{
-            "": "start"
-        }
-    });
 
     Sim.Controller = Marionette.Controller.extend({
 
@@ -70,16 +65,6 @@ FactorySim.module("Sim", function(Sim, App, Backbone, Marionette, $, _){
 
         }
 
-    });
-
-    Sim.addInitializer(function(options){
-
-        // App.controller = new Sim.Controller({
-        //     welcomeRegion: App.modalRegion,
-        //     region: App.mainRegion
-        // });
-
-        // App.router = new Sim.Router({controller: App.controller});
     });
 
 });

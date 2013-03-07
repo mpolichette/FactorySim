@@ -1,5 +1,0 @@
-[
-    {"type":"market", "id":24, "x":20, "y":900, "name": "Widget 1", "buys_from":1, "unitPrice":180, "unitProfit":115, "demand":40},
-    {"type":"market", "id":25, "x":350, "y":900, "name": "Widget 2", "buys_from":2, "unitPrice":240, "unitProfit":145, "demand":50},
-    {"type":"market", "id":26, "x":765, "y":900, "name": "Widget 3", "buys_from":3, "unitPrice":180, "unitProfit":115, "demand":40}
-]

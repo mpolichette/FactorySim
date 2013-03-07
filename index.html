@@ -30,8 +30,10 @@
             <div class="navbar-inner">
                 <div class="container">
                     <a class="brand" href="#">Factory Sim</a>
+                    <div id="toolbar-holder"></div>
                 </div>
             </div>
+            <div id="workforce-holder"></div>
         </div>
 
         <div id="content" class="container">
@@ -324,16 +326,69 @@
         <script type="text/javascript" src="js/FactorySim.Util.js"></script>
         <script type="text/javascript" src="js/FactorySim.Account.js"></script>
         <script type="text/javascript" src="js/FactorySim.Game.js"></script>
+        <script type="text/javascript" src="js/FactorySim.Factory.js"></script>
+        <script type="text/javascript" src="js/FactorySim.Bank.js"></script>
+        <script type="text/javascript" src="js/FactorySim.Clock.js"></script>
+        <script type="text/javascript" src="js/FactorySim.Workers.js"></script>
+
+        <!-- Floor Items (Order matters) -->
+        <script type="text/javascript" src="js/FactorySim.FloorItem.js"></script>
+        <script type="text/javascript" src="js/FactorySim.Resources.js"></script>
+        <script type="text/javascript" src="js/FactorySim.Jobs.js"></script>
+        <script type="text/javascript" src="js/FactorySim.Markets.js"></script>
+
+        <!-- Remove these soon
         <script type="text/javascript" src="js/FactorySim.Stats.js"></script>
         <script type="text/javascript" src="js/FactorySim.Sim.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Factory.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Layout.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Workers.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Floor.js"></script>
-
+        -->
         <script type="text/javascript">
             FactorySim.start({
+                settings: {},
+                config: {
+                    resources: [
+                        {"id":20, "x":35, "y":0, "name":"Raw Material A", "price":30, "purchased": 25},
+                        {"id":21, "x":270, "y":0,"name":"Raw Material B", "price":35, "purchased": 25},
+                        {"id":22, "x":535, "y":0, "name":"Raw Material C", "price":30, "purchased": 15},
+                        {"id":23, "x":780, "y":0, "name":"Raw Material D", "price":65, "purchased": 10}],
+                    jobs: [
+                        {"id":16, "x":20, "y":130, "skill_required":"Developer", "parentIDs":[20], "taskTime":4},
+                        {"id":17, "x":255, "y":130, "skill_required":"Developer", "parentIDs":[21], "taskTime":5},
+                        {"id":18, "x":520, "y":130, "skill_required":"Chemist", "parentIDs":[22], "taskTime":9},
+                        {"id":19, "x":765, "y":130, "skill_required":"Developer", "parentIDs":[23], "taskTime":15},
 
+                        {"id":14, "x":520, "y":250, "skill_required":"Engineer", "parentIDs":[18], "taskTime":18, "inventory":15},
+                        {"id":15, "x":765, "y":250, "skill_required":"Chemist", "parentIDs":[19], "taskTime":12},
+                        {"id":12, "x":150, "y":250, "skill_required":"Assembler", "parentIDs":[16, 17], "taskTime":8, "inventory":25},
+
+                        {"id":13, "x":765, "y":380, "skill_required":"Engineer", "parentIDs":[15], "taskTime":20, "inventory":10},
+                        {"id":8, "x":20, "y":380, "skill_required":"Developer", "parentIDs":[12], "taskTime":15},
+                        {"id":9, "x":250, "y":380, "skill_required":"Fabricator", "parentIDs":[12], "taskTime":6},
+                        {"id":10, "x":520, "y":380, "skill_required":"Fabricator", "parentIDs":[14], "taskTime":28},
+
+                        {"id":11, "x":765, "y":510, "skill_required":"Fabricator", "parentIDs":[13], "taskTime":14},
+                        {"id":7, "x":20, "y": 510, "skill_required":"Chemist", "parentIDs":[8], "taskTime":15},
+
+                        {"id":4, "x":20, "y": 640, "skill_required":"Engineer", "parentIDs":[7], "taskTime":20},
+                        {"id":5, "x":350, "y": 640, "skill_required":"Assembler", "parentIDs":[9, 10], "taskTime":9},
+                        {"id":6, "x":765, "y": 640, "skill_required":"Engineer", "parentIDs":[11], "taskTime":7},
+
+                        {"id":1, "x":20, "y":770, "skill_required":"Chemist", "parentIDs":[4], "taskTime":18},
+                        {"id":2, "x":350, "y":770, "skill_required":"Chemist", "parentIDs":[5], "taskTime":6},
+                        {"id":3, "x":765, "y":770, "skill_required":"Chemist", "parentIDs":[6], "taskTime":10}],
+                    markets: [
+                        {"id":24, "x":20, "y":900, "name": "Widget 1", "parentIDs":[1], "unitPrice":180, "unitProfit":115, "demand":40},
+                        {"id":25, "x":350, "y":900, "name": "Widget 2", "parentIDs":[2], "unitPrice":240, "unitProfit":145, "demand":50},
+                        {"id":26, "x":765, "y":900, "name": "Widget 3", "parentIDs":[3], "unitPrice":180, "unitProfit":115, "demand":40}],
+                    workers: [
+                        {"name": "Alice", "skill": "Chemist"},
+                        {"name": "Bob", "skill": "Developer"},
+                        {"name": "Carl", "skill": "Developer"},
+                        {"name": "Debbie", "skill": "Engineer"},
+                        {"name": "Eric", "skill": "Engineer"},
+                        {"name": "Frank", "skill": "Assembler"},
+                        {"name": "George", "skill": "Fabricator"},
+                        {"name": "Hank", "skill": "Chemist"}]
+                }
 
             });
         </script>

@@ -1,6 +1,6 @@
-FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
+FactorySim.module("Game", function(Game, App, Backbone, Marionette, $, _){
 
-    var worker_types = Workers.worker_types = {
+    var worker_types = Game.worker_types = {
         'Assembler': {
             'sort_order': 1,
             'type_class': 'wrktyp1',
@@ -28,7 +28,7 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
         }
     };
 
-    var worker_status = Workers.worker_status = {
+    var worker_status = Game.worker_status = {
         "unassigned": "Unassigned",
         "settingup": "Setting Up",
         "working": "Working",
@@ -36,14 +36,15 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
         "stopped": "Stopped"
     };
 
-    var task_type = Workers.task_type = {
+    var task_type = Game.task_type = {
         "fresh": 1,
         "partial": 2,
         "wait": 3,
         "stop": 4
     };
 
-    Workers.Worker = Backbone.Model.extend({
+    Game.Worker = Backbone.Model.extend({
+        __name__: "Worker",
         initialize: function(){
             this.set(worker_types[this.get('skill')]);
             this.listenTo(App.vent, "clock:timestep", this.doTimeStep, this);
@@ -151,12 +152,12 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
     });
 
 
-    Workers.WorkForce = Backbone.Collection.extend({
+    Game.WorkForce = Backbone.Collection.extend({
         initialize: function(){
             this.fetch();
         },
 
-        model: Workers.Worker,
+        model: Game.Worker,
         url: "data/workers.json",
 
         comparator: function(worker){
@@ -166,7 +167,7 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
 
     // WorkerView
     // ----------
-    Workers.WorkerView = Marionette.ItemView.extend({
+    Game.WorkerView = Marionette.ItemView.extend({
         template: "#worker_template",
         className: "worker_holder",
 
@@ -232,9 +233,9 @@ FactorySim.module("Workers", function(Workers, App, Backbone, Marionette, $, _){
     // WorkforceView
     // -------------
 
-    Workers.WorkforceView = Marionette.CompositeView.extend({
+    Game.WorkforceView = Marionette.CompositeView.extend({
         template: "#workforce_template",
-        itemView: Workers.WorkerView,
+        itemView: Game.WorkerView,
         itemViewContainer: ".workers",
         id: "workforce",
         className: "container clearfix",
