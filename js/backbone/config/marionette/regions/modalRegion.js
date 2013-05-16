@@ -7,11 +7,15 @@
         },
 
         onShow: function(view){
+            this.setupBindings(view);
+
             var options = this.getDefaultOptions(_.result(view, "modal"));
             this.$el.modal(options);
         },
 
         closeModal: function(){
+            this.$el.modal('hide');
+            this.stopListening();
             this.close();
         },
 
@@ -19,6 +23,12 @@
         getDefaultOptions: function (options) {
             options = options || {};
             return _.defaults(options, {});
+        },
+
+        setupBindings: function(view){
+            this.listenTo(view, {
+                "close modal:close": this.closeModal
+            });
         }
     });
 
