@@ -106,6 +106,11 @@ FactorySim.module("Game", function(Game, App, Backbone, Marionette, $, _){
     });
 
 
+    Game.FactoryView = Marionette.CollectionView.extend({
+
+    });
+
+
     // Factory Options View
     // --------------------
 

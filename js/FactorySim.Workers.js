@@ -153,12 +153,8 @@ FactorySim.module("Game", function(Game, App, Backbone, Marionette, $, _){
 
 
     Game.WorkForce = Backbone.Collection.extend({
-        initialize: function(){
-            this.fetch();
-        },
 
         model: Game.Worker,
-        url: "data/workers.json",
 
         comparator: function(worker){
             return worker.get('sort_order');

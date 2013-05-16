@@ -30,8 +30,6 @@ FactorySim.module("Game", function(Game, App, Backbone, Marionette, $, _){
             parents.push(parent);
             this.trigger("change", this);
             this.trigger("change:parents", this, parent);
-
-            console.log(this.id + " found parent " + parent.id + " with parents " + this.get("parentIDs"));
         },
 
         _hasAllParents: function(){
@@ -129,8 +127,10 @@ FactorySim.module("Game", function(Game, App, Backbone, Marionette, $, _){
         url: "data/floor.json"
     });
 
-// VIEWS
-// -----
+
+
+    // Views
+    // -----
 
     Game.FloorView = Marionette.CollectionView.extend({
 

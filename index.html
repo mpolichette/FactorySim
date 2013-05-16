@@ -26,7 +26,23 @@
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
-        <div id="header" class="navbar navbar-inverse navbar-fixed-top">
+        <div id="header-region" class="navbar navbar-inverse navbar-fixed-top"></div>
+        <div id="main-region" class="container"></div>
+        <div id="modal-region" class="modal hide fade"></div>
+
+
+
+
+
+
+
+
+
+
+
+        <!-- TEMPLATES -->
+
+        <script id="header-template" type="text/template" >
             <div class="navbar-inner">
                 <div class="container">
                     <a class="brand" href="#">Factory Sim</a>
@@ -34,22 +50,15 @@
                 </div>
             </div>
             <div id="workforce-holder"></div>
-        </div>
+        </script>
 
-        <div id="content" class="container">
-            <div class="hero-unit">
-                <h2>Welcome to the factory simulation</h2>
-                <p>As a producer of widgets, you will apply concepts learned from the class and readings. Keep in mind that you need to think carefully about what you need to do to successfully produce enough widgets to make a positive profit. As this game is in beta form, please call Alysse over as you are playing if you  have any questions about the program.</p>
-                <p><button class="btn btn-large btn-primary pull-right js-start">Start Simulator</button></p>
-            </div>
-        </div> <!-- /container -->
+        <script id="welcome-template" type="text/template">
+            <h2>Welcome to the factory simulation</h2>
+            <p>As a producer of widgets, you will apply concepts learned from the class and readings. Keep in mind that you need to think carefully about what you need to do to successfully produce enough widgets to make a positive profit. As this game is in beta form, please call Alysse over as you are playing if you  have any questions about the program.</p>
+            <p><button class="btn btn-large btn-primary pull-right js-start">Start Simulator</button></p>
+        </script>
 
-        <div id="modal"></div>
-
-
-        <!-- TEMPLATES -->
-
-        <script type="text/template" id="login_template">
+        <script id="login-template" type="text/template">
             <div class="modal-header">
                 <h3>Before we get started...</h3>
             </div>
@@ -71,245 +80,16 @@
         </script>
 
 
-        <script type="text/template" id="new_user_template">
-            <div class="row">
-                <span class="help-block span7">Enter <strong>both</strong> a first and last name <strong>OR</strong> a school ID.</span>
-                <div class="first-name control-group span2">
-                    <label>First name:</label>
-                    <input class="span2" type="text" value="" placeholder="First name"/>
-                </div>
-                <div class="last-name control-group span2">
-                    <label>Last name:</label>
-                    <input class="span2" type="text" value="" placeholder="Last name"/>
-                </div>
-                <div class="school-id control-group span2">
-                    <label>School ID:</label>
-                    <input class="span2" type="text" value="" placeholder="School ID"/>
-                </div>
-                <button type="button" class="btn btn-primary save-user-btn js-save-user">Save</button>
-            </div>
 
-        </script>
 
-         <script type="text/template" id="no-users-template">
-            No players, no credit... add someone!
-        </script>
 
-        <script type="text/template" id="user_tempalte">
-            <%= displayUser() %> <button type="button" class="btn btn-link js-remove-user">remove</button>
-        </script>
 
-        <script type="text/template" id="clock_template">
-            <li><button class="btn">
-                <% running ? print('Pause') : print('Start') %>
-            </button></li>
-            <li class="divider-vertical"></li>
-            <li class="navbar-text">
-                <strong>Day: </strong><span class="day"><%= day %></span>
-                <strong>Time: </strong>
-                <span class="time"><%= hour %>:<% minute<10? print('0'+minute):print(minute) %></span>
-            </li>
-        </script>
 
-        <script type="text/template" id="bank_template">
-            <li class="divider-vertical"></li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <strong>Cash: </strong><span class="cash">$<%= cash %> </span> <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu pull-right"></ul>
-            </li>
-        </script>
 
-        <script type="text/template" id="bank-dropdown_template">
-            <li><i class="icon-plus"></i>Starting Cash: <span><%=startingCash%></span></li>
-            <li><i class="icon-plus"></i>Revenue: <span class="revenue"><%=revenue%></span></li>
-            <li><i class="icon-minus"></i>Purchases: <span class="purchases"><%=purchases%></span></li>
-            <li><i class="icon-minus"></i>Operations: <span class="expenses"><%=expenses%></span></li>
-            <li class="divider"></li>
-            <li><span class="cash">$<%=startingCash%></span></li>
-        </script>
 
-        <script type="text/template" id="profit_template">
-            <li class="divider-vertical"></li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <strong>Profit: </strong><span class="profit">$<%= profit %></span> <b class="caret"> </b>
-                </a>
-                <ul class="dropdown-menu pull-right">
-                    <li><i class="icon-plus"></i>Revenue: <span class="revenue"><%=revenue%></span></li>
-                    <li><i class="icon-minus"></i>Inventory Sold: <span class="inventory-sold"><%=inventory_sold%></span></li>
-                    <li><i class="icon-minus"></i>Operations: <span class="expenses"><%=expenses%></span></li>
-                    <li class="divider"></li>
-                    <li><span class="profit">$<%=profit%></span></li>
-                </ul>
-            </li>
-        </script>
 
-        <script type="text/template" id="options_template">
-            <li class="divider-vertical"></li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    Options<b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                    <li class="slider-holder">
-                        <span>Speed: </span><span class="speed">1x</span>
-                        <div class="slider"></div>
-                    </li>
-                    <!--<li><a href="#" class="reset">Reset</a></li>-->
-                </ul>
-            </li>
-        </script>
 
-        <script type="text/template" id="workforce_template">
-            <div class="wf-container clearfix" style="">
-                <strong>Workforce</strong>
-                <div class="workers"></div>
-            </div>
-            <div class="toggle pull-right">
-                <button class="btn btn-small">
-                    <i class="wf-icon icon-chevron-up"></i>
-                    <span class="wf-text"> Hide Workforce</span>
-                </button>
-            </div>
-        </script>
 
-        <script type="text/template" id="worker_template">
-            <div class="worker <%= type_class %> clearfix" >
-                <div class="person">
-                    <div class="icon"></div>
-                    <div class="name"><%= name %></div>
-                </div>
-                <div class="info" <% if(status=="Unassigned")print('style="display:none;"') %>>
-                    <div>
-                        <span>Status:</span>
-                        <span class="status"><%= status %></span>
-                    </div>
-                    <div class="progressbar">
-                        <div class="progress">
-                            <div class="bar" style="width:<% print((progress/taskTime)*100) %>%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </script>
-
-        <script type="text/template" id="limit-popover_template">
-            <div class="limit-popover">
-                <div class="input-append">
-                    <input class="span2" type="text">
-                    <button class="set btn" type="button">Set</button>
-                </div>
-                <button class="cancel btn btn-small" type="button">Cancel</button>
-            </div>
-        </script>
-
-        <script type="text/template" id="job_template">
-            <div class="info">
-                <div class="skill"><%= skill_required %></div>
-                <div>Task time: <%= taskTime %></div>
-            </div>
-            <div class="stats">
-                <div>
-                    <span class="limit">Set Limit</span>
-                </div>
-                <div class="inventory">
-                    <span>Inventory: </span>
-                    <span class="value"><%= inventory %></span>
-                </div>
-            </div>
-            <div class="workers"></div>
-        </script>
-
-        <script type="text/template" id="market_template">
-            <div><%=name%></div>
-            <div class="clearfix">
-                <div class="stats">
-                    <div>Demand: <%=demand%></div>
-                    <div>Produced: <span class="produced"><%=produced%></span></div>
-                </div>
-                <div class="info">
-                    <div>Unit Revenue: $<%=unitPrice%></div>
-                    <div>Revenue: <span class="revenue">$0</span></div>
-                </div>
-            </div>
-        </script>
-
-        <script type="text/template" id="resource_template">
-            <div><%=name%></div>
-            <div class="clearfix">
-                <div class="stats">
-                    <div>Price: $<%=price%></div>
-                    <div>Purchased: <span class="purchased"><%= purchased %></span></div>
-                    <div>Inventory: <span class="inventory"><%= inventory %></span></div>
-                </div>
-                <div class="controls">
-                    <div>Buy:</div>
-                    <span class="btn-group">
-                        <button class="btn btn-mini btn-primary" data-amount="1">1</button>
-                        <button class="btn btn-mini btn-primary" data-amount="5">5</button>
-                        <button class="btn btn-mini btn-primary" data-amount="10">10</button>
-                    </span>
-                </div>
-            </div>
-        </script>
-
-        <script type="text/template" id="dayOver_template">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3>Day <%=day% is over!></h3>
-            </div>
-            <div class="modal-body">
-                <p>You have reached the end of day <%=day%>.</p>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn">Close</a>
-            </div>
-        </script>
-
-        <script type="text/template" id="gameover_template">
-            <div class="hero-unit">
-                <%= getFinalHeading() %>
-                <p> <%= getFinalMessage() %></p>
-            </div>
-            <div id="statistics"></div>
-        </script>
-
-        <script type="text/template" id="stats_template">
-            <h3>Statistics</h3>
-            <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#">Stats</a>
-                </li>
-            </ul>
-            <table class="table">
-                <tr>
-                    <th>#</th>
-                    <th>Profit</th>
-                    <th>Ending Cash</th>
-                    <th>Widget 1 Sold</th>
-                    <th>Widget 1 Revenue</th>
-                    <th>Widget 2 Sold</th>
-                    <th>Widget 2 Revenue</th>
-                    <th>Widget 3 Sold</th>
-                    <th>Widget 3 Revenue</th>
-                    <th>Submit Scores</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>$<%=weekEnd.profit%></td>
-                    <td>$<%=weekEnd.cash%></td>
-                    <td><%=widgetSold("Widget 1")%></td>
-                    <td><%=widgetRevenue("Widget 1")%></td>
-                    <td><%=widgetSold("Widget 2")%></td>
-                    <td><%=widgetRevenue("Widget 2")%></td>
-                    <td><%=widgetSold("Widget 3")%></td>
-                    <td><%=widgetRevenue("Widget 3")%></td>
-                    <td><button class="submit-score">submit</button></div></td>
-                </tr>
-            </table>
-        </script>
 
         <!-- Thirt-Party Libraries (Order matters) -->
         <script type="text/javascript" src="js/vendor/jquery-1.8.3.js"></script>
@@ -321,7 +101,35 @@
         <script type="text/javascript" src="js/vendor/jsPlumb-1.3.16-all.js"></script>
         <script type="text/javascript" src="js/plugins.js"></script>
 
-        <!-- Application core (Order matters) -->
+
+        <!-- Config -->
+        <script type="text/javascript" src="js/backbone/config/marionette/application.js"></script>
+        <script type="text/javascript" src="js/backbone/config/marionette/regions/modalRegion.js"></script>
+
+        <!-- Application -->
+        <script type="text/javascript" src="js/backbone/factorySim.js"></script>
+
+
+        <!-- Controllers -->
+        <script type="text/javascript" src="js/backbone/controllers/_base.js"></script>
+
+
+        <!-- Apps -->
+        <script type="text/javascript" src="js/backbone/apps/header/header_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/header/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/header/show/show_view.js"></script>
+
+        <script type="text/javascript" src="js/backbone/apps/welcome/welcome_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/welcome/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/welcome/show/show_view.js"></script>
+
+        <script type="text/javascript" src="js/backbone/apps/user/user_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/user/login/login_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/user/login/login_view.js"></script>
+
+
+
+        <!-- Application core (Order matters) --
         <script type="text/javascript" src="js/FactorySim.js"></script>
         <script type="text/javascript" src="js/FactorySim.Util.js"></script>
         <script type="text/javascript" src="js/FactorySim.Account.js"></script>
@@ -331,7 +139,7 @@
         <script type="text/javascript" src="js/FactorySim.Clock.js"></script>
         <script type="text/javascript" src="js/FactorySim.Workers.js"></script>
 
-        <!-- Floor Items (Order matters) -->
+        <!-- Floor Items (Order matters) --
         <script type="text/javascript" src="js/FactorySim.FloorItem.js"></script>
         <script type="text/javascript" src="js/FactorySim.Resources.js"></script>
         <script type="text/javascript" src="js/FactorySim.Jobs.js"></script>
