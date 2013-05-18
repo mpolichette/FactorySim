@@ -3,41 +3,99 @@ FactorySim.module("UserApp.Login", function(Login, App, Backbone, Marionette, $,
     Login.LoginLayout = Marionette.Layout.extend({
         template: "#login-template",
         regions:{
-            listRegion: ".list-user-region",
+            listUserRegion: ".list-user-region",
             newUserRegion: ".new-user-region"
         },
-
+        collectionEvents:{
+            "add remove reset": "updateStartGameBtn"
+        },
         triggers: {
-            "click .js-new": "new:user:clicked"
+            "click .js-start-game": "game:start"
+        },
+        ui: {
+            startGameBtn: ".js-start-game",
+            dividerHolder: "divider-holder"
         },
 
-        templateHelpers: {
-            showAddButton: function(){return true;},
-            hasUser: function(){return false;}
+        onRender: function(){
+            this.updateStartGameBtn();
+        },
+
+        updateStartGameBtn: function(){
+            if(this.collection.length === 0){
+                this.ui.startGameBtn.removeClass("btn-primary");
+                this.ui.startGameBtn.text("Skip");
+            } else {
+                this.ui.startGameBtn.addClass("btn-primary");
+                this.ui.startGameBtn.text("Start Game");
+            }
+        },
+
+        showDivider: function(){
+            this.ui.dividerHolder.append($("<hr>"));
+        },
+        hideDivider: function(){
+            this.ui.dividerHolder.empty();
+        }
+    });
+
+    Login.AddUserView = Marionette.ItemView.extend({
+        template: "#add-user-template",
+        triggers: {
+            "click .js-add": "user:add:clicked"
+        },
+        ui: {
+            addBtn: ".js-add"
+        },
+        onShow: function(){
+            this.ui.addBtn.focus();
         }
     });
 
     Login.NewUserView = Marionette.ItemView.extend({
-        template: "#new-user-template",
+        template: "#new-user-template2",
+        triggers: {
+            "click .js-save": "user:save",
+            "form submit": "user:save"
+        },
 
         bindings: {
-            "[name=firstName]": "firstName",
+            "[name=firstName]": {
+                observe: "firstName",
+                attributes: [{
+                    name: "class",
+                    onGet: "checkValid"
+                }]
+            },
             "[name=lastName]": "lastName",
-            "[name=schoolId]": "schoolId"
+            "[name=schoolId]": "schoolId",
+            ".js-save": {
+                attributes: [{
+                    name: "disabled",
+                    observe: ["firstName", "lastName", "schoolId"],
+                    onGet: function(values){
+                        return !this.model.isValid(true);
+                    }
+                }]
+            }
+        },
+
+        ui: {
+            firstInput: "[name=firstName]"
+        },
+
+        checkValid: function(){
+            return this.model.isValid(true) ? "error" : "";
         },
 
         onRender: function(){
             this.stickit();
+        },
+
+        onShow:function(){
+            this.ui.firstInput.focus();
         }
-    });
 
-    Login.EmptyView = Marionette.ItemView.extend({
-        template: "#empty-user-template"
-    });
-
-    Login.UserList = Marionette.CollectionView.extend({
-        itemView: Login.NewUserView,
-        emptyView: Login.EmptyView
     });
 
 });

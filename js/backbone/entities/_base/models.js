@@ -3,7 +3,7 @@ FactorySim.module ("Entities", function(Entities, App, Backbone, Marionette, $, 
     Entities.Model = Backbone.Model.extend({
 
     });
-    _.extend(Entities.Model, Backbone.Validation.mixin);
+    _.extend(Entities.Model.prototype, Backbone.Validation.mixin);
 
 });
 

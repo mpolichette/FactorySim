@@ -63,38 +63,66 @@
                 <h3>Before we get started...</h3>
             </div>
             <div class="modal-body authenticate">
-                <span>Please identify yourselves in order to get credit.</span>
-
-                <div class="row login-users">
-                    <div class="span7">
-                        <h3>Players <%= showAddButton() ? '<button type="button" class="btn btn-link js-new">add player</button>' : "" %></h3>
-                        <div class="list-user-region"></div>
-                    </div>
-                </div>
-
+                <p>Please identify yourselves in order to get credit.</p>
                 <div class="new-user-region"></div>
+                <div class="divider-holder"></div>
+                <div class="list-user-region"></div>
             </div>
             <div class="modal-footer">
-                <button class="btn js-start-game <%= hasUser() ? 'btn-primary' : ''%>" type="button"><%= hasUser() ? "Start Game" : "Skip" %></button>
+                <button class="btn js-start-game" type="button">replace me</button>
             </div>
         </script>
 
-        <script type="text/template" id="new-user-template">
-            <form class="row form-inline">
-                <div class="span7">
-                    <p class="help-block">Enter <strong>both</strong> a first and last name <strong>OR</strong> a school ID.</p>
-                    <input name="firstname" class="span2" type="text" value="" placeholder="First name"/>
-                    <input name="lastname" class="span2" type="text" value="" placeholder="Last name"/>
-                    <input name="schoolid" class="span2" type="text" value="" placeholder="School ID"/>
-                    <button type="button" class="btn btn-primary js-save">Save</button>
-                </div>
+        <script id="add-user-template" type="text/template">
+            <button type="button" class="btn btn-primary js-add">Add Player</button>
+        </script>
+
+        <script id="new-user-template" type="text/template">
+            <form class="form-inline">
+                <p class="help-block">Enter <strong>both</strong> a first and last name <strong>OR</strong> a school ID.</p>
+                <input name="firstName" class="span2" type="text" value="" placeholder="First name"/>
+                <input name="lastName" class="span2" type="text" value="" placeholder="Last name"/>
+                <input name="schoolId" class="span2" type="text" value="" placeholder="School ID"/>
+                <button type="submit" class="btn btn-primary js-save">Save</button>
             </form>
         </script>
 
-        <script type="text/template" id="empty-user-template">
-            <div class="row">
-                <p class="span7">No players! Click 'add a player' above!</p>
-            </div>
+         <script id="new-user-template2" type="text/template">
+            <form class="form-inline">
+                <p class="help-block">Enter <strong>both</strong> a first and last name <strong>OR</strong> a school ID.</p>
+                <div class="control-group">
+                    <label class="control-label">Name:</label>
+                    <div class="controls">
+                        <input name="firstName" class="input-medium" type="text" value="" placeholder="First"  />
+                        <input name="lastName" class="input-medium" type="text" value="" placeholder="Last"  />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">School ID:</label>
+                    <div class="controls">
+                        <input name="schoolId" class="input-medium" type="text" value="" placeholder="School ID"  />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary js-save">Save</button>
+            </form>
+        </script>
+
+        <script id="user-template" type="text/template" >
+            <span> <%= name() %></span>
+            <span> <%= school() %></span>
+            <% if(canRemove()){ %>
+                <button type="button" class="btn btn-link js-remove">remove</button>
+            <% } %>
+        </script>
+
+        <script id="list-user-template" type="text/template">
+            <hr/>
+            <h3>Players</h3>
+            <ul class="user-list"></ul>
+        </script>
+
+        <script id="empty-user-template"  type="text/template">
+            <p>No players! Click 'add a player' above!</p>
         </script>
 
 
@@ -147,6 +175,8 @@
         <script type="text/javascript" src="js/backbone/apps/user/user_app.js"></script>
         <script type="text/javascript" src="js/backbone/apps/user/login/login_controller.js"></script>
         <script type="text/javascript" src="js/backbone/apps/user/login/login_view.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/user/list/list_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/user/list/list_view.js"></script>
 
 
 

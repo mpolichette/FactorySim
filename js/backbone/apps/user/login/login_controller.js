@@ -2,32 +2,89 @@ FactorySim.module("UserApp.Login", function(Login, App, Backbone, Marionette, $,
 
     Login.Controller = App.Controllers.Base.extend({
 
-        initialize: function(){
+        initialize: function(options){
+            this.options = this.getDefaultOptions(options);
+            this.users = this.getUserList();
             this.layout = this.getLoginLayout();
-
-            this.listenTo(this.layout, {
-                "render": this.userList,
-                "new:user:clicked": this.onNewUserClicked
-            });
-
             this.show(this.layout);
         },
 
-        userList: function(){
-            var view = new Login.UserList();
-            this.layout.listRegion.show(view);
+        getDefaultOptions: function(options){
+            options = _.defaults({}, options, {
+                maxUsers: 3
+            });
+            return options;
         },
 
-        onNewUserClicked: function(){
+        getUserList: function() {
+            var users = App.request("user:entities");
+            this.listenTo(users, "remove", this.onUserRemove);
+            return users;
+        },
+
+        onUserRemove: function(){
             if(!this.layout.newUserRegion.currentView){
-                var user = App.request("new:user:entity");
-                var view = new Login.NewUserView({model: user});
-                this.layout.newUserRegion.show(view);
+                this.showNewUserButton();
             }
         },
 
+        showNewUserButton: function(){
+            if(this.users.length < this.options.maxUsers){
+                var view = new Login.AddUserView();
+                this.listenTo(view, "user:add:clicked", this.onUserAddClicked);
+                this.layout.newUserRegion.show(view);
+            } else {
+                this.layout.hideDivider();
+                this.layout.newUserRegion.close();
+            }
+        },
+
+        onUserAddClicked: function(){
+            var user = App.request("new:user:entity");
+            var view = new Login.NewUserView({model: user});
+            this.listenTo(view, "user:save", this.saveUser);
+            this.layout.newUserRegion.show(view);
+        },
+
+        showUserList: function(){
+            if(this.users.length !== 0){
+                this.layout.showDivider();
+                App.execute("list:users", this.layout.listUserRegion);
+            }
+        },
+
+        saveUser: function(args){
+            if(args.model && args.model.isValid(true)){
+                this.users.add(args.model);
+                this.layoutParts();
+            }
+        },
+
+        layoutParts: function(){
+            this.showNewUserButton();
+            this.showUserList();
+        },
+
         getLoginLayout: function(){
-            return new Login.LoginLayout();
+            var view = new Login.LoginLayout({collection: this.users});
+
+            this.listenTo(view, {
+                "render": this.layoutParts,
+                "game:start": this.onStartGame
+            });
+
+            return view;
+        },
+
+        onStartGame: function(){
+            if(this.users.length === 0){
+                if(!confirm("No credit will be given if no users exist, continue?")){
+                    return;
+                }
+            }
+            // Start the game!
+            App.execute("user:entities:lock");
+            App.vent.trigger("game:start");
         }
     });
 
