@@ -83,8 +83,9 @@ FactorySim.module("UserApp.Login", function(Login, App, Backbone, Marionette, $,
                 }
             }
             // Start the game!
+            this.region.close();
             App.execute("user:entities:lock");
-            App.vent.trigger("game:start");
+            App.vent.trigger("new:game");
         }
     });
 

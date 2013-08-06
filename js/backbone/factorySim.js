@@ -2,7 +2,7 @@ window.FactorySim = (function FactorySim(Backbone, Marionette, $, _){
     var App = new Marionette.Application();
 
     // Debug
-    App.listenTo(App.vent, "all", function(e){ console.log(e);});
+    App.listenTo(App.vent, "all", function(){ console.log(arguments);});
 
     App.addRegions({
         headerRegion: "#header-region",
@@ -23,6 +23,14 @@ window.FactorySim = (function FactorySim(Backbone, Marionette, $, _){
 
     App.commands.setHandler("unregister:instance", function(instance, id){
         App.unregister(instance, id);
+    });
+
+    App.on("start", function(options){
+        App.options = options;
+        App.reqres.setHandler("get:app:config", function(){
+            return App.options.config;
+        });
+        App.startHistory();
     });
 
     return App;

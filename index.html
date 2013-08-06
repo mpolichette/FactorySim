@@ -17,8 +17,8 @@
             }
         </style>
         <link rel="stylesheet" href="css/smoothness/jquery-ui-1.9.2.custom.css">
-        <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
 
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
@@ -46,7 +46,9 @@
             <div class="navbar-inner">
                 <div class="container">
                     <a class="brand" href="#">Factory Sim</a>
-                    <div id="toolbar-holder"></div>
+                    <div class="nav pull-right">
+                        <div id="controls-region"></div>
+                    </div>
                 </div>
             </div>
             <div id="workforce-holder"></div>
@@ -125,12 +127,102 @@
             <p>No players! Click 'add a player' above!</p>
         </script>
 
+        <script id="header-controls-template"  type="text/template">
+            <li >
+                <p class="navbar-text">
+                    Cash: $<span class="cash"></span>
+                </p>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  Profit: <span class="profit"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="">TODO - Add profic calculator</a></li>
+                </ul>
+            </li>
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    Day: <span class="day"></span>
+                    Time: <span class="time"></span>
+                </p>
+            </li>
+            <li class="divider-vertical"></li>
+            <li>
+                <div class="btn-group">
+                    <button class="btn js-clock-toggle">Start</button>
+                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                        <li class="slider-holder">
+                            <p>Speed: <span class="speed">1</span>x</p>
+                            <div class="slider"></div>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </script>
 
+        <script id="floor-template"  type="text/template">
+            <div id="resources-region"></div>
+            <div id="jobs-region"></div>
+            <div id="markets-region"></div>
+        </script>
 
+        <script id="resource-template" type="text/template" >
+            <div class="heading clearfix">
+                <h5 class="item-title pull-left"><%= name %></h5>
+                <h4 class="item-title price pull-right">$<%= price %></h4>
+            </div>
+            <div class="stats">
+                <div>Purchased: <span class="purchased"><%= purchased %></span></div>
+                <div>Inventory: <span class="inventory"><%= inventory %></span></div>
+            </div>
+            <button type="button" class="btn btn-mini btn-primary pull-right js-toggle">Buy more!</button>
+        </script>
 
+        <script id="resource-popover-template" type="text/template" >
+            <div class="control-group">
+                <div class="input-append">
+                    <input type="text" class="input-medium" placeholder="Amount?">
+                    <button type="button" class="btn js-buy">Buy</button>
+                </div>
+                <span class="help-block"></span>
+            </div>
+        </script>
 
+        <script id="job-template" type="text/template" >
+            <div class="heading clearfix">
+                <h5 class="item-title pull-left"><%= skillRequired %></h5>
+                <h5 class="item-title pull-right"><%= taskTime %> min</h5>
+            </div>
+            <div class="stats">
+                <div>Processed: <span class="purchased"><%= processed %></span><span class="limit"></span></div>
+                <div>Inventory: <span class="inventory"><%= inventory %></span></div>
+            </div>
+            <button type="button" class="btn btn-mini pull-right js-limit">Limit production</button>
+        </script>
 
+        <script id="job-limit-popover-template" type="text/template" >
+            <div class="control-group">
+                <div class="input-append">
+                    <input type="text" class="input-medium" placeholder="Amount?">
+                    <button type="button" class="btn js-set-limit">Set</button>
+                </div>
+                <span class="help-block"></span>
+            </div>
+            <div class="control-group pull-right">
+                <button type="button" class="btn js-remove-limit">Remove Limit</button>
+            </div>
+        </script>
 
+        <script id="market-template" type="text/template" >
+            <h5 class="item-title pull-left"><%= name %></h5>
+            <div class="stats">
+            </div>
+        </script>
 
 
 
@@ -158,10 +250,16 @@
         <!-- Entities -->
         <script type="text/javascript" src="js/backbone/entities/_base/models.js"></script>
         <script type="text/javascript" src="js/backbone/entities/users.js"></script>
+        <script type="text/javascript" src="js/backbone/entities/resources.js"></script>
+        <script type="text/javascript" src="js/backbone/entities/jobs.js"></script>
+        <script type="text/javascript" src="js/backbone/entities/markets.js"></script>
+        <script type="text/javascript" src="js/backbone/entities/workers.js"></script>
+        <script type="text/javascript" src="js/backbone/entities/game.js"></script>
 
         <!-- Controllers -->
         <script type="text/javascript" src="js/backbone/controllers/_base.js"></script>
 
+        <script type="text/javascript" src="js/backbone/components/game.js"></script>
 
         <!-- Apps -->
         <script type="text/javascript" src="js/backbone/apps/header/header_app.js"></script>
@@ -177,6 +275,10 @@
         <script type="text/javascript" src="js/backbone/apps/user/login/login_view.js"></script>
         <script type="text/javascript" src="js/backbone/apps/user/list/list_controller.js"></script>
         <script type="text/javascript" src="js/backbone/apps/user/list/list_view.js"></script>
+
+        <script type="text/javascript" src="js/backbone/apps/factoryFloor/factoryFloor_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factoryFloor/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factoryFloor/show/show_view.js"></script>
 
 
 
@@ -205,39 +307,39 @@
                 settings: {},
                 config: {
                     resources: [
-                        {"id":20, "x":35, "y":0, "name":"Raw Material A", "price":30, "purchased": 25},
-                        {"id":21, "x":270, "y":0,"name":"Raw Material B", "price":35, "purchased": 25},
-                        {"id":22, "x":535, "y":0, "name":"Raw Material C", "price":30, "purchased": 15},
+                        {"id":20, "x":0, "y":0, "name":"Raw Material A", "price":30, "purchased": 25},
+                        {"id":21, "x":260, "y":0,"name":"Raw Material B", "price":35, "purchased": 25},
+                        {"id":22, "x":520, "y":0, "name":"Raw Material C", "price":30, "purchased": 15},
                         {"id":23, "x":780, "y":0, "name":"Raw Material D", "price":65, "purchased": 10}],
                     jobs: [
-                        {"id":16, "x":20, "y":130, "skill_required":"Developer", "parentIDs":[20], "taskTime":4},
-                        {"id":17, "x":255, "y":130, "skill_required":"Developer", "parentIDs":[21], "taskTime":5},
-                        {"id":18, "x":520, "y":130, "skill_required":"Chemist", "parentIDs":[22], "taskTime":9},
-                        {"id":19, "x":765, "y":130, "skill_required":"Developer", "parentIDs":[23], "taskTime":15},
+                        {"id":16, "x":0, "y":130, "skillRequired":"Developer", "parentIDs":[20], "taskTime":4},
+                        {"id":17, "x":260, "y":130, "skillRequired":"Developer", "parentIDs":[21], "taskTime":5},
+                        {"id":18, "x":520, "y":130, "skillRequired":"Chemist", "parentIDs":[22], "taskTime":9},
+                        {"id":19, "x":780, "y":130, "skillRequired":"Developer", "parentIDs":[23], "taskTime":15},
 
-                        {"id":14, "x":520, "y":250, "skill_required":"Engineer", "parentIDs":[18], "taskTime":18, "inventory":15},
-                        {"id":15, "x":765, "y":250, "skill_required":"Chemist", "parentIDs":[19], "taskTime":12},
-                        {"id":12, "x":150, "y":250, "skill_required":"Assembler", "parentIDs":[16, 17], "taskTime":8, "inventory":25},
+                        {"id":12, "x":130, "y":250, "skillRequired":"Assembler", "parentIDs":[16, 17], "taskTime":8, "inventory":25},
+                        {"id":14, "x":520, "y":250, "skillRequired":"Engineer", "parentIDs":[18], "taskTime":18, "inventory":15},
+                        {"id":15, "x":780, "y":250, "skillRequired":"Chemist", "parentIDs":[19], "taskTime":12},
 
-                        {"id":13, "x":765, "y":380, "skill_required":"Engineer", "parentIDs":[15], "taskTime":20, "inventory":10},
-                        {"id":8, "x":20, "y":380, "skill_required":"Developer", "parentIDs":[12], "taskTime":15},
-                        {"id":9, "x":250, "y":380, "skill_required":"Fabricator", "parentIDs":[12], "taskTime":6},
-                        {"id":10, "x":520, "y":380, "skill_required":"Fabricator", "parentIDs":[14], "taskTime":28},
+                        {"id":8, "x":0, "y":380, "skillRequired":"Developer", "parentIDs":[12], "taskTime":15},
+                        {"id":9, "x":260, "y":380, "skillRequired":"Fabricator", "parentIDs":[12], "taskTime":6},
+                        {"id":10, "x":520, "y":380, "skillRequired":"Fabricator", "parentIDs":[14], "taskTime":28},
+                        {"id":13, "x":780, "y":380, "skillRequired":"Engineer", "parentIDs":[15], "taskTime":20, "inventory":10},
 
-                        {"id":11, "x":765, "y":510, "skill_required":"Fabricator", "parentIDs":[13], "taskTime":14},
-                        {"id":7, "x":20, "y": 510, "skill_required":"Chemist", "parentIDs":[8], "taskTime":15},
+                        {"id":7, "x":0, "y": 510, "skillRequired":"Chemist", "parentIDs":[8], "taskTime":15},
+                        {"id":11, "x":780, "y":510, "skillRequired":"Fabricator", "parentIDs":[13], "taskTime":14},
 
-                        {"id":4, "x":20, "y": 640, "skill_required":"Engineer", "parentIDs":[7], "taskTime":20},
-                        {"id":5, "x":350, "y": 640, "skill_required":"Assembler", "parentIDs":[9, 10], "taskTime":9},
-                        {"id":6, "x":765, "y": 640, "skill_required":"Engineer", "parentIDs":[11], "taskTime":7},
+                        {"id":4, "x":0, "y": 640, "skillRequired":"Engineer", "parentIDs":[7], "taskTime":20},
+                        {"id":5, "x":390, "y": 640, "skillRequired":"Assembler", "parentIDs":[9, 10], "taskTime":9},
+                        {"id":6, "x":780, "y": 640, "skillRequired":"Engineer", "parentIDs":[11], "taskTime":7},
 
-                        {"id":1, "x":20, "y":770, "skill_required":"Chemist", "parentIDs":[4], "taskTime":18},
-                        {"id":2, "x":350, "y":770, "skill_required":"Chemist", "parentIDs":[5], "taskTime":6},
-                        {"id":3, "x":765, "y":770, "skill_required":"Chemist", "parentIDs":[6], "taskTime":10}],
+                        {"id":1, "x":0, "y":770, "skillRequired":"Chemist", "parentIDs":[4], "taskTime":18},
+                        {"id":2, "x":390, "y":770, "skillRequired":"Chemist", "parentIDs":[5], "taskTime":6},
+                        {"id":3, "x":780, "y":770, "skillRequired":"Chemist", "parentIDs":[6], "taskTime":10}],
                     markets: [
-                        {"id":24, "x":20, "y":900, "name": "Widget 1", "parentIDs":[1], "unitPrice":180, "unitProfit":115, "demand":40},
-                        {"id":25, "x":350, "y":900, "name": "Widget 2", "parentIDs":[2], "unitPrice":240, "unitProfit":145, "demand":50},
-                        {"id":26, "x":765, "y":900, "name": "Widget 3", "parentIDs":[3], "unitPrice":180, "unitProfit":115, "demand":40}],
+                        {"id":24, "x":0, "y":900, "name": "Widget 1", "parentIDs":[1], "unitPrice":180, "unitProfit":115, "demand":40},
+                        {"id":25, "x":390, "y":900, "name": "Widget 2", "parentIDs":[2], "unitPrice":240, "unitProfit":145, "demand":50},
+                        {"id":26, "x":780, "y":900, "name": "Widget 3", "parentIDs":[3], "unitPrice":180, "unitProfit":115, "demand":40}],
                     workers: [
                         {"name": "Alice", "skill": "Chemist"},
                         {"name": "Bob", "skill": "Developer"},

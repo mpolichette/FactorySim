@@ -6,7 +6,7 @@ FactorySim.module("WelcomeApp.Show", function(Show, App, Backbone, Marionette, $
             var showView = this.getShowView();
 
             this.listenTo(showView, "start:clicked", function(){
-                App.vent.trigger("start:clicked");
+                App.vent.trigger("welcome:start:clicked");
             });
 
             this.show(showView);

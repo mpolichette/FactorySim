@@ -100,7 +100,7 @@ textarea {
 }
 
 
-.simulation{
+.floor{
     position: relative;
     min-height: 970px;
 }
@@ -175,27 +175,7 @@ textarea {
     margin: 0;
 }
 
-.job{
-    width: 180px;
-    font-size: 12px;
-}
-.job .skill{
-    font-size: 14px;
-}
-.job .info{
-    float: left;
-}
-.job .stats{
-    float: right;
-}
-
-.job .limit input{
-    font-size: 12px;
-    line-height: 12px;
-    width: 20px;
-}
-
-.job, .market, .resource{
+.floor-item{
     position: absolute;
     border: 1px solid gray;
     padding: 5px;
@@ -208,53 +188,9 @@ textarea {
     border-radius: 4px;
  }
 
-span.skill{
-    font-size: 10px;
-}
-span.status{
-    font-size: 14px;
-}
-
-/* Resource styles */
-.resource{
-    width: 150px;
-    padding: 5px;
+ .floor-item .item-title{
+    margin: 0;
  }
-
-.market{
-    width: 180px;
-    padding: 5px;
-}
-
-.market .info{
-    float: right;
-    font-size: 12px;
-}
-
-.market .stats{
-    float: left;
-    font-size: 12px;
-}
-
-.resource .stats{
-    float: left;
-    font-size: 12px;
-}
-.resource .controls{
-    float: right;
-}
-
-.limit-popover input{
-    width: 100px;
-}
-
-span.limit{
-    color: blue;
-}
-span.limit:hover{
-    color: darkblue;
-    text-decoration: underline;
-}
 
 .wrktyp1{
     background: #C2F56E;
@@ -276,14 +212,14 @@ span.limit:hover{
 }
 
 
-#options .slider-holder{
+.slider-holder{
     padding: 3px 20px;
 }
-#options .slider{
+.slider{
     margin: 5px 0;
     height: 8px;
 }
-#options .slider a{
+.slider a{
     height: 15px;
 }
 
@@ -291,6 +227,10 @@ span.limit:hover{
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid #ddd;
+}
+
+.inline-region{
+    display: inline-block;
 }
 
 

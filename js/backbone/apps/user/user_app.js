@@ -19,7 +19,7 @@ FactorySim.module("UserApp", function(UserApp, App, Backbone, Marionette, $, _){
 
     UserApp.addInitializer(function(options){
         // Listen for start event
-        this.listenTo(App.vent, "start:clicked", function(){
+        this.listenTo(App.vent, "welcome:start:clicked", function(){
             API.showLogin();
         });
     });
