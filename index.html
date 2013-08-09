@@ -175,7 +175,7 @@
         <script id="resource-template" type="text/template" >
             <div class="heading clearfix">
                 <h5 class="item-title pull-left"><%= name %></h5>
-                <h4 class="item-title price pull-right">$<%= price %></h4>
+                <h5 class="item-title price pull-right">$<%= price %></h5>
             </div>
             <div class="stats">
                 <div>Purchased: <span class="purchased"><%= purchased %></span></div>
@@ -200,7 +200,7 @@
                 <h5 class="item-title pull-right"><%= taskTime %> min</h5>
             </div>
             <div class="stats">
-                <div>Processed: <span class="purchased"><%= processed %></span><span class="limit"></span></div>
+                <div>Processed: <span class="processed"><%= processed %></span><span class="limit"></span></div>
                 <div>Inventory: <span class="inventory"><%= inventory %></span></div>
             </div>
             <button type="button" class="btn btn-mini pull-right js-limit">Limit production</button>
@@ -220,8 +220,13 @@
         </script>
 
         <script id="market-template" type="text/template" >
-            <h5 class="item-title pull-left"><%= name %></h5>
+            <div class="heading clearfix">
+                <h5 class="item-title pull-left"><%= name %></h5>
+                <h5 class="item-title price pull-right">+ $<%= unitProfit %></h5>
+            </div>
             <div class="stats">
+                <div>Produced: <span class="produced"></span>/<span class="demand"><%= demand %></span></div>
+                <div>Revenue: $<span class="revenue"></span></div>
             </div>
         </script>
 
@@ -313,34 +318,34 @@
                         {"id":22, "x":520, "y":0, "name":"Raw Material C", "price":30, "purchased": 15},
                         {"id":23, "x":780, "y":0, "name":"Raw Material D", "price":65, "purchased": 10}],
                     jobs: [
-                        {"id":16, "x":0, "y":130, "skillRequired":"Developer", "parentIDs":[20], "taskTime":4},
-                        {"id":17, "x":260, "y":130, "skillRequired":"Developer", "parentIDs":[21], "taskTime":5},
-                        {"id":18, "x":520, "y":130, "skillRequired":"Chemist", "parentIDs":[22], "taskTime":9},
-                        {"id":19, "x":780, "y":130, "skillRequired":"Developer", "parentIDs":[23], "taskTime":15},
+                        {"id":16, "x":0, "y":130, "skillRequired":"Developer", "upstream":[20], "taskTime":4},
+                        {"id":17, "x":260, "y":130, "skillRequired":"Developer", "upstream":[21], "taskTime":5},
+                        {"id":18, "x":520, "y":130, "skillRequired":"Chemist", "upstream":[22], "taskTime":9},
+                        {"id":19, "x":780, "y":130, "skillRequired":"Developer", "upstream":[23], "taskTime":15},
 
-                        {"id":12, "x":130, "y":250, "skillRequired":"Assembler", "parentIDs":[16, 17], "taskTime":8, "inventory":25},
-                        {"id":14, "x":520, "y":250, "skillRequired":"Engineer", "parentIDs":[18], "taskTime":18, "inventory":15},
-                        {"id":15, "x":780, "y":250, "skillRequired":"Chemist", "parentIDs":[19], "taskTime":12},
+                        {"id":12, "x":130, "y":250, "skillRequired":"Assembler", "upstream":[16, 17], "taskTime":8, "inventory":25},
+                        {"id":14, "x":520, "y":250, "skillRequired":"Engineer", "upstream":[18], "taskTime":18, "inventory":15},
+                        {"id":15, "x":780, "y":250, "skillRequired":"Chemist", "upstream":[19], "taskTime":12},
 
-                        {"id":8, "x":0, "y":380, "skillRequired":"Developer", "parentIDs":[12], "taskTime":15},
-                        {"id":9, "x":260, "y":380, "skillRequired":"Fabricator", "parentIDs":[12], "taskTime":6},
-                        {"id":10, "x":520, "y":380, "skillRequired":"Fabricator", "parentIDs":[14], "taskTime":28},
-                        {"id":13, "x":780, "y":380, "skillRequired":"Engineer", "parentIDs":[15], "taskTime":20, "inventory":10},
+                        {"id":8, "x":0, "y":380, "skillRequired":"Developer", "upstream":[12], "taskTime":15},
+                        {"id":9, "x":260, "y":380, "skillRequired":"Fabricator", "upstream":[12], "taskTime":6},
+                        {"id":10, "x":520, "y":380, "skillRequired":"Fabricator", "upstream":[14], "taskTime":28},
+                        {"id":13, "x":780, "y":380, "skillRequired":"Engineer", "upstream":[15], "taskTime":20, "inventory":10},
 
-                        {"id":7, "x":0, "y": 510, "skillRequired":"Chemist", "parentIDs":[8], "taskTime":15},
-                        {"id":11, "x":780, "y":510, "skillRequired":"Fabricator", "parentIDs":[13], "taskTime":14},
+                        {"id":7, "x":0, "y": 510, "skillRequired":"Chemist", "upstream":[8], "taskTime":15},
+                        {"id":11, "x":780, "y":510, "skillRequired":"Fabricator", "upstream":[13], "taskTime":14},
 
-                        {"id":4, "x":0, "y": 640, "skillRequired":"Engineer", "parentIDs":[7], "taskTime":20},
-                        {"id":5, "x":390, "y": 640, "skillRequired":"Assembler", "parentIDs":[9, 10], "taskTime":9},
-                        {"id":6, "x":780, "y": 640, "skillRequired":"Engineer", "parentIDs":[11], "taskTime":7},
+                        {"id":4, "x":0, "y": 640, "skillRequired":"Engineer", "upstream":[7], "taskTime":20},
+                        {"id":5, "x":390, "y": 640, "skillRequired":"Assembler", "upstream":[9, 10], "taskTime":9},
+                        {"id":6, "x":780, "y": 640, "skillRequired":"Engineer", "upstream":[11], "taskTime":7},
 
-                        {"id":1, "x":0, "y":770, "skillRequired":"Chemist", "parentIDs":[4], "taskTime":18},
-                        {"id":2, "x":390, "y":770, "skillRequired":"Chemist", "parentIDs":[5], "taskTime":6},
-                        {"id":3, "x":780, "y":770, "skillRequired":"Chemist", "parentIDs":[6], "taskTime":10}],
+                        {"id":1, "x":0, "y":770, "skillRequired":"Chemist", "upstream":[4], "taskTime":18},
+                        {"id":2, "x":390, "y":770, "skillRequired":"Chemist", "upstream":[5], "taskTime":6},
+                        {"id":3, "x":780, "y":770, "skillRequired":"Chemist", "upstream":[6], "taskTime":10}],
                     markets: [
-                        {"id":24, "x":0, "y":900, "name": "Widget 1", "parentIDs":[1], "unitPrice":180, "unitProfit":115, "demand":40},
-                        {"id":25, "x":390, "y":900, "name": "Widget 2", "parentIDs":[2], "unitPrice":240, "unitProfit":145, "demand":50},
-                        {"id":26, "x":780, "y":900, "name": "Widget 3", "parentIDs":[3], "unitPrice":180, "unitProfit":115, "demand":40}],
+                        {"id":24, "x":0, "y":900, "name": "Widget 1", "upstream":[1], "unitPrice":180, "unitProfit":115, "demand":40},
+                        {"id":25, "x":390, "y":900, "name": "Widget 2", "upstream":[2], "unitPrice":240, "unitProfit":145, "demand":50},
+                        {"id":26, "x":780, "y":900, "name": "Widget 3", "upstream":[3], "unitPrice":180, "unitProfit":115, "demand":40}],
                     workers: [
                         {"name": "Alice", "skill": "Chemist"},
                         {"name": "Bob", "skill": "Developer"},

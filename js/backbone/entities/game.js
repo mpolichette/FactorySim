@@ -26,6 +26,11 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
             this.markets = App.request("new:market:entities");
         },
 
+        getFloorItem: function (id) {
+            // most likely it will be a job
+            return this.jobs.get(id) || this.resources.get(id) || this.markets.get(id);
+        },
+
         purchase: function (resource, amount) {
             var total, cash, purchased, inventory;
             total = resource.get("price") * amount;

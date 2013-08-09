@@ -213,7 +213,16 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
 
     var MarketView = FloorItem.extend({
         template: "#market-template",
-        className: "floor-item market span2"
+        className: "floor-item market span2",
+
+        bindings: {
+            ".produced": "produced",
+            ".revenue": "revenue"
+        },
+
+        onRender: function () {
+            this.stickit();
+        }
 
     });
 
