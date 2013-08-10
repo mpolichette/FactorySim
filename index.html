@@ -12,7 +12,7 @@
         <style>
             body {
                 /* This moves the content below the navbar */
-                padding-top: 90px;
+                padding-top: 40px;
                 padding-bottom: 40px;
             }
         </style>
@@ -168,9 +168,12 @@
         </script>
 
         <script id="floor-template"  type="text/template">
-            <div id="resources-region"></div>
-            <div id="jobs-region"></div>
-            <div id="markets-region"></div>
+            <h3>Factory Floor</h3>
+            <div class="floor-items row">
+                <div id="resources-region"></div>
+                <div id="jobs-region"></div>
+                <div id="markets-region"></div>
+            </div>
         </script>
 
         <script id="resource-template" type="text/template" >
@@ -232,10 +235,17 @@
         </script>
 
         <script id="worker-layout-template" type="text/template">
-            <div class="btn-holder pull-left">
-                <button class="btn">Workers <i class="icon-arrow-up"></i></button>
-            </div>
-            <div id="worker-holder"></div>
+            <h3>Workers</h3>
+            <div id="worker-groups"></div>
+        </script>
+
+        <script id="worker-group-template" type="text/template">
+            <h5><%= name %>s: <small><%= setupTime %> min</small></h5>
+            <div class="workers"></div>
+        </script>
+
+        <script id="worker-template" type="text/template">
+            <h6><%= name %></h6>
         </script>
 
 
@@ -273,7 +283,6 @@
 
         <!-- Controllers -->
         <script type="text/javascript" src="js/backbone/controllers/_base.js"></script>
-
         <script type="text/javascript" src="js/backbone/components/game.js"></script>
 
         <!-- Apps -->
@@ -303,28 +312,6 @@
         <script type="text/javascript" src="js/backbone/apps/factoryWorkers/show/show_controller.js"></script>
         <script type="text/javascript" src="js/backbone/apps/factoryWorkers/show/show_view.js"></script>
 
-
-
-        <!-- Application core (Order matters) --
-        <script type="text/javascript" src="js/FactorySim.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Util.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Account.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Game.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Factory.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Bank.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Clock.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Workers.js"></script>
-
-        <!-- Floor Items (Order matters) --
-        <script type="text/javascript" src="js/FactorySim.FloorItem.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Resources.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Jobs.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Markets.js"></script>
-
-        <!-- Remove these soon
-        <script type="text/javascript" src="js/FactorySim.Stats.js"></script>
-        <script type="text/javascript" src="js/FactorySim.Sim.js"></script>
-        -->
         <script type="text/javascript">
             FactorySim.start({
                 settings: {},

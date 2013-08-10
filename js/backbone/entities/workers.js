@@ -27,7 +27,7 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
 
         parse: function  (data) {
             var setupTime =  WORKER_SETUP_TIMES[data.skill];
-            if(!setupTime) throw new Error("Worker skill not recognized.");
+            if(setupTime === undefined) throw new Error("Worker skill not recognized.");
             data.setupTime = setupTime;
             return data;
         },
@@ -84,7 +84,7 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
 
     var API = {
         newWorkers: function(){
-            return new Entities.WorkerCollection(App.options.config.workers);
+            return new Entities.WorkerCollection(App.options.config.workers, {parse: true});
         }
     };
 

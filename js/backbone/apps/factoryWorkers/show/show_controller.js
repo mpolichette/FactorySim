@@ -5,13 +5,43 @@ FactorySim.module("FactoryWorkersApp.Show", function(Show, App, Backbone, Marion
 
         initialize: function (options) {
             this.game = options.game;
-            var layout = this.getLayout();
+            this.workers = this.groupWorkers(this.game.workers);
 
-            this.show(layout);
+            this.layout = this.getLayout();
+
+            this.listenTo(this.layout, "show", function () {
+                this.showWorkers();
+            });
+
+            this.show(this.layout);
+        },
+
+        showWorkers: function () {
+            var view = this.getWorkersView();
+            this.layout.workerRegion.show(view);
+        },
+
+        getWorkersView: function () {
+            return new Show.WorkersView({collection: this.workers});
         },
 
         getLayout: function () {
-            return new Show.Layout({collection: this.game.workers});
+            return new Show.Layout();
+        },
+
+        groupWorkers: function (workers) {
+            // Group the workers into groups
+            var groups = _.map(workers.groupBy("skill"), function (workers, skill) {
+                var group = new Backbone.Model({
+                    name: skill,
+                    setupTime: _.first(workers).get("setupTime")
+                });
+                group.workers = new Backbone.Collection(workers);
+                return group;
+            }, this);
+
+            // Return a collection of groups
+            return new Backbone.Collection(groups);
         }
 
     });

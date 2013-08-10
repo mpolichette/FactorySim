@@ -101,8 +101,11 @@ textarea {
 
 
 .floor{
-    position: relative;
     min-height: 1000px;
+}
+
+.floor-items{
+    position: relative;
 }
 
 #workforce .toggle{

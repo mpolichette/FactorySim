@@ -241,7 +241,7 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
      */
     Show.FloorView = Marionette.Layout.extend({
         template: "#floor-template",
-        className: "floor row",
+        className: "floor",
         regions:{
             resourcesRegion: "#resources-region",
             jobsRegion: "#jobs-region",
