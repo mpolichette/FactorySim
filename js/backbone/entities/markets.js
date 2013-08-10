@@ -23,7 +23,20 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
                 upstreams.push(upstream);
             }, this);
             this.upstreams = new Backbone.Collection(upstreams);
+
+            // Bind to the upstreams for purchasing
+            this.listenTo(this.upstreams, "change:inventory", this.tryToSell);
+        },
+
+        tryToSell: function  (upstream) {
+            var produced = this.get("produced");
+            if(produced < this.get("demand") && upstream.takeInventory()){
+                this.set("produced", produced + 1);
+                var game = App.request("current:game");
+                game.addSale(this.get("unitPrice"), this.get("unitProfit"));
+            }
         }
+
     });
 
     Entities.MarketCollection = Backbone.Collection.extend({

@@ -14,7 +14,7 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
             // Money
             cash: 12725,
             profit: 0,
-            revenue: 0,
+            runningRevenue: 0,
             purchaseExpense: 0,
             operatingExpense: 0
         },
@@ -44,6 +44,12 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
             } else {
                 resource.set("_error", "You do not have enough cash");
             }
+        },
+
+        addSale: function (cash, profit) {
+            this.set("cash", this.get("cash") + cash);
+            this.set("runningRevenue", this.get("runningRevenue") + cash);
+            this.set("profit", this.get("profit") + profit);
         },
 
         startClock: function () {

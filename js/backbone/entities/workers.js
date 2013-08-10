@@ -42,8 +42,11 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
                     this.set("setupProgress", setupProgress + 1);
                     newStatus = STATUSES.settingUp;
                 } else {
+                    var task = this.get("task") || this.requestTask();
                     // Finally if they can, acutally put some work in
-                    if(this.get("job").putInTime(this)){
+                    if(task){
+                        task.addTime();
+                        if(task.get("complete")) this.completeTask(task);
                         newStatus = STATUSES.working;
                     } else {
                         // Or sit idly
@@ -51,10 +54,25 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
                     }
                 }
             } else {
+                // Remain unassigned
                 newStatus = STATUSES.unassigned;
             }
             // Update the workers' status
             this.set("status", newStatus);
+        },
+
+        requestTask: function () {
+            var task = this.get("job").getTask();
+            if(task){
+                this.set("task", task);
+                task.set("worker", this);
+            }
+            return task;
+        },
+
+        completeTask: function (task) {
+            this.get("job").completeTask(task);
+            this.unset("task");
         }
 
     });

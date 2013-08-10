@@ -10,6 +10,7 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
         initialize: function () {
             // Once the game starts, request your upstream connections.
             this.listenTo(App.vent, "start:game", this.connectUpstreams);
+            this.tasks = new Backbone.Collection();
         },
 
         connectUpstreams: function (game) {
@@ -24,11 +25,43 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
             this.upstreams = new Backbone.Collection(upstreams);
         },
 
-        // This is the method that allows a worker to put in time
-        putInTime: function (worker) {
-            // First we have to see if we have a task to work on.
-            var task = this.getTask();
+        // Get a task if one is available, otherwise returns false
+        getTask: function () {
+            var task = this.tasks.chain().where({worker: undefined}).first();
+            if(task){
+                return task;
+            } else {
+                return this.createTask();
+            }
+        },
+
+        // Try to create a task by checking if we have the resources upstream
+        createTask: function () {
+            var hasResources = _.every(this.upstreams.invoke("get", "inventory"));
+            if(hasResources){
+                this.upstream.invoke("takeInvetory");
+                var task =  App.request("task:entity", { taskTime: this.get("taskTime") });
+                return task;
+            } else {
+                return false;
+            }
+        },
+
+        // Invoked downstream to take inventory so they can create a task
+        takeInventory: function () {
+            var inventory = this.get("inentory");
+            if (inventory > 0){
+                this.set("inventory", inventory - 1);
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        completeTask: function (task) {
+            this.tasks.remove(task);
         }
+
     });
 
     Entities.JobCollection = Backbone.Collection.extend({
