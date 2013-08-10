@@ -231,7 +231,7 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
     });
 
     /**
-     * FloorView is mostly a layout holde for the individual items, giving me
+     * FloorView is mostly a layout holder for the individual items, giving me
      * regions to use for each of my collection views.  This allows me to use
      * the built in mechanisms for view closing
      */

@@ -30,7 +30,7 @@
         <div id="header-region" class="navbar navbar-inverse navbar-fixed-top"></div>
         <div id="main-region" class="container"></div>
         <div id="modal-region" class="modal hide fade"></div>
-
+        <div id="worker-region" class="navbar-fixed-bottom"></div>
 
 
 
@@ -230,6 +230,13 @@
             </div>
         </script>
 
+        <script id="worker-layout-template" type="text/template">
+            <div class="btn-holder pull-left">
+                <button class="btn">Workers <i class="icon-arrow-up"></i></button>
+            </div>
+            <div id="worker-holder"></div>
+        </script>
+
 
 
         <!-- Thirt-Party Libraries (Order matters) -->
@@ -285,6 +292,10 @@
         <script type="text/javascript" src="js/backbone/apps/factoryFloor/factoryFloor_app.js"></script>
         <script type="text/javascript" src="js/backbone/apps/factoryFloor/show/show_controller.js"></script>
         <script type="text/javascript" src="js/backbone/apps/factoryFloor/show/show_view.js"></script>
+
+        <script type="text/javascript" src="js/backbone/apps/factoryWorkers/factoryWorkers_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factoryWorkers/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factoryWorkers/show/show_view.js"></script>
 
 
 

@@ -22,6 +22,12 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
                 upstreams.push(upstream);
             }, this);
             this.upstreams = new Backbone.Collection(upstreams);
+        },
+
+        // This is the method that allows a worker to put in time
+        putInTime: function (worker) {
+            // First we have to see if we have a task to work on.
+            var task = this.getTask();
         }
     });
 
