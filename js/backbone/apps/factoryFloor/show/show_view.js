@@ -1,11 +1,15 @@
 FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionette, $, _){
 
+    var COLLUMNS = [0, 90, 180, 270, 360, 450, 540];
+    var ROWS = [0, 120, 240, 360, 480, 600, 720, 840];
+
+
     var FloorItem = Marionette.ItemView.extend({
 
         onShow: function () {
             this.$el.css({
-                left:this.model.get("x"),
-                top:this.model.get("y")
+                left: COLLUMNS[this.model.get("x")],
+                top: ROWS[this.model.get("y")]
             });
         }
 

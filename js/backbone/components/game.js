@@ -75,23 +75,6 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
 
     });
 
-    Game.Router = Marionette.AppRouter.extend({
-        appRoutes: {
-            "skip": "skip"
-        }
-    });
-
-    var API = {
-        skip: function () {
-            App.vent.trigger("new:game");
-        }
-    };
-
-    App.addInitializer(function () {
-        new Game.Router({
-            controller: API
-        });
-    });
 
     App.vent.on("new:game", function(options){
         if(!Game.runner) Game.runner = new Game.GameRunner();

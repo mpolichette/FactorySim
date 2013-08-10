@@ -7,7 +7,6 @@ window.FactorySim = (function FactorySim(Backbone, Marionette, $, _){
     App.addRegions({
         headerRegion: "#header-region",
         mainRegion: "#main-region",
-        workerRegion: "#worker-region",
         modalRegion: {
             selector: "#modal-region",
             regionType: Marionette.Region.ModalRegion

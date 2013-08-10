@@ -1,16 +1,16 @@
 FactorySim.module("FactoryWorkersApp", function(FactoryWorkersApp, App, Backbone, Marionette, $, _){
 
     var API = {
-        showWorkers: function(game){
+        showWorkers: function(options){
             var controller = new FactoryWorkersApp.Show.Controller({
-                region: App.workerRegion,
-                game:game
+                region: options.region,
+                game: options.factory
             });
         }
     };
 
-    App.vent.on("start:game", function(game){
-        API.showWorkers(game);
+    App.commands.setHandler("show:workers", function(options){
+        API.showWorkers(options);
     });
 
 });

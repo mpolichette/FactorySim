@@ -1,16 +1,16 @@
 FactorySim.module("FactoryFloorApp", function(FactoryFloorApp, App, Backbone, Marionette, $, _){
 
     var API = {
-        showFloor: function(game){
+        showFloor: function(options){
             var controller = new FactoryFloorApp.Show.Controller({
-                region: App.mainRegion,
-                game:game
+                region: options.region,
+                game: options.factory
             });
         }
     };
 
-    App.vent.on("start:game", function(game){
-        API.showFloor(game);
+    App.commands.setHandler("show:floor", function(options){
+        API.showFloor(options);
     });
 
 
