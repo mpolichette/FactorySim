@@ -245,7 +245,12 @@
         </script>
 
         <script id="worker-template" type="text/template">
-            <h6><%= name %></h6>
+            <div class="media-object pull-left">
+                <i class="worker-icon icon-<%= gender %> icon-2x"></i>
+            </div>
+            <div class="media-body">
+                <h5 class="media-heading"><%= name %> <small> - <%= status %></small></h5>
+            </div>
         </script>
 
 
@@ -307,6 +312,9 @@
         <script type="text/javascript" src="js/backbone/apps/factoryFloor/factoryFloor_app.js"></script>
         <script type="text/javascript" src="js/backbone/apps/factoryFloor/show/show_controller.js"></script>
         <script type="text/javascript" src="js/backbone/apps/factoryFloor/show/show_view.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factoryFloor/show/show_job_view.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factoryFloor/show/show_market_view.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factoryFloor/show/show_resource_view.js"></script>
 
         <script type="text/javascript" src="js/backbone/apps/factoryWorkers/factoryWorkers_app.js"></script>
         <script type="text/javascript" src="js/backbone/apps/factoryWorkers/show/show_controller.js"></script>
@@ -351,14 +359,14 @@
                         {"id":25, "x":3, "y":7, "name": "Widget 2", "upstream":[2], "unitPrice":240, "unitProfit":145, "demand":50},
                         {"id":26, "x":6, "y":7, "name": "Widget 3", "upstream":[3], "unitPrice":180, "unitProfit":115, "demand":40}],
                     workers: [
-                        {"name": "Alice", "skill": "Chemist"},
-                        {"name": "Bob", "skill": "Developer"},
-                        {"name": "Carl", "skill": "Developer"},
-                        {"name": "Debbie", "skill": "Engineer"},
-                        {"name": "Eric", "skill": "Engineer"},
-                        {"name": "Frank", "skill": "Assembler"},
-                        {"name": "George", "skill": "Fabricator"},
-                        {"name": "Hank", "skill": "Chemist"}]
+                        {"name": "Alice", "skill": "Chemist", "gender": "female"},
+                        {"name": "Bella", "skill": "Developer", "gender": "female"},
+                        {"name": "Carl", "skill": "Developer", "gender": "male"},
+                        {"name": "Debbie", "skill": "Engineer", "gender": "female"},
+                        {"name": "Eric", "skill": "Engineer", "gender": "male"},
+                        {"name": "Frank", "skill": "Assembler", "gender": "male"},
+                        {"name": "Gaby", "skill": "Fabricator", "gender": "female"},
+                        {"name": "Hank", "skill": "Chemist", "gender": "male"}]
                 }
 
             });
