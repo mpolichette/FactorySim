@@ -23,9 +23,10 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
         toggleClock: function (val) {
             var start = val || !this.game.get("running");
             if(start){
-                this.game.startClock();
+                this.timer = this.game.startClock();
                 this._clockLoop();
             } else {
+                clearTimeout(this.timer);
                 this.game.stopClock();
             }
         },
@@ -34,7 +35,7 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
             if(this.game.get("running")){
                 this._clockTick();
                 var delay = SPEEDS[this.game.get("speed")] || 1000;
-                _.delay(_.bind(this._clockLoop, this), delay);
+                return _.delay(_.bind(this._clockLoop, this), delay);
             }
         },
 
