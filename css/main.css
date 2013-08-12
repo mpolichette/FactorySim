@@ -99,13 +99,9 @@ textarea {
     float: left;
 }
 
-
 .floor{
-    min-height: 1000px;
-}
-
-.floor-items{
     position: relative;
+    min-height: 1000px;
 }
 
 .floor-item{

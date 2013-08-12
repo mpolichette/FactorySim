@@ -32,7 +32,11 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
             if(task){
                 return task;
             } else {
-                return this.createTask();
+                if(!this.has("limit") || this.get("processed") < this.get("limit")){
+                    return this.createTask();
+                } else {
+                    return false;
+                }
             }
         },
 
