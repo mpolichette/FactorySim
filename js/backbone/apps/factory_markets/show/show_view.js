@@ -1,4 +1,4 @@
-FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionette, $, _){
+FactorySim.module("FactoryMarketsApp.Show", function(Show, App, Backbone, Marionette, $, _){
 
 
     var MarketView = Marionette.ItemView.extend({
@@ -12,18 +12,11 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
 
         onRender: function() {
             this.stickit();
-            this.$el.css({
-                left: Show.COLLUMNS[this.model.get("x")],
-                top: Show.ROWS[this.model.get("y")]
-            });
+            var coords = App.request("resolve:coordinates", this.model.get("x"), this.model.get("y"));
+            this.$el.css(coords);
         }
 
     });
-
-
-    // Make the Market View a floor item
-    // There's gotta be a better place for this
-    _.extend(MarketView, App.Views.FloorItemMixin);
 
     Show.MarketsView = Marionette.CollectionView.extend({
         itemView: MarketView

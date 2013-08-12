@@ -34,8 +34,7 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
                 var newRevenue = this.get("revenue") + this.get("unitPrice");
                 this.set("revenue", newRevenue);
                 this.set("produced", produced + 1);
-                var game = App.request("current:game");
-                game.addSale(this.get("unitPrice"), this.get("unitProfit"));
+                App.vent.trigger("market:sold", this.get("unitPrice"), this.get("unitProfit"));
             }
         }
 

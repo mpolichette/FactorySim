@@ -6,25 +6,47 @@ FactorySim.module("FactoryApp.Show", function(Show, App, Backbone, Marionette, $
             this.layout =  this.getLayout();
 
             this.listenTo(this.layout, "show", function () {
-                this.showFloor();
                 this.showWorkers();
+                this.showResources();
+                this.showJobs();
+                this.showMarkets();
+                this.showConnections();
             });
 
             this.show(this.layout);
         },
 
-        showFloor: function () {
-            App.execute("show:floor", {
-                region: this.layout.floorRegion,
-                factory: this.factory
-            });
-        },
 
         showWorkers: function () {
             App.execute("show:workers", {
                 region: this.layout.workersRegion,
-                factory: this.factory
+                workers: this.factory.workers
             });
+        },
+
+        showResources: function() {
+            App.execute("show:resources", {
+                region: this.layout.resourcesRegion,
+                resources: this.factory.resources
+            });
+        },
+
+        showJobs: function() {
+            App.execute("show:jobs", {
+                region: this.layout.jobsRegion,
+                jobs: this.factory.jobs
+            });
+        },
+
+        showMarkets: function() {
+            App.execute("show:markets", {
+                region: this.layout.marketsRegion,
+                markets: this.factory.markets
+            });
+        },
+
+        showConnections: function () {
+
         },
 
         getLayout: function () {

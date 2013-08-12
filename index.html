@@ -164,15 +164,13 @@
 
         <script id="factory-template" type="text/template">
             <div id="worker-region" class="span3"></div>
-            <div id="floor-region" class="span9"></div>
-        </script>
-
-        <script id="floor-template"  type="text/template">
-            <h3>Factory Floor</h3>
-            <div class="floor-items row">
-                <div id="resources-region"></div>
-                <div id="jobs-region"></div>
-                <div id="markets-region"></div>
+            <div id="floor" class="span9">
+                <h3>Factory Floor</h3>
+                <div class="floor-items row">
+                    <div id="resources-region"></div>
+                    <div id="jobs-region"></div>
+                    <div id="markets-region"></div>
+                </div>
             </div>
         </script>
 
@@ -319,16 +317,21 @@
         <script type="text/javascript" src="js/backbone/apps/factory/show/show_controller.js"></script>
         <script type="text/javascript" src="js/backbone/apps/factory/show/show_view.js"></script>
 
-        <script type="text/javascript" src="js/backbone/apps/factoryFloor/factoryFloor_app.js"></script>
-        <script type="text/javascript" src="js/backbone/apps/factoryFloor/show/show_controller.js"></script>
-        <script type="text/javascript" src="js/backbone/apps/factoryFloor/show/show_view.js"></script>
-        <script type="text/javascript" src="js/backbone/apps/factoryFloor/show/show_job_view.js"></script>
-        <script type="text/javascript" src="js/backbone/apps/factoryFloor/show/show_market_view.js"></script>
-        <script type="text/javascript" src="js/backbone/apps/factoryFloor/show/show_resource_view.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_jobs/factory_jobs_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_jobs/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_jobs/show/show_view.js"></script>
 
-        <script type="text/javascript" src="js/backbone/apps/factoryWorkers/factoryWorkers_app.js"></script>
-        <script type="text/javascript" src="js/backbone/apps/factoryWorkers/show/show_controller.js"></script>
-        <script type="text/javascript" src="js/backbone/apps/factoryWorkers/show/show_view.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_markets/factory_markets_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_markets/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_markets/show/show_view.js"></script>
+
+        <script type="text/javascript" src="js/backbone/apps/factory_resources/factory_resources_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_resources/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_resources/show/show_view.js"></script>
+
+        <script type="text/javascript" src="js/backbone/apps/factory_workers/factory_workers_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_workers/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_workers/show/show_view.js"></script>
 
         <script type="text/javascript">
             FactorySim.start({
@@ -345,29 +348,29 @@
                         {"id":3, "x":4, "y":1, "skillRequired":"Chemist", "upstream":[22], "taskTime":9},
                         {"id":4, "x":6, "y":1, "skillRequired":"Developer", "upstream":[23], "taskTime":15},
 
-                        {"id":5, "x":1, "y":2, "skillRequired":"Assembler", "upstream":[16, 17], "taskTime":8, "inventory":25},
-                        {"id":6, "x":4, "y":2, "skillRequired":"Engineer", "upstream":[18], "taskTime":18, "inventory":15},
-                        {"id":7, "x":6, "y":2, "skillRequired":"Chemist", "upstream":[19], "taskTime":12},
+                        {"id":5, "x":1, "y":2, "skillRequired":"Assembler", "upstream":[1, 2], "taskTime":8, "inventory":25},
+                        {"id":6, "x":4, "y":2, "skillRequired":"Engineer", "upstream":[3], "taskTime":18, "inventory":15},
+                        {"id":7, "x":6, "y":2, "skillRequired":"Chemist", "upstream":[4], "taskTime":12},
 
-                        {"id":8, "x":0, "y":3, "skillRequired":"Developer", "upstream":[12], "taskTime":15},
-                        {"id":9, "x":2, "y":3, "skillRequired":"Fabricator", "upstream":[12], "taskTime":6},
-                        {"id":10, "x":4, "y":3, "skillRequired":"Fabricator", "upstream":[14], "taskTime":28},
-                        {"id":11, "x":6, "y":3, "skillRequired":"Engineer", "upstream":[15], "taskTime":20, "inventory":10},
+                        {"id":8, "x":0, "y":3, "skillRequired":"Developer", "upstream":[5], "taskTime":15},
+                        {"id":9, "x":2, "y":3, "skillRequired":"Fabricator", "upstream":[5], "taskTime":6},
+                        {"id":10, "x":4, "y":3, "skillRequired":"Fabricator", "upstream":[6], "taskTime":28},
+                        {"id":11, "x":6, "y":3, "skillRequired":"Engineer", "upstream":[7], "taskTime":20, "inventory":10},
 
                         {"id":12, "x":0, "y": 4, "skillRequired":"Chemist", "upstream":[8], "taskTime":15},
-                        {"id":13, "x":6, "y":4, "skillRequired":"Fabricator", "upstream":[13], "taskTime":14},
+                        {"id":13, "x":6, "y":4, "skillRequired":"Fabricator", "upstream":[11], "taskTime":14},
 
-                        {"id":14, "x":0, "y": 5, "skillRequired":"Engineer", "upstream":[7], "taskTime":20},
+                        {"id":14, "x":0, "y": 5, "skillRequired":"Engineer", "upstream":[12], "taskTime":20},
                         {"id":15, "x":3, "y": 5, "skillRequired":"Assembler", "upstream":[9, 10], "taskTime":9},
-                        {"id":16, "x":6, "y": 5, "skillRequired":"Engineer", "upstream":[11], "taskTime":7},
+                        {"id":16, "x":6, "y": 5, "skillRequired":"Engineer", "upstream":[13], "taskTime":7},
 
-                        {"id":17, "x":0, "y":6, "skillRequired":"Chemist", "upstream":[4], "taskTime":18},
-                        {"id":18, "x":3, "y":6, "skillRequired":"Chemist", "upstream":[5], "taskTime":6},
-                        {"id":19, "x":6, "y":6, "skillRequired":"Chemist", "upstream":[6], "taskTime":10}],
+                        {"id":17, "x":0, "y":6, "skillRequired":"Chemist", "upstream":[14], "taskTime":18},
+                        {"id":18, "x":3, "y":6, "skillRequired":"Chemist", "upstream":[15], "taskTime":6},
+                        {"id":19, "x":6, "y":6, "skillRequired":"Chemist", "upstream":[16], "taskTime":10}],
                     markets: [
-                        {"id":24, "x":0, "y":7, "name": "Widget 1", "upstream":[1], "unitPrice":180, "unitProfit":115, "demand":40},
-                        {"id":25, "x":3, "y":7, "name": "Widget 2", "upstream":[2], "unitPrice":240, "unitProfit":145, "demand":50},
-                        {"id":26, "x":6, "y":7, "name": "Widget 3", "upstream":[3], "unitPrice":180, "unitProfit":115, "demand":40}],
+                        {"id":24, "x":0, "y":7, "name": "Widget 1", "upstream":[17], "unitPrice":180, "unitProfit":115, "demand":40},
+                        {"id":25, "x":3, "y":7, "name": "Widget 2", "upstream":[18], "unitPrice":240, "unitProfit":145, "demand":50},
+                        {"id":26, "x":6, "y":7, "name": "Widget 3", "upstream":[19], "unitPrice":180, "unitProfit":115, "demand":40}],
                     workers: [
                         {"name": "Alice", "skill": "Chemist", "gender": "female"},
                         {"name": "Bella", "skill": "Developer", "gender": "female"},

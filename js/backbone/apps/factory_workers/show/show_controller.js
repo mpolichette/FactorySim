@@ -4,8 +4,8 @@ FactorySim.module("FactoryWorkersApp.Show", function(Show, App, Backbone, Marion
     Show.Controller = App.Controllers.Base.extend({
 
         initialize: function (options) {
-            this.factory = options.factory;
-            this.workers = this.groupWorkers(this.factory.workers);
+            this.workers = options.workers;
+            this.workers = this.groupWorkers(this.workers);
 
             this.layout = this.getLayout();
 

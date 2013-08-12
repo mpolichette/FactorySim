@@ -1,4 +1,4 @@
-FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionette, $, _){
+FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionette, $, _){
 
     var DROP_DEFAULTS = {
 
@@ -10,7 +10,7 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
         className: function() {
             return "icon-" + this.model.get("gender") + " icon-2x";
         },
-        attributes: function () { return {"data-name": this.model.get("name")}; },
+        attributes: function () { return {"data-name": this.model.get("name")}; }
 
     });
 
@@ -57,7 +57,7 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
 
         showInventory: function(value) {
             var icon = "<i class='icon-archive'></i>";
-            if(value <= 20){
+            if(value <= 10){
                 return new Array( value + 1 ).join(icon);
             } else {
                 return [value, icon].join(" ");
@@ -106,10 +106,8 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
 
         onRender: function() {
             this.stickit();
-            this.$el.css({
-                left: Show.COLLUMNS[this.model.get("x")],
-                top: Show.ROWS[this.model.get("y")]
-            });
+            var coords = App.request("resolve:coordinates", this.model.get("x"), this.model.get("y"));
+            this.$el.css(coords);
             this.showWorkers();
         },
 
@@ -156,10 +154,6 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
         }
 
     });
-
-    // Make the Job View a floor item
-    // There's gotta be a better place for this
-    _.extend(JobView, App.Views.FloorItemMixin);
 
     Show.JobsView = Marionette.CollectionView.extend({
         itemView: JobView

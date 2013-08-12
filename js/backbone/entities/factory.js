@@ -38,7 +38,8 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
         listenToGameEvents: function() {
             this.listenTo(App.vent, {
                 "assign:job": this.assignJob,
-                "purchase:resource": this.purchaseResource
+                "purchase:resource": this.purchaseResource,
+                "market:sold": this.addSale
             });
         },
 

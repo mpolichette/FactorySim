@@ -4,7 +4,7 @@ FactorySim.module("FactoryWorkersApp", function(FactoryWorkersApp, App, Backbone
         showWorkers: function(options){
             var controller = new FactoryWorkersApp.Show.Controller({
                 region: options.region,
-                factory: options.factory
+                workers: options.workers
             });
         }
     };

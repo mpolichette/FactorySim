@@ -1,4 +1,4 @@
-FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionette, $, _){
+FactorySim.module("FactoryResourcesApp.Show", function(Show, App, Backbone, Marionette, $, _){
 
     var ResourceView = Marionette.ItemView.extend({
         template: "#resource-template",
@@ -27,10 +27,8 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
 
         onRender: function() {
             this.stickit();
-            this.$el.css({
-                left: Show.COLLUMNS[this.model.get("x")],
-                top: Show.ROWS[this.model.get("y")]
-            });
+            var coords = App.request("resolve:coordinates", this.model.get("x"), this.model.get("y"));
+            this.$el.css(coords);
         },
 
         onShow: function () {
@@ -100,11 +98,6 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
         }
 
     });
-
-
-    // Make the Resource View a floor item
-    // There's gotta be a better place for this
-    _.extend(ResourceView, App.Views.FloorItemMixin);
 
     Show.ResourcesView = Marionette.CollectionView.extend({
         itemView: ResourceView,
