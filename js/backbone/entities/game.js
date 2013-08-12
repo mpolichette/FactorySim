@@ -31,7 +31,31 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
             return this.jobs.get(id) || this.resources.get(id) || this.markets.get(id);
         },
 
-        purchase: function (resource, amount) {
+        start: function() {
+            this.listenToGameEvents();
+        },
+
+        listenToGameEvents: function() {
+            this.listenTo(App.vent, {
+                "assign:job": this.assignJob,
+                "purchase:resource": this.purchaseResource
+            });
+        },
+
+        assignJob: function(worker, job) {
+            // Make sure we have the models
+            worker = this.workers.get(worker);
+            job = this.jobs.get(job);
+            var oldJob = worker.get("job");
+
+            // Check if worker will take job first
+            if(worker.assignJob(job)){
+                if(oldJob) oldJob.workers.remove(worker);
+                job.workers.add(worker);
+            }
+        },
+
+        purchaseResource: function (resource, amount) {
             var total, cash, purchased, inventory;
             total = resource.get("price") * amount;
             cash = this.get("cash");
@@ -62,8 +86,6 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
         stopClock: function () {
             this.set("running", false);
         }
-
-
 
     });
 

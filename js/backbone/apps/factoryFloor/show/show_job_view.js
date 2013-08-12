@@ -4,18 +4,43 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
 
     };
 
-    var JobView = Show.FloorItem.extend({
+    var JobWorkerView = Marionette.ItemView.extend({
+        template: _.template("&nbsp;"),
+        tagName: "i",
+        className: function() {
+            return "icon-" + this.model.get("gender") + " icon-2x";
+        },
+        attributes: function () { return {"data-name": this.model.get("name")}; },
+
+    });
+
+    var JobWorkersView = Marionette.CollectionView.extend({
+        itemView: JobWorkerView,
+        className: "workers"
+    });
+
+
+    var JobView = Marionette.Layout.extend({
         template: "#job-template",
         className: "floor-item job span2",
 
+        regions: {
+            workersRegion: ".workers-region"
+        },
+
         bindings: {
             ".processed": "processed",
-            ".inventory": "inventory",
+            //".inventory": "inventory",
             ".limit": {
                 observe: "limit",
                 onGet: function (val) {
                     return val > 0 ? " of " + val : "";
                 }
+            },
+            ".inventory": {
+                observe: "inventory",
+                updateMethod: "html",
+                onGet: "showInventory"
             }
         },
 
@@ -30,8 +55,13 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
             "keyup input": "onSetKeyup"
         },
 
-        modelEvents: {
-
+        showInventory: function(value) {
+            var icon = "<i class='icon-archive'></i>";
+            if(value <= 20){
+                return new Array( value + 1 ).join(icon);
+            } else {
+                return [value, icon].join(" ");
+            }
         },
 
         grabFocus: function (){
@@ -74,6 +104,19 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
             this.closeLimit();
         },
 
+        onRender: function() {
+            this.stickit();
+            this.$el.css({
+                left: Show.COLLUMNS[this.model.get("x")],
+                top: Show.ROWS[this.model.get("y")]
+            });
+            this.showWorkers();
+        },
+
+        showWorkers: function() {
+            this.workersRegion.show(new JobWorkersView({collection: this.model.workers}));
+        },
+
         onShow: function () {
             this.ui.limitBtn.popover(this.getPopoverOptions());
             this.$el.droppable(this.getDrobbableOptions());
@@ -88,7 +131,7 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
         },
 
         onDrop: function (event, ui) {
-            this.trigger("worker:placed", ui.draggable.attr("id"));
+            this.trigger("worker:placed", ui.draggable.data("name"));
         },
 
         getPopoverOptions: function () {
@@ -113,6 +156,10 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
         }
 
     });
+
+    // Make the Job View a floor item
+    // There's gotta be a better place for this
+    _.extend(JobView, App.Views.FloorItemMixin);
 
     Show.JobsView = Marionette.CollectionView.extend({
         itemView: JobView

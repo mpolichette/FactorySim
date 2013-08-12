@@ -125,6 +125,27 @@ textarea {
     margin: 0;
  }
 
+ .stats{
+    margin: 5px 0;
+ }
+
+.status{
+    min-height: 20px;
+    max-height: 40px;
+    overflow: hidden;
+}
+
+.status .workers{
+    float:left;
+    padding-top: 6px;
+}
+
+ .inventory{
+    width: 70px;
+    float: right;
+    text-align: right;
+ }
+
  .worker-group{
     -webkit-touch-callout: none;
     -webkit-user-select: none;

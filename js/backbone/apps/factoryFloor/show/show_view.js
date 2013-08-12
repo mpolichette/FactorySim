@@ -1,20 +1,8 @@
 FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionette, $, _){
 
-    var COLLUMNS = [0, 90, 180, 270, 360, 450, 540];
-    var ROWS = [0, 120, 240, 360, 480, 600, 720, 840];
-
-
-    Show.FloorItem = Marionette.ItemView.extend({
-
-        onRender: function () {
-            this.stickit();
-            this.$el.css({
-                left: COLLUMNS[this.model.get("x")],
-                top: ROWS[this.model.get("y")]
-            });
-        }
-
-    });
+    // This is kind of in an ugly area
+    Show.COLLUMNS = [0, 90, 180, 270, 360, 450, 540];
+    Show.ROWS = [0, 120, 240, 360, 480, 600, 720, 840];
 
     /**
      * FloorView is mostly a layout holder for the individual items, giving me

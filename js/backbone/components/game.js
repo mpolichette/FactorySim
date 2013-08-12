@@ -13,6 +13,7 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
 
         newGame: function () {
             this.game = App.request("create:new:game");
+            this.game.start();
             App.vent.trigger("start:game", this.game);
         },
 
@@ -29,6 +30,15 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
                 clearTimeout(this.timer);
                 this.game.stopClock();
             }
+        },
+
+        // Leaving this incase I decide to swap out the confirm dialog modal or something
+        pauseConfirm: function(message) {
+            var wasRunning = this.game.get("running");
+            // if(wasRunning) this.toggleClock();
+            var choice = confirm(message);
+            // if(wasRunning) this.toggleClock();
+            return choice;
         },
 
         _clockLoop: function () {
@@ -72,6 +82,7 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
                 this.game.stopClock();
             }
             App.vent.trigger("clock:tick", day, hour, minute);
+            App.vent.trigger("clock:tick:after");
         }
 
     });
@@ -93,4 +104,9 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
     App.commands.setHandler("set:clock:speed", function (value) {
         Game.runner.setClockSpeed(value);
     });
+
+    App.reqres.setHandler("pause:confirm", function (message) {
+        return Game.runner.pauseConfirm(message);
+    });
+
 });

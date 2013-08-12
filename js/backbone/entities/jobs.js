@@ -65,10 +65,6 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
                 "processed": this.get("processed") + 1
             });
             this.tasks.remove(task);
-        },
-
-        addWorker: function (worker) {
-            this.workers.add(worker);
         }
 
     });

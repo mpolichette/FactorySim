@@ -11,6 +11,10 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
             this.set("total", options.taskTime);
         },
 
+        claim: function(worker) {
+            this.set("worker", worker);
+        },
+
         abandon: function () {
             this.unset("worker");
         },

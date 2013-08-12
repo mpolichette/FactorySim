@@ -11,13 +11,17 @@ FactorySim.module("FactoryWorkersApp.Show", function(Show, App, Backbone, Marion
 
         regions: {
             workerRegion: "#worker-groups"
+        },
+
+        onShow: function() {
+            this.$el.affix();
         }
     });
 
     var WorkerView = Marionette.ItemView.extend({
         template: "#worker-template",
         className: "worker media",
-        id: function () { return this.model.get("name"); },
+        attributes: function () { return {"data-name": this.model.get("name")}; },
 
         bindings: {
             ":el": {

@@ -16,6 +16,7 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
     };
 
     Entities.Worker = Backbone.Model.extend({
+        idAttribute: "name",
         defaults:{
             status: STATUSES.unassigned,
             setupProgress: 0
@@ -23,6 +24,7 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
 
         initialize: function () {
             this.listenTo(App.vent, "clock:tick", this.tryToWork);
+            this.listenTo(App.vent, "clock:tick:after", this.completeWork);
         },
 
         parse: function  (data) {
@@ -33,17 +35,21 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
         },
 
         assignJob: function (job) {
-            if(!this.has("task") || this.abandonCurrentTask()){
-                this.set("job", job);
-                this.set("status", STATUSES.settingUp);
-                job.addWorker(this);
+            if(this.has("task") && !this.confirmAbandonTask()){
+                return false;
             }
+            this.set({
+                job: job,
+                setupProgress: 0,
+                status: STATUSES.settingUp
+            });
+            return true;
         },
 
-        abandonCurrentTask: function () {
+        confirmAbandonTask: function () {
             var msg, task = this.get("task");
             if(task){
-                msg = ["Abandon ", this.get("name"), "'s current task? (progress will be kept)"].join(" ");
+                msg = ["Abandon", this.get("name") + "'s", "current task?\n(Progress will be kept)"].join(" ");
                 if(App.request("pause:confirm", msg )){
                     this.get("task").abandon();
                     this.unset("task");
@@ -65,10 +71,9 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
                     newStatus = STATUSES.settingUp;
                 } else {
                     var task = this.get("task") || this.requestTask();
-                    // Finally if they can, acutally put some work in
                     if(task){
+                        // Finally if they can, acutally put some work in
                         task.addTime();
-                        if(task.get("complete")) this.completeTask(task);
                         newStatus = STATUSES.working;
                     } else {
                         // Or sit idly
@@ -83,11 +88,18 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
             this.set("status", newStatus);
         },
 
+        completeWork: function() {
+            var task = this.get("task");
+            if(task && task.get("complete")){
+                this.completeTask(task);
+            }
+        },
+
         requestTask: function () {
             var task = this.get("job").getTask();
             if(task){
                 this.set("task", task);
-                task.set("worker", this);
+                task.claim(this); // bad style still
             }
             return task;
         },

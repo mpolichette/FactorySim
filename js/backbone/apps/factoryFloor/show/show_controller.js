@@ -29,8 +29,7 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
         },
 
         onBuy: function  (view, amount) {
-            var resource = view.model;
-            this.game.purchase(resource, amount);
+            App.vent.trigger("purchase:resource", view.model, amount);
         },
 
         showJobs: function () {
@@ -45,8 +44,7 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
         },
 
         onWorkerPlaced: function (view, workerName) {
-            var worker = _.first(this.game.workers.where({ name: workerName }));
-            worker.assignJob(view.model);
+            App.vent.trigger("assign:job", workerName, view.model);
         },
 
         showMarkets: function () {
