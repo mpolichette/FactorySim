@@ -4,7 +4,7 @@ FactorySim.module("FactoryFloorApp", function(FactoryFloorApp, App, Backbone, Ma
         showFloor: function(options){
             var controller = new FactoryFloorApp.Show.Controller({
                 region: options.region,
-                game: options.factory
+                factory: options.factory
             });
         }
     };

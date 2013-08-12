@@ -4,11 +4,11 @@ FactorySim.module("HeaderApp.Show", function(Show, App, Backbone, Marionette, $,
     Show.Controller = App.Controllers.Base.extend({
 
         initialize: function(options){
-            this.game = options.game;
+            this.factory = options.factory;
             this.layout = this.getLayout();
 
             this.listenTo(this.layout, "show", function(){
-                if(this.game){
+                if(this.factory){
                     this.showControls();
                 }
             });
@@ -17,7 +17,7 @@ FactorySim.module("HeaderApp.Show", function(Show, App, Backbone, Marionette, $,
         },
 
         showControls: function () {
-            var view = new Show.ControlsView({model: this.game});
+            var view = new Show.ControlsView({model: this.factory});
 
             this.listenTo(view, {
                 "toggle:clock": this.onToggleClock

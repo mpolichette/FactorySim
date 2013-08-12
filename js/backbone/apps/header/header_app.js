@@ -2,10 +2,10 @@ FactorySim.module("HeaderApp", function(HeaderApp, App, Backbone, Marionette, $,
     this.startWithParent = false;
 
     var API = {
-        show: function(game){
+        show: function(factory){
             new HeaderApp.Show.Controller({
                 region: App.headerRegion,
-                game: game
+                factory: factory
             });
         }
     };
@@ -14,8 +14,8 @@ FactorySim.module("HeaderApp", function(HeaderApp, App, Backbone, Marionette, $,
         API.show();
     });
 
-    App.vent.on("start:game", function(game){
-        API.show(game);
+    App.vent.on("start:game", function(factory){
+        API.show(factory);
     });
 
 });

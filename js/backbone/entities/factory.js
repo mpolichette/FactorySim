@@ -1,6 +1,6 @@
 FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _){
 
-    Entities.Game = Backbone.Model.extend({
+    Entities.Factory = Backbone.Model.extend({
 
         defaults: {
             // Time
@@ -89,13 +89,8 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
 
     });
 
-    App.reqres.setHandler("create:new:game", function(){
-        Entities.currentGame = new Entities.Game();
-        return Entities.currentGame;
-    });
-
-    App.reqres.setHandler("current:game", function(){
-        return Entities.currentGame;
+    App.reqres.setHandler("new:factory", function(){
+        return new Entities.Factory();
     });
 
 });

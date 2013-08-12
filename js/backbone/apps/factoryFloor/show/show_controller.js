@@ -2,7 +2,7 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
 
     Show.Controller = App.Controllers.Base.extend({
         initialize: function(options){
-            this.game = options.game;
+            this.factory = options.factory;
 
             this.layout = this.getFloorView(options);
 
@@ -17,11 +17,11 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
         },
 
         getFloorView: function () {
-            return new Show.FloorView({model: this.game});
+            return new Show.FloorView({model: this.factory});
         },
 
         showResources: function () {
-            var view = new Show.ResourcesView({collection: this.game.resources});
+            var view = new Show.ResourcesView({collection: this.factory.resources});
             this.listenTo(view, {
                 "childView:buy:resource": this.onBuy
             });
@@ -33,7 +33,7 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
         },
 
         showJobs: function () {
-            var view = new Show.JobsView({collection: this.game.jobs});
+            var view = new Show.JobsView({collection: this.factory.jobs});
 
             this.listenTo(view, {
                 "itemview:worker:placed": this.onWorkerPlaced
@@ -48,7 +48,7 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
         },
 
         showMarkets: function () {
-            var view = new Show.MarketsView({collection: this.game.markets});
+            var view = new Show.MarketsView({collection: this.factory.markets});
             this.layout.marketsRegion.show(view);
 
         },

@@ -12,29 +12,29 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
         },
 
         newGame: function () {
-            this.game = App.request("create:new:game");
-            this.game.start();
-            App.vent.trigger("start:game", this.game);
+            this.factory = App.request("new:factory");
+            this.factory.start();
+            App.vent.trigger("start:game", this.factory);
         },
 
         setClockSpeed: function (speed) {
-            this.game.set("speed", speed);
+            this.factory.set("speed", speed);
         },
 
         toggleClock: function (val) {
-            var start = val || !this.game.get("running");
+            var start = val || !this.factory.get("running");
             if(start){
-                this.timer = this.game.startClock();
+                this.timer = this.factory.startClock();
                 this._clockLoop();
             } else {
                 clearTimeout(this.timer);
-                this.game.stopClock();
+                this.factory.stopClock();
             }
         },
 
         // Leaving this incase I decide to swap out the confirm dialog modal or something
         pauseConfirm: function(message) {
-            var wasRunning = this.game.get("running");
+            var wasRunning = this.factory.get("running");
             // if(wasRunning) this.toggleClock();
             var choice = confirm(message);
             // if(wasRunning) this.toggleClock();
@@ -42,18 +42,18 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
         },
 
         _clockLoop: function () {
-            if(this.game.get("running")){
+            if(this.factory.get("running")){
                 this._clockTick();
-                var delay = SPEEDS[this.game.get("speed")] || 1000;
+                var delay = SPEEDS[this.factory.get("speed")] || 1000;
                 return _.delay(_.bind(this._clockLoop, this), delay);
             }
         },
 
         _clockTick: function () {
             var minute, hour, day, newHour, newDay;
-            minute = this.game.get("minute");
-            hour = this.game.get("hour");
-            day = this.game.get("day");
+            minute = this.factory.get("minute");
+            hour = this.factory.get("hour");
+            day = this.factory.get("day");
 
             minute = minute + 1;
             if(minute === 60){
@@ -67,19 +67,19 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
                 }
             }
 
-            this.game.set({ "minute": minute, "hour": hour, "day": day });
+            this.factory.set({ "minute": minute, "hour": hour, "day": day });
             if(newHour) {
                 App.vent.trigger("clock:hour:over");
             }
             if(newDay) {
                 App.vent.trigger("clock:day:over");
                 if(PAUSE_ON_DAY_END){
-                    this.game.stopClock();
+                    this.factory.stopClock();
                 }
             }
             if(day === DAYS_IN_WEEK) {
                 App.vent.trigger("clock:week:over");
-                this.game.stopClock();
+                this.factory.stopClock();
             }
             App.vent.trigger("clock:tick", day, hour, minute);
             App.vent.trigger("clock:tick:after");
@@ -97,6 +97,14 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
      * The Below events require a runner be instantiated... this should always be the case
      * if the application is opperating correctly.
      */
+    App.reqres.setHandler("current:factory", function(){
+        return Game.runner.factory;
+    });
+
+    App.reqres.setHandler("pause:confirm", function (message) {
+        return Game.runner.pauseConfirm(message);
+    });
+
     App.commands.setHandler("toggle:clock", function () {
         Game.runner.toggleClock();
     });
@@ -104,9 +112,4 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
     App.commands.setHandler("set:clock:speed", function (value) {
         Game.runner.setClockSpeed(value);
     });
-
-    App.reqres.setHandler("pause:confirm", function (message) {
-        return Game.runner.pauseConfirm(message);
-    });
-
 });
