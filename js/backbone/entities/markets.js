@@ -31,6 +31,8 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
         tryToSell: function  (upstream) {
             var produced = this.get("produced");
             if(produced < this.get("demand") && upstream.takeInventory()){
+                var newRevenue = this.get("revenue") + this.get("unitPrice");
+                this.set("revenue", newRevenue);
                 this.set("produced", produced + 1);
                 var game = App.request("current:game");
                 game.addSale(this.get("unitPrice"), this.get("unitProfit"));

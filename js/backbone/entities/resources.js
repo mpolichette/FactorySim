@@ -16,7 +16,7 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
 
         // Invoked downstream to take inventory so they can create a task
         takeInventory: function () {
-            var inventory = this.get("inentory");
+            var inventory = this.get("inventory");
             if (inventory > 0){
                 this.set("inventory", inventory - 1);
                 return true;

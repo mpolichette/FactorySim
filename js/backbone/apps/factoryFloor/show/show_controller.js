@@ -35,8 +35,18 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
 
         showJobs: function () {
             var view = new Show.JobsView({collection: this.game.jobs});
+
+            this.listenTo(view, {
+                "itemview:worker:placed": this.onWorkerPlaced
+            });
+
             this.layout.jobsRegion.show(view);
 
+        },
+
+        onWorkerPlaced: function (view, workerName) {
+            var worker = _.first(this.game.workers.where({ name: workerName }));
+            worker.assignJob(view.model);
         },
 
         showMarkets: function () {

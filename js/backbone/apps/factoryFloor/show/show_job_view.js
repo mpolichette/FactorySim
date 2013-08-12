@@ -1,11 +1,15 @@
 FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionette, $, _){
 
+    var DROP_DEFAULTS = {
+
+    };
 
     var JobView = Show.FloorItem.extend({
         template: "#job-template",
         className: "floor-item job span2",
 
         bindings: {
+            ".processed": "processed",
             ".inventory": "inventory",
             ".limit": {
                 observe: "limit",
@@ -76,7 +80,15 @@ FactorySim.module("FactoryFloorApp.Show", function(Show, App, Backbone, Marionet
         },
 
         getDrobbableOptions: function () {
-            return {};
+            var opts = {
+                scope: this.model.get("skillRequired"),
+                drop: _.bind(this.onDrop, this)
+            };
+            return _.defaults(opts, DROP_DEFAULTS);
+        },
+
+        onDrop: function (event, ui) {
+            this.trigger("worker:placed", ui.draggable.attr("id"));
         },
 
         getPopoverOptions: function () {

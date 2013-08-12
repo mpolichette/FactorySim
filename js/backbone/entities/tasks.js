@@ -15,14 +15,14 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
             this.unset("worker");
         },
 
+        // Update the progress and set it complete if it is
         addTime: function () {
-            var newProgress = this.get("progress") + 1;
-            this.set("progress", newProgress);
-
-            // Set it as complete if it is
-            if(newProgress === this.get("total")){
-                this.set("compltete", true);
-            }
+            var newProgress = this.get("progress") + 1,
+                isComplete = newProgress === this.get("total");
+            this.set({
+                "progress": newProgress,
+                "complete": isComplete
+            });
         }
 
     });

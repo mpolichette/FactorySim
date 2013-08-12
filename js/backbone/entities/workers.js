@@ -32,6 +32,28 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
             return data;
         },
 
+        assignJob: function (job) {
+            if(!this.has("task") || this.abandonCurrentTask()){
+                this.set("job", job);
+                this.set("status", STATUSES.settingUp);
+                job.addWorker(this);
+            }
+        },
+
+        abandonCurrentTask: function () {
+            var msg, task = this.get("task");
+            if(task){
+                msg = ["Abandon ", this.get("name"), "'s current task? (progress will be kept)"].join(" ");
+                if(App.request("pause:confirm", msg )){
+                    this.get("task").abandon();
+                    this.unset("task");
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        },
+
         tryToWork: function () {
             var newStatus;
             // If the worker doesn't have a job, it cannot work

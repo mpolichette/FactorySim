@@ -144,12 +144,22 @@ textarea {
 
  .worker-icon{
     width: 20px;
-    z-index: 1000
+    z-index: 1000;
  }
+
+.worker .worker-icon{
+    color: #ccc;
+}
+
+.worker.unassigned .worker-icon{
+    color: black;
+}
+
 
  .worker .icon-male{
     padding: 0 2px;
  }
+
 
 .wrktyp1{
     background: #C2F56E;

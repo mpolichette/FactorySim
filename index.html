@@ -132,7 +132,7 @@
             </li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  Profit: <span class="profit"></span>
+                  Profit: $<span class="profit"></span>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="">TODO - Add profic calculator</a></li>
@@ -204,8 +204,8 @@
                 <h5 class="item-title pull-right"><%= taskTime %> min</h5>
             </div>
             <div class="stats">
-                <div>Processed: <span class="processed"><%= processed %></span><span class="limit"></span></div>
-                <div>Inventory: <span class="inventory"><%= inventory %></span></div>
+                <div>Processed: <span class="processed"></span><span class="limit"></span></div>
+                <div>Inventory: <span class="inventory"></span></div>
             </div>
             <button type="button" class="btn btn-mini pull-right js-limit">Limit production</button>
         </script>
@@ -226,7 +226,7 @@
         <script id="market-template" type="text/template" >
             <div class="heading clearfix">
                 <h5 class="item-title pull-left"><%= name %></h5>
-                <h5 class="item-title price pull-right">+ $<%= unitProfit %></h5>
+                <h5 class="item-title price pull-right">+ $<%= unitPrice %></h5>
             </div>
             <div class="stats">
                 <div>Produced: <span class="produced"></span>/<span class="demand"><%= demand %></span></div>
@@ -249,7 +249,7 @@
                 <i class="worker-icon icon-<%= gender %> icon-2x"></i>
             </div>
             <div class="media-body">
-                <h5 class="media-heading"><%= name %> <small> - <%= status %></small></h5>
+                <h5 class="media-heading"><%= name %> <small class="js-status"> - <%= status %></small></h5>
             </div>
         </script>
 
