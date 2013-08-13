@@ -245,7 +245,7 @@
         </script>
 
         <script id="worker-group-template" type="text/template">
-            <h5><%= name %>s: <small><%= setupTime %> min</small></h5>
+            <h5 class="worker-heading"><%= name %>s: <small title="Setup Time"><%= setupTime %> min</small></h5>
             <div class="workers"></div>
         </script>
 
@@ -254,7 +254,7 @@
                 <i class="worker-icon icon-<%= gender %> icon-2x"></i>
             </div>
             <div class="media-body">
-                <h5 class="media-heading"><%= name %> <small class="js-status"> - <%= status %></small></h5>
+                <h5 class="media-heading"><%= name %> <small class="status"><%= status %></small></h5>
             </div>
         </script>
 

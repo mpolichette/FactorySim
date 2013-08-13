@@ -125,10 +125,15 @@ textarea {
     margin: 5px 0;
  }
 
-.status{
+.job .status{
     min-height: 20px;
     max-height: 40px;
     overflow: hidden;
+}
+
+.job .workers{
+    float:left;
+    padding-top: 6px;
 }
 
 .job .workers .worker{
@@ -149,10 +154,20 @@ textarea {
     z-index: -1;
 }
 
-.status .workers{
-    float:left;
-    padding-top: 6px;
+.worker .status:before{
+    content: " - ";
+    color: #999;
 }
+
+.idle .status{
+    color: #b94a48;
+}
+
+.settingup .status,
+.working.status{
+    color: #468847;
+}
+
 
  .job .inventory{
     height: 40px;
@@ -178,6 +193,18 @@ textarea {
     -ms-user-select: none;
     user-select: none;
  }
+
+.worker-heading{
+    width: 220px;
+    margin-bottom: 5px;
+    border-bottom: 2px solid #332;
+}
+
+.worker-heading small{
+    margin: 5px 0;
+    float: right;
+}
+
 .workers .worker{
     margin-top: 0;
     padding: 5px 0;

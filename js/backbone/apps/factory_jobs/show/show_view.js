@@ -190,8 +190,8 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
 
         onShow: function () {
             this.ui.limitBtn.popover(this.getPopoverOptions());
-            this.ui.inventory.tooltip({placement:"right", delay: 500, html: true});
-            this.ui.processed.tooltip({placement:"left", delay: 500, html: true});
+            this.ui.inventory.tooltip({placement:"right", delay: 500});
+            this.ui.processed.tooltip({placement:"left", delay: 500});
 
             this.$el.droppable(this.getDrobbableOptions());
         },

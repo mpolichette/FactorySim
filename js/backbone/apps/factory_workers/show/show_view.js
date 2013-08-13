@@ -32,10 +32,13 @@ FactorySim.module("FactoryWorkersApp.Show", function(Show, App, Backbone, Marion
                     onGet: "getStatus"
                 }]
             },
-            ".js-status": {
-                observe: "status",
-                onGet: function(val) { return " - " + val; }
+            ".status": {
+                observe: "status"
             }
+        },
+
+        ui: {
+            icon: ".media-object"
         },
 
         events: {
@@ -52,11 +55,7 @@ FactorySim.module("FactoryWorkersApp.Show", function(Show, App, Backbone, Marion
         },
 
         getStatus: function(val) {
-            return val.toLowerCase();
-        },
-
-        ui: {
-            icon: ".media-object"
+            return val.toLowerCase().replace(/\s+/g, '');
         },
 
         onRender: function  () {
@@ -72,7 +71,7 @@ FactorySim.module("FactoryWorkersApp.Show", function(Show, App, Backbone, Marion
             var gender = this.model.get("gender");
             var opts = {
                 scope: this.model.get("skill"),
-                helper: function (e) {return "<i class='worker-icon icon-" + gender + " icon-2x'></i>";},
+                helper: function (e) {return "<i class='worker-icon icon-" + gender + " icon-2x'></i>";}
             };
             return _.defaults(opts, DRAG_DEFAULTS);
         }
@@ -84,7 +83,20 @@ FactorySim.module("FactoryWorkersApp.Show", function(Show, App, Backbone, Marion
         className: "worker-group",
 
         itemView: WorkerView,
-        itemViewContainer: ".workers"
+        itemViewContainer: ".workers",
+
+        ui: {
+            status: ".worker-heading small"
+        },
+
+        onShow: function() {
+            this.ui.status.tooltip({
+                delay: {
+                    show: 300,
+                    hide: 100
+                }
+            });
+        }
     });
 
     Show.WorkersView = Marionette.CollectionView.extend({
