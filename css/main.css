@@ -161,6 +161,15 @@ textarea {
     text-align: right;
  }
 
+ .is-drop-active{
+    border: 4px dashed gray;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: gray;
+ }
+
  .worker-group{
     -webkit-touch-callout: none;
     -webkit-user-select: none;

@@ -112,7 +112,17 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
             "click .js-limit": "grabFocus",
             "click .js-set-limit": "onSetLimit",
             "click .js-remove-limit": "onRemoveLimit",
-            "keyup input": "onSetKeyup"
+            "keyup input": "onSetKeyup",
+            "dropactivate": "onActivate",
+            "dropdeactivate": "onDeactivate"
+        },
+
+        onActivate: function() {
+            this.$el.toggleDropOnMe();
+        },
+
+        onDeactivate: function() {
+            this.$el.toggleDropOnMe(false);
         },
 
         showInventory: function(value) {
