@@ -1,0 +1,12 @@
+{
+	"folders":
+	[
+		{
+			"path": "/Users/mpolichette/Develop/FactorySim",
+            "name": "[Root]"
+		},{
+            "path": "js/backbone",
+            "name": "[Backbone]"
+        }
+	]
+}
