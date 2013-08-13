@@ -91,6 +91,7 @@ FactorySim.module("FactoryWorkersApp.Show", function(Show, App, Backbone, Marion
 
         onShow: function() {
             this.ui.status.tooltip({
+                placement: "left",
                 delay: {
                     show: 300,
                     hide: 100

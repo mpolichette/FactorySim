@@ -195,6 +195,7 @@ textarea {
  }
 
 .worker-heading{
+    position: relative; /* For tooltip positioning */
     width: 220px;
     margin-bottom: 5px;
     border-bottom: 2px solid #332;

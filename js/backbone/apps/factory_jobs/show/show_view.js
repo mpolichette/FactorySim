@@ -26,8 +26,7 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
 
         onShow: function() {
             this.$el.tooltip({
-                title: this.model.get("name"),
-                placement: "bottom"
+                title: this.model.get("name")
             });
             this.$el.draggable(this.getDraggableOptions());
         },
