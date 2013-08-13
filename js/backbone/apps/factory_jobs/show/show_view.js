@@ -86,7 +86,7 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
         },
 
         bindings: {
-            ".processed .value": "processed",
+            ".processed .js-value": "processed",
             //".inventory": "inventory",
             ".limit": {
                 observe: "limit",

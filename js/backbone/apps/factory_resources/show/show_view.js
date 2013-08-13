@@ -5,11 +5,13 @@ FactorySim.module("FactoryResourcesApp.Show", function(Show, App, Backbone, Mari
         className: "floor-item resource span2",
 
         bindings: {
-            ".purchased": "purchased",
-            ".inventory": "inventory"
+            ".purchased .js-value": "purchased",
+            ".inventory .js-value": "inventory"
         },
 
         ui: {
+            purchased: ".purchased",
+            inventory: ".inventory",
             toggleBtn: ".js-toggle"
         },
 
@@ -34,6 +36,8 @@ FactorySim.module("FactoryResourcesApp.Show", function(Show, App, Backbone, Mari
         onShow: function () {
             var opts = this.getPopoverOptions();
             this.ui.toggleBtn.popover(opts);
+            this.ui.purchased.tooltip({placement: "left", delay: 500});
+            this.ui.inventory.tooltip({placement: "right", delay: 500});
         },
 
         getPopoverOptions: function () {

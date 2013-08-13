@@ -179,9 +179,13 @@
                 <h5 class="item-title pull-left"><%= name %></h5>
                 <h5 class="item-title price pull-right">$<%= price %></h5>
             </div>
-            <div class="stats">
-                <div>Purchased: <span class="purchased"><%= purchased %></span></div>
-                <div><span class="inventory"><%= inventory %></span> <i class="icon-archive"></i></div>
+            <div class="stats clearfix">
+                <div class="purchased pull-left" title="Total # purchased">
+                    <span class="js-value"><%= purchased %></span> <i class="icon-check"></i>
+                </div>
+                <div class="inventory pull-right" title="Inventory">
+                    <span class="js-value"><%= inventory %></span> <i class="icon-archive"></i>
+                </div>
             </div>
             <button type="button" class="btn btn-mini btn-block btn-primary js-toggle">Buy more!</button>
         </script>
@@ -204,7 +208,7 @@
             <div class="stats">
                 <button type="button" class="btn btn-mini pull-right js-limit">Set Limit</button>
                 <div class="processed" title="# of items processed">
-                    <span class="value"></span><span class="limit"></span> <i class="icon-check"></i>
+                    <span class="js-value"></span><span class="limit"></span> <i class="icon-check"></i>
                 </div>
             </div>
             <div class="status clearfix">
