@@ -118,7 +118,10 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
         },
 
         onActivate: function() {
-            this.$el.toggleDropOnMe();
+            this.$el.toggleDropOnMe({
+                top: 2,
+                left: 2
+            });
         },
 
         onDeactivate: function() {

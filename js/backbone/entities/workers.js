@@ -35,6 +35,7 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
         },
 
         assignJob: function (job) {
+            if(this.get("job") === job) return;
             if(this.has("task") && !this.confirmAbandonTask()){
                 return false;
             }

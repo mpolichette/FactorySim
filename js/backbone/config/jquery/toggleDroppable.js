@@ -14,7 +14,9 @@
             className: 'is-drop-active',
             backgroundColor: "white",
             opacity: 0.6,
-            text: "Place Here"
+            text: "Place Here",
+            top: 0,
+            left: 0
         });
 
         var $offset = this.offset(),
@@ -29,8 +31,8 @@
             }).css({
                 width: $width,
                 height: $height,
-                top: $offset.top + 2,
-                left: $offset.left + 2,
+                top: $offset.top + obj.top,
+                left: $offset.left + obj.left,
                 position: "absolute",
                 lineHeight: $height+"px",
                 opacity: obj.opacity,
