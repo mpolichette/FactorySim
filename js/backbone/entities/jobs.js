@@ -46,6 +46,7 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
             if(hasResources){
                 this.upstreams.invoke("takeInventory");
                 var task =  App.request("task:entity", { taskTime: this.get("taskTime") });
+                this.tasks.add(task);
                 return task;
             } else {
                 return false;

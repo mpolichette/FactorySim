@@ -131,12 +131,31 @@ textarea {
     overflow: hidden;
 }
 
+.job .workers .worker{
+    display: inline-block;
+    position: relative;
+    padding: 0 2px;
+}
+
+.worker .bar{
+    /* !!! TEMPORARY */
+    background: lightgreen;
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 5px;
+    height: 0;
+    z-index: -1;
+}
+
 .status .workers{
     float:left;
     padding-top: 6px;
 }
 
- .inventory{
+ .job .inventory{
+    height: 40px;
     width: 70px;
     float: right;
     text-align: right;
@@ -155,8 +174,8 @@ textarea {
     padding: 5px 0;
 }
 
-.worker:hover{
-    background: whitesmoke;
+.worker-group-list .worker:hover{
+    background: #eee;
 }
 
  .worker-icon{
@@ -164,7 +183,7 @@ textarea {
     z-index: 1000;
  }
 
-.worker .worker-icon{
+.worker-group-list .worker .worker-icon{
     color: #ccc;
 }
 

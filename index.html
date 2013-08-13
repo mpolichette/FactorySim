@@ -203,13 +203,13 @@
             </div>
             <div class="stats">
                 <button type="button" class="btn btn-mini pull-right js-limit">Set Limit</button>
-                <div title="# of items processed">
-                    <span class="processed"></span><span class="limit"></span> <i class="icon-check"></i>
+                <div class="processed" title="# of items processed">
+                    <span class="value"></span><span class="limit"></span> <i class="icon-check"></i>
                 </div>
             </div>
             <div class="status clearfix">
                 <div class="workers-region pull-left"></div>
-                <div class="inventory pull-right">
+                <div class="inventory pull-right" title="Inventory">
                     <i class="icon-archive"></i>
                 </div>
             </div>
@@ -256,6 +256,11 @@
             <div class="media-body">
                 <h5 class="media-heading"><%= name %> <small class="js-status"> - <%= status %></small></h5>
             </div>
+        </script>
+
+        <script id="job-worker-template" type="text/template">
+            <i class="worker-icon icon-<%= gender %> icon-2x"></i>
+            <div class="bar"></div>
         </script>
 
 

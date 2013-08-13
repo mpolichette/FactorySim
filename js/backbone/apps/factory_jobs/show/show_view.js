@@ -1,16 +1,74 @@
 FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionette, $, _){
 
+    var DRAG_DEFAULTS = {
+        revert: "invalid",
+        cursorAt: {top:25, left: 15},
+        containment: "#main-region"
+        };
+
     var DROP_DEFAULTS = {
 
     };
 
     var JobWorkerView = Marionette.ItemView.extend({
-        template: _.template("&nbsp;"),
-        tagName: "i",
-        className: function() {
-            return "icon-" + this.model.get("gender") + " icon-2x";
+        template: "#job-worker-template",
+        className: "worker",
+        attributes: function () { return {"data-name": this.model.get("name")}; },
+
+        ui: {
+            progressBar: ".bar"
         },
-        attributes: function () { return {"data-name": this.model.get("name")}; }
+
+        modelEvents: {
+            "change:setupProgress": "updateProgress",
+            "change:task": "updateTask"
+        },
+
+        onShow: function() {
+            this.$el.tooltip({
+                title: this.model.get("name"),
+                placement: "bottom"
+            });
+            this.$el.draggable(this.getDraggableOptions());
+        },
+
+        getDraggableOptions: function () {
+            var gender = this.model.get("gender");
+            var opts = {
+                scope: this.model.get("skill"),
+                helper: function (e) {return "<i class='worker-icon icon-" + gender + " icon-2x'></i>";},
+            };
+            return _.defaults(opts, DRAG_DEFAULTS);
+        },
+
+        updateTask: function(worker, task) {
+            if(task){
+                this.bindTask(task);
+            } else {
+                this.bindTask(false);
+            }
+        },
+
+        bindTask: function(task) {
+            if(this._curTask) this.stopListening(this._curtask);
+            this._curtask = task;
+            if(task) this.listenTo(task, "change:progress", this.updateProgress);
+            this.updateProgress();
+        },
+
+        updateProgress: function() {
+            var val = 0,
+                setupProgress = this.model.get("setupProgress") / this.model.get("setupTime"),
+                task = this.model.get("task");
+
+            if(task) val = task.get("progress") / task.get("total");
+            if(setupProgress < 1) val = setupProgress;
+
+            // Make it a nice clean percentage
+            val = Math.ceil( val * 100 );
+
+            this.ui.progressBar.height(val + "%");
+        }
 
     });
 
@@ -29,7 +87,7 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
         },
 
         bindings: {
-            ".processed": "processed",
+            ".processed .value": "processed",
             //".inventory": "inventory",
             ".limit": {
                 observe: "limit",
@@ -45,7 +103,9 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
         },
 
         ui: {
-            limitBtn: ".js-limit"
+            limitBtn: ".js-limit",
+            inventory: ".inventory",
+            processed: ".processed"
         },
 
         events: {
@@ -100,7 +160,7 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
         },
 
         onRemoveLimit: function () {
-            this.model.set("limit", 0);
+            this.model.unset("limit");
             this.closeLimit();
         },
 
@@ -117,6 +177,9 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
 
         onShow: function () {
             this.ui.limitBtn.popover(this.getPopoverOptions());
+            this.ui.inventory.tooltip({placement:"right", delay: 500, html: true});
+            this.ui.processed.tooltip({placement:"left", delay: 500, html: true});
+
             this.$el.droppable(this.getDrobbableOptions());
         },
 

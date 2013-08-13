@@ -2,7 +2,8 @@ FactorySim.module("FactoryWorkersApp.Show", function(Show, App, Backbone, Marion
 
     var DRAG_DEFAULTS = {
         revert: "invalid",
-        cursorAt: {top:25, left: 15}
+        cursorAt: {top:25, left: 15},
+        containment: "#main-region"
         };
 
 
@@ -35,6 +36,19 @@ FactorySim.module("FactoryWorkersApp.Show", function(Show, App, Backbone, Marion
                 observe: "status",
                 onGet: function(val) { return " - " + val; }
             }
+        },
+
+        events: {
+            "mouseenter": "onEnter",
+            "mouseleave": "onLeave"
+        },
+
+        onEnter: function() {
+            $("[data-name=" + this.model.get("name") + "]").tooltip("show");
+        },
+
+        onLeave: function() {
+            $("[data-name=" + this.model.get("name") + "]").tooltip("hide");
         },
 
         getStatus: function(val) {
@@ -75,6 +89,7 @@ FactorySim.module("FactoryWorkersApp.Show", function(Show, App, Backbone, Marion
 
     Show.WorkersView = Marionette.CollectionView.extend({
         itemView: WorkerGroupView,
+        className: "worker-group-list",
         itemViewOptions: function (model, index) {
             return {
                 collection: model.workers
