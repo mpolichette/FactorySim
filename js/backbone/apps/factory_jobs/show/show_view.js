@@ -35,7 +35,7 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
             var gender = this.model.get("gender");
             var opts = {
                 scope: this.model.get("skill"),
-                helper: function (e) {return "<i class='worker-icon icon-" + gender + " icon-2x'></i>";},
+                helper: function (e) {return "<i class='worker-icon icon-" + gender + " icon-2x'></i>";}
             };
             return _.defaults(opts, DRAG_DEFAULTS);
         },

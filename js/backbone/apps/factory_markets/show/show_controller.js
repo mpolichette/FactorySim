@@ -9,7 +9,14 @@ FactorySim.module("FactoryMarketsApp.Show", function(Show, App, Backbone, Marion
         },
 
         getView: function () {
-            return new Show.MarketsView({collection: this.markets});
+            var view = new Show.MarketsView({collection: this.markets});
+
+            // Might not be the best way to do this
+            view.listenTo(App.vent, "render:connections", function() {
+                this.children.invoke("connectUpstreams");
+            });
+
+            return view;
         }
     });
 

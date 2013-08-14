@@ -1,7 +1,6 @@
 FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _){
 
     Entities.Job = Backbone.Model.extend({
-
         defaults:{
             inventory: 0,
             processed: 0

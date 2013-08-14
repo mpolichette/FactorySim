@@ -46,7 +46,7 @@ FactorySim.module("FactoryApp.Show", function(Show, App, Backbone, Marionette, $
         },
 
         showConnections: function () {
-
+            _.defer(function() {App.vent.trigger("render:connections");});
         },
 
         getLayout: function () {

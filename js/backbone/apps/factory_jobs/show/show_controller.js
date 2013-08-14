@@ -4,8 +4,8 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
 
         initialize: function(options) {
             this.jobs = options.jobs;
-            var view = this.getView();
 
+            var view = this.getView();
             this.show(view);
         },
 
@@ -16,6 +16,11 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
                 "itemview:worker:placed": this.onWorkerPlaced
             });
 
+            // Might not be the best way to do this
+            view.listenTo(App.vent, "render:connections", function() {
+                this.children.invoke("connectUpstreams");
+            });
+
             return view;
 
         },
@@ -23,6 +28,7 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
         onWorkerPlaced: function (view, workerName) {
             App.vent.trigger("assign:job", workerName, view.model);
         }
+
     });
 
 });
