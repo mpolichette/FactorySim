@@ -78,6 +78,7 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
 
 
     var JobView = Marionette.Layout.extend({
+        mixins: ["floor-item"],
         template: "#job-template",
         className: "floor-item job span2",
 
@@ -178,8 +179,6 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
 
         onRender: function() {
             this.stickit();
-            var coords = App.request("resolve:coordinates", this.model.get("x"), this.model.get("y"));
-            this.$el.css(coords);
             this.showWorkers();
         },
 

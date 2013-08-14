@@ -33,14 +33,5 @@ window.FactorySim = (function FactorySim(Backbone, Marionette, $, _){
         App.startHistory();
     });
 
-    // This is kind of in an ugly area
-    var COLLUMNS = [0, 90, 180, 270, 360, 450, 540],
-        ROWS = [0, 120, 240, 360, 480, 600, 720, 840];
-
-    App.reqres.setHandler("resolve:coordinates", function(x, y) {
-        return { top: ROWS[y], left: COLLUMNS[x] };
-    });
-
-
     return App;
 })(Backbone, Backbone.Marionette, $, _);

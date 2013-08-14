@@ -1,6 +1,7 @@
 FactorySim.module("FactoryResourcesApp.Show", function(Show, App, Backbone, Marionette, $, _){
 
     var ResourceView = Marionette.ItemView.extend({
+        mixins: ["floor-item"],
         template: "#resource-template",
         className: "floor-item resource span2",
 
@@ -29,8 +30,6 @@ FactorySim.module("FactoryResourcesApp.Show", function(Show, App, Backbone, Mari
 
         onRender: function() {
             this.stickit();
-            var coords = App.request("resolve:coordinates", this.model.get("x"), this.model.get("y"));
-            this.$el.css(coords);
         },
 
         onShow: function () {

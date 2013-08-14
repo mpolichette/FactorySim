@@ -2,6 +2,7 @@ FactorySim.module("FactoryMarketsApp.Show", function(Show, App, Backbone, Marion
 
 
     var MarketView = Marionette.ItemView.extend({
+        mixins: ["floor-item"],
         template: "#market-template",
         className: "floor-item market span2",
 
@@ -12,8 +13,6 @@ FactorySim.module("FactoryMarketsApp.Show", function(Show, App, Backbone, Marion
 
         onRender: function() {
             this.stickit();
-            var coords = App.request("resolve:coordinates", this.model.get("x"), this.model.get("y"));
-            this.$el.css(coords);
         }
 
     });
