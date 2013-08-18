@@ -2,7 +2,7 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
 
     var PAUSE_ON_DAY_END = true,
         HOURS_PER_DAY = 8,
-        DAYS_IN_WEEK = 5,
+        DAYS_IN_WEEK = 6,
         SPEEDS = [ 2000, 1000, 500, 250, 100, 10];
 
     Game.GameRunner = Marionette.Controller.extend({
