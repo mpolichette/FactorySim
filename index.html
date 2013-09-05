@@ -1,52 +1,452 @@
 <!DOCTYPE html>
-<html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Factory Sim</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <style>
+            body {
+                /* This moves the content below the navbar */
+                padding-top: 40px;
+                padding-bottom: 40px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/smoothness/jquery-ui-1.9.2.custom.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Factory Sim : A factory simulation" />
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+        <div id="header-region" class="navbar navbar-inverse navbar-fixed-top"></div>
+        <div id="main-region" class="container"></div>
+        <div id="modal-region" class="modal hide fade"></div>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Factory Sim</title>
-  </head>
 
-  <body>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/mpolichette/FactorySim">View on GitHub</a>
 
-          <h1 id="project_title">Factory Sim</h1>
-          <h2 id="project_tagline">A factory simulation</h2>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/mpolichette/FactorySim/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/mpolichette/FactorySim/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+        <!-- TEMPLATES -->
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-      </section>
-    </div>
+        <script id="header-template" type="text/template" >
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="#">Factory Sim</a>
+                    <div class="nav pull-right">
+                        <div id="controls-region"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="workforce-holder"></div>
+        </script>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Factory Sim maintained by <a href="https://github.com/mpolichette">mpolichette</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
+        <script id="welcome-template" type="text/template">
+            <h2>Welcome to the factory simulation</h2>
+            <p>As a producer of widgets, you will apply concepts learned from the class and readings. Keep in mind that you need to think carefully about what you need to do to successfully produce enough widgets to make a positive profit. As this game is in beta form, please call Alysse over as you are playing if you  have any questions about the program.</p>
+            <p><button class="btn btn-large btn-primary pull-right js-start">Start Simulator</button></p>
+        </script>
 
-    
+        <script id="login-template" type="text/template">
+            <div class="modal-header">
+                <h3>Before we get started...</h3>
+            </div>
+            <div class="modal-body authenticate">
+                <p>Please identify yourselves in order to get credit.</p>
+                <div class="new-user-region"></div>
+                <div class="divider-holder"></div>
+                <div class="list-user-region"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn js-start-game" type="button">replace me</button>
+            </div>
+        </script>
 
-  </body>
+        <script id="add-user-template" type="text/template">
+            <button type="button" class="btn btn-primary js-add">Add Player</button>
+        </script>
+
+        <script id="new-user-template" type="text/template">
+            <form class="form-inline">
+                <p class="help-block">Enter <strong>both</strong> a first and last name <strong>OR</strong> a school ID.</p>
+                <input name="firstName" class="span2" type="text" value="" placeholder="First name"/>
+                <input name="lastName" class="span2" type="text" value="" placeholder="Last name"/>
+                <input name="schoolId" class="span2" type="text" value="" placeholder="School ID"/>
+                <button type="submit" class="btn btn-primary js-save">Save</button>
+            </form>
+        </script>
+
+         <script id="new-user-template2" type="text/template">
+            <form class="form-inline">
+                <p class="help-block">Enter <strong>both</strong> a first and last name <strong>OR</strong> a school ID.</p>
+                <div class="control-group">
+                    <label class="control-label">Name:</label>
+                    <div class="controls">
+                        <input name="firstName" class="input-medium" type="text" value="" placeholder="First"  />
+                        <input name="lastName" class="input-medium" type="text" value="" placeholder="Last"  />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">School ID:</label>
+                    <div class="controls">
+                        <input name="schoolId" class="input-medium" type="text" value="" placeholder="School ID"  />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary js-save">Save</button>
+            </form>
+        </script>
+
+        <script id="user-template" type="text/template" >
+            <span> <%= name() %></span>
+            <span> <%= school() %></span>
+            <% if(canRemove()){ %>
+                <button type="button" class="btn btn-link js-remove">remove</button>
+            <% } %>
+        </script>
+
+        <script id="list-user-template" type="text/template">
+            <hr/>
+            <h3>Players</h3>
+            <ul class="user-list"></ul>
+        </script>
+
+        <script id="empty-user-template"  type="text/template">
+            <p>No players! Click 'add a player' above!</p>
+        </script>
+
+        <script id="header-controls-template"  type="text/template">
+            <li >
+                <p class="navbar-text">
+                    Cash: $<span class="cash"></span>
+                </p>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  Profit: $<span class="profit"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="">TODO - Add profic calculator</a></li>
+                </ul>
+            </li>
+            <li class="divider-vertical"></li>
+            <li>
+                <p class="navbar-text">
+                    Day: <span class="day"></span>
+                    Time: <span class="time"></span>
+                </p>
+            </li>
+            <li class="divider-vertical"></li>
+            <li>
+                <div class="btn-group">
+                    <button class="btn js-clock-toggle">Start</button>
+                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                        <li class="slider-holder">
+                            <p>Speed: <span class="speed">1</span>x</p>
+                            <div class="slider"></div>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </script>
+
+        <script id="factory-template" type="text/template">
+            <div id="worker-region" class="span3"></div>
+            <div id="floor-region" class="span9">
+                <h3>Factory Floor</h3>
+                <div class="floor row">
+                    <div id="resources-region"></div>
+                    <div id="jobs-region"></div>
+                    <div id="markets-region"></div>
+                </div>
+            </div>
+        </script>
+
+        <script id="resource-template" type="text/template" >
+            <div class="heading clearfix">
+                <h5 class="item-title pull-left"><%= name %></h5>
+                <h5 class="item-title price pull-right">$<%= price %></h5>
+            </div>
+            <div class="stats clearfix">
+                <div class="purchased pull-left" title="Total # purchased">
+                    <span class="js-value"><%= purchased %></span> <i class="icon-check"></i>
+                </div>
+                <div class="inventory pull-right" title="Inventory">
+                    <span class="js-value"><%= inventory %></span> <i class="icon-archive"></i>
+                </div>
+            </div>
+            <button type="button" class="btn btn-mini btn-block btn-primary js-toggle">Buy more!</button>
+        </script>
+
+        <script id="resource-popover-template" type="text/template" >
+            <div class="control-group">
+                <div class="input-append">
+                    <input type="text" class="input-medium" placeholder="Amount?">
+                    <button type="button" class="btn js-buy">Buy</button>
+                </div>
+                <span class="help-block"></span>
+            </div>
+        </script>
+
+        <script id="job-template" type="text/template" >
+            <div class="heading clearfix">
+                <h5 class="item-title pull-left"><%= skillRequired %></h5>
+                <h5 class="item-title pull-right"><%= taskTime %> min</h5>
+            </div>
+            <div class="stats">
+                <button type="button" class="btn btn-mini pull-right js-limit">Set Limit</button>
+                <div class="processed" title="# of items processed">
+                    <span class="js-value"></span><span class="limit"></span> <i class="icon-check"></i>
+                </div>
+            </div>
+            <div class="status clearfix">
+                <div class="workers-region pull-left"></div>
+                <div class="inventory pull-right" title="Inventory">
+                    <i class="icon-archive"></i>
+                </div>
+            </div>
+        </script>
+
+        <script id="job-limit-popover-template" type="text/template" >
+            <div class="control-group">
+                <div class="input-append">
+                    <input type="text" class="input-medium" placeholder="Amount?">
+                    <button type="button" class="btn js-set-limit">Set</button>
+                </div>
+                <span class="help-block"></span>
+            </div>
+            <div class="control-group pull-right">
+                <button type="button" class="btn js-remove-limit">Remove Limit</button>
+            </div>
+        </script>
+
+        <script id="market-template" type="text/template" >
+            <div class="heading clearfix">
+                <h5 class="item-title pull-left"><%= name %></h5>
+                <h5 class="item-title price pull-right">+ $<%= unitPrice %></h5>
+            </div>
+            <div class="stats">
+                <div><span class="produced"></span>/<span class="demand"><%= demand %></span> <i class="icon-check"></i></div>
+                <div>Revenue: $<span class="revenue"></span></div>
+            </div>
+        </script>
+
+        <script id="worker-layout-template" type="text/template">
+            <h3>Workers</h3>
+            <div id="worker-groups"></div>
+        </script>
+
+        <script id="worker-group-template" type="text/template">
+            <h5 class="worker-heading"><%= name %>s: <small title="Setup Time"><%= setupTime %> min</small></h5>
+            <div class="workers"></div>
+        </script>
+
+        <script id="worker-template" type="text/template">
+            <div class="media-object pull-left">
+                <i class="worker-icon icon-<%= gender %> icon-2x"></i>
+            </div>
+            <div class="media-body">
+                <h5 class="media-heading"><%= name %> <small class="status"><%= status %></small></h5>
+            </div>
+        </script>
+
+        <script id="job-worker-template" type="text/template">
+            <i class="worker-icon icon-<%= gender %> icon-2x"></i>
+            <div class="bar"></div>
+        </script>
+
+        <script id="day-over-template" type="text/template">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>You reached the end of day <%= day-1 %></h3>
+              </div>
+              <div class="modal-body">
+                <dl class="dl-horizontal">
+                    <dt>Revenue:</dt>
+                    <dd>$<%= runningRevenue %></dd>
+                    <dt>Spent on Resources:</dt>
+                    <dd>$<%= purchaseExpense %></dd>
+                    <dt>Spent on Workers:</dt>
+                    <dd>$<%= operatingExpense %></dd>
+                    <dt>Current Profit:</dt>
+                    <dd>$<%= profit %></dd>
+                </dl>
+                <p class="muted">To continue playing dismiss this box and click resume.</p>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Close</button>
+              </div>
+        </script>
+
+        <script id="week-over-template" type="text/template">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>You reached the end of the week!</h3>
+              </div>
+              <div class="modal-body">
+                <dl class="dl-horizontal">
+                    <dt>Current Profit:</dt>
+                    <dd>$<%= profit %></dd>
+                    <dt>Revenue:</dt>
+                    <dd>$<%= runningRevenue %></dd>
+                    <dt>Spent on Resources:</dt>
+                    <dd>$<%= purchaseExpense %></dd>
+                </dl>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Submit Scores</button>
+              </div>
+        </script>
+
+        <!-- Thirt-Party Libraries (Order matters) -->
+        <script type="text/javascript" src="js/vendor/jquery-1.8.3.js"></script>
+        <script type="text/javascript" src="js/vendor/jquery-ui-1.9.2.custom.js"></script>
+        <script type="text/javascript" src="js/vendor/bootstrap.js"></script>
+        <script type="text/javascript" src="js/vendor/underscore.js"></script>
+        <script type="text/javascript" src="js/vendor/backbone.js"></script>
+        <!-- Cocktail and patching needs to be before marionet :( ) -->
+        <script type="text/javascript" src="js/vendor/Cocktail.js"></script>
+        <script type="text/javascript" src="js/backbone/config/backbone/cocktail_mixins.js"></script>
+
+        <script type="text/javascript" src="js/vendor/backbone.marionette.js"></script>
+        <script type="text/javascript" src="js/vendor/backbone-validation.js"></script>
+        <script type="text/javascript" src="js/vendor/backbone.stickit.js"></script>
+        <script type="text/javascript" src="js/vendor/jsPlumb-1.3.16-all.js"></script>
+        <script type="text/javascript" src="js/plugins.js"></script>
+
+
+        <!-- Config -->
+        <script type="text/javascript" src="js/backbone/config/marionette/application.js"></script>
+        <script type="text/javascript" src="js/backbone/config/marionette/regions/modalRegion.js"></script>
+        <script type="text/javascript" src="js/backbone/config/jquery/toggleDroppable.js"></script>
+
+        <!-- Application -->
+        <script type="text/javascript" src="js/backbone/factorySim.js"></script>
+
+        <!-- Mixins -->
+        <script type="text/javascript" src="js/backbone/mixins/floor_item_mixin.js"></script>
+
+
+        <!-- Entities -->
+        <script type="text/javascript" src="js/backbone/entities/_base/models.js"></script>
+        <script type="text/javascript" src="js/backbone/entities/users.js"></script>
+        <script type="text/javascript" src="js/backbone/entities/factory.js"></script>
+        <script type="text/javascript" src="js/backbone/entities/resources.js"></script>
+        <script type="text/javascript" src="js/backbone/entities/jobs.js"></script>
+        <script type="text/javascript" src="js/backbone/entities/markets.js"></script>
+        <script type="text/javascript" src="js/backbone/entities/workers.js"></script>
+        <script type="text/javascript" src="js/backbone/entities/tasks.js"></script>
+
+        <!-- Controllers -->
+        <script type="text/javascript" src="js/backbone/controllers/_base.js"></script>
+        <script type="text/javascript" src="js/backbone/components/game_runner.js"></script>
+
+        <!-- Views -->
+        <script type="text/javascript" src="js/backbone/views/floor_item_mixin.js"></script>
+
+        <!-- Apps -->
+        <script type="text/javascript" src="js/backbone/apps/header/header_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/header/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/header/show/show_view.js"></script>
+
+        <script type="text/javascript" src="js/backbone/apps/welcome/welcome_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/welcome/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/welcome/show/show_view.js"></script>
+
+        <script type="text/javascript" src="js/backbone/apps/user/user_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/user/login/login_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/user/login/login_view.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/user/list/list_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/user/list/list_view.js"></script>
+
+        <script type="text/javascript" src="js/backbone/apps/factory/factory_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory/show/show_view.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory/dayover/dayOver_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory/dayover/dayOver_view.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory/weekOver/weekOver_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory/weekOver/weekOver_view.js"></script>
+
+        <script type="text/javascript" src="js/backbone/apps/factory_jobs/factory_jobs_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_jobs/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_jobs/show/show_view.js"></script>
+
+        <script type="text/javascript" src="js/backbone/apps/factory_markets/factory_markets_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_markets/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_markets/show/show_view.js"></script>
+
+        <script type="text/javascript" src="js/backbone/apps/factory_resources/factory_resources_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_resources/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_resources/show/show_view.js"></script>
+
+        <script type="text/javascript" src="js/backbone/apps/factory_workers/factory_workers_app.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_workers/show/show_controller.js"></script>
+        <script type="text/javascript" src="js/backbone/apps/factory_workers/show/show_view.js"></script>
+
+        <script type="text/javascript">
+            FactorySim.start({
+                settings: {},
+                config: {
+                    resources: [
+                        {"id":20, "x":0, "y":0, "name":"Raw Material A", "price":30, "purchased": 25},
+                        {"id":21, "x":2, "y":0,"name":"Raw Material B", "price":35, "purchased": 25},
+                        {"id":22, "x":4, "y":0, "name":"Raw Material C", "price":30, "purchased": 15},
+                        {"id":23, "x":6, "y":0, "name":"Raw Material D", "price":65, "purchased": 10}],
+                    jobs: [
+                        {"id":1, "x":0, "y":1, "skillRequired":"Developer", "upstream":[20], "taskTime":4, "processed": 25},
+                        {"id":2, "x":2, "y":1, "skillRequired":"Developer", "upstream":[21], "taskTime":5, "processed": 25},
+                        {"id":3, "x":4, "y":1, "skillRequired":"Chemist", "upstream":[22], "taskTime":9, "processed": 15},
+                        {"id":4, "x":6, "y":1, "skillRequired":"Developer", "upstream":[23], "taskTime":15, "processed": 10},
+
+                        {"id":5, "x":1, "y":2, "skillRequired":"Assembler", "upstream":[1, 2], "taskTime":8, "inventory":25, "processed": 25},
+                        {"id":6, "x":4, "y":2, "skillRequired":"Engineer", "upstream":[3], "taskTime":18, "inventory":15, "processed": 15},
+                        {"id":7, "x":6, "y":2, "skillRequired":"Chemist", "upstream":[4], "taskTime":12, "processed": 10},
+
+                        {"id":8, "x":0, "y":3, "skillRequired":"Developer", "upstream":[5], "taskTime":15},
+                        {"id":9, "x":2, "y":3, "skillRequired":"Fabricator", "upstream":[5], "taskTime":6},
+                        {"id":10, "x":4, "y":3, "skillRequired":"Fabricator", "upstream":[6], "taskTime":28},
+                        {"id":11, "x":6, "y":3, "skillRequired":"Engineer", "upstream":[7], "taskTime":20, "inventory":10, "processed": 10},
+
+                        {"id":12, "x":0, "y": 4, "skillRequired":"Chemist", "upstream":[8], "taskTime":15},
+                        {"id":13, "x":6, "y":4, "skillRequired":"Fabricator", "upstream":[11], "taskTime":14},
+
+                        {"id":14, "x":0, "y": 5, "skillRequired":"Engineer", "upstream":[12], "taskTime":20},
+                        {"id":15, "x":3, "y": 5, "skillRequired":"Assembler", "upstream":[9, 10], "taskTime":9},
+                        {"id":16, "x":6, "y": 5, "skillRequired":"Engineer", "upstream":[13], "taskTime":7},
+
+                        {"id":17, "x":0, "y":6, "skillRequired":"Chemist", "upstream":[14], "taskTime":18},
+                        {"id":18, "x":3, "y":6, "skillRequired":"Chemist", "upstream":[15], "taskTime":6},
+                        {"id":19, "x":6, "y":6, "skillRequired":"Chemist", "upstream":[16], "taskTime":10}],
+                    markets: [
+                        {"id":24, "x":0, "y":7, "name": "Widget 1", "upstream":[17], "unitPrice":180, "unitProfit":115, "demand":40},
+                        {"id":25, "x":3, "y":7, "name": "Widget 2", "upstream":[18], "unitPrice":240, "unitProfit":145, "demand":50},
+                        {"id":26, "x":6, "y":7, "name": "Widget 3", "upstream":[19], "unitPrice":180, "unitProfit":115, "demand":40}],
+                    workers: [
+                        {"name": "Alice", "skill": "Chemist", "gender": "female"},
+                        {"name": "Bella", "skill": "Developer", "gender": "female"},
+                        {"name": "Carl", "skill": "Developer", "gender": "male"},
+                        {"name": "Debbie", "skill": "Engineer", "gender": "female"},
+                        {"name": "Eric", "skill": "Engineer", "gender": "male"},
+                        {"name": "Frank", "skill": "Assembler", "gender": "male"},
+                        {"name": "Gaby", "skill": "Fabricator", "gender": "female"},
+                        {"name": "Hank", "skill": "Chemist", "gender": "male"}]
+                }
+
+            });
+        </script>
+
+
+    </body>
 </html>
