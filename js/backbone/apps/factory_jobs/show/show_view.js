@@ -12,7 +12,11 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
 
     var JobWorkerView = Marionette.ItemView.extend({
         template: "#job-worker-template",
-        className: "worker",
+
+        className: function () {
+            return "worker " + this.model.get("skill").toLowerCase();
+        },
+
         attributes: function () { return {"data-name": this.model.get("name")}; },
 
         ui: {
@@ -32,11 +36,12 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
         },
 
         getDraggableOptions: function () {
-            var gender = this.model.get("gender");
-            var opts = {
-                scope: this.model.get("skill"),
-                helper: function (e) {return "<i class='worker-icon icon-" + gender + " icon-2x'></i>";}
-            };
+            var gender = this.model.get("gender"),
+                skill = this.model.get("skill"),
+                opts = {
+                    scope: skill,
+                    helper: function (e) {return "<i class='worker-icon icon-" + gender + " " + skill + " icon-2x'></i>";}
+                };
             return _.defaults(opts, DRAG_DEFAULTS);
         },
 
@@ -80,7 +85,9 @@ FactorySim.module("FactoryJobsApp.Show", function(Show, App, Backbone, Marionett
     var JobView = Marionette.Layout.extend({
         mixins: ["floor-item"],
         template: "#job-template",
-        className: "floor-item job span2",
+        className: function () {
+            return "floor-item job span2 " + this.model.get("skillRequired").toLowerCase();
+        },
 
         regions: {
             workersRegion: ".workers-region"

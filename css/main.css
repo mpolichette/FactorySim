@@ -142,6 +142,52 @@ textarea {
     padding: 0 2px;
 }
 
+.job.assembler{
+    border-width: 2px;
+    border-color: #d50065;
+}
+
+.job.chemist{
+    border-width: 2px;
+    border-color: #00cc00;
+}
+
+.job.developer{
+    border-width: 2px;
+    border-color: #ffad00;
+}
+
+.job.engineer{
+    border-width: 2px;
+    border-color: #009999;
+}
+
+.job.fabricator{
+    border-width: 2px;
+    border-color: #3415b0;
+}
+
+.assembler .worker-icon{
+    color: #d50065;
+}
+
+.chemist .worker-icon{
+    color: #00cc00;
+}
+
+.developer .worker-icon{
+    color: #ffad00;
+}
+
+.engineer .worker-icon{
+    color: #009999;
+}
+
+.fabricator .worker-icon{
+    color: #3415b0;
+}
+
+
 .worker .bar{
     /* !!! TEMPORARY */
     background: lightgreen;
@@ -221,11 +267,11 @@ textarea {
  }
 
 .worker-group-list .worker .worker-icon{
-    color: #ccc;
+    opacity: .3;
 }
 
 .worker.unassigned .worker-icon{
-    color: black;
+    opacity: 1;
 }
 
 
@@ -233,25 +279,6 @@ textarea {
     padding: 0 2px;
  }
 
-
-.wrktyp1{
-    background: #C2F56E;
-}
-.wrktyp2{
-    background: #6996D3;
-}
-.wrktyp3{
-    background: #FFCA73;
-}
-.wrktyp4{
-    background: #E969A8;
-}
-.wrktyp5{
-    background: #A767D5;
-}
-.wrktyp6{
-    background: #FAE92F;
-}
 
 .slider-holder{
     padding: 3px 20px;

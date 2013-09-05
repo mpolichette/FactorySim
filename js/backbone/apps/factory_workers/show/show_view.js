@@ -21,7 +21,9 @@ FactorySim.module("FactoryWorkersApp.Show", function(Show, App, Backbone, Marion
 
     var WorkerView = Marionette.ItemView.extend({
         template: "#worker-template",
-        className: "worker media",
+        className: function () {
+            return "media worker " + this.model.get("skill").toLowerCase();
+        },
         attributes: function () { return {"data-name": this.model.get("name")}; },
 
         bindings: {
@@ -68,10 +70,11 @@ FactorySim.module("FactoryWorkersApp.Show", function(Show, App, Backbone, Marion
 
         getDraggableOptions: function () {
             // TODO get some settings based on worker type
-            var gender = this.model.get("gender");
-            var opts = {
-                scope: this.model.get("skill"),
-                helper: function (e) {return "<i class='worker-icon icon-" + gender + " icon-2x'></i>";}
+            var gender = this.model.get("gender"),
+                skill = this.model.get("skill"),
+                opts = {
+                scope: skill,
+                helper: function (e) {return "<i class='worker-icon icon-" + gender + " " + skill + " icon-2x'></i>";}
             };
             return _.defaults(opts, DRAG_DEFAULTS);
         }
