@@ -1,7 +1,7 @@
 FactorySim.module("Mixins", function(Mixins, App, Backbone, Marionette, $, _){
 
     var COLLUMNS = [0, 90, 180, 270, 360, 450, 540],
-        ROWS = [0, 120, 240, 360, 480, 600, 720, 840];
+        ROWS = [0, 100, 220, 340, 460, 580, 700, 820];
 
     var endpointOpts = {
             endpoint: ["Dot", {radius: 2}]

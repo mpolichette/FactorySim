@@ -8,7 +8,6 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
     Game.GameRunner = Marionette.Controller.extend({
 
         initialize: function (options) {
-
         },
 
         newGame: function () {
@@ -68,23 +67,28 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
             }
 
             this.factory.set({ "minute": minute, "hour": hour, "day": day });
+            App.vent.trigger("clock:tick", day, hour, minute);
+            // Allow lock-step actions to apply updates after clock ticks
+            App.vent.trigger("clock:tick:after");
+
+            // Always fire a new hour event
             if(newHour) {
                 App.vent.trigger("clock:hour:over");
             }
+
+            // Fire the more relavent of the time events
             if(newDay) {
-                App.vent.trigger("clock:day:over");
-                if(PAUSE_ON_DAY_END){
+                if(day === DAYS_IN_WEEK){
+                    App.vent.trigger("clock:week:over");
                     this.factory.stopClock();
+                } else {
+                    App.vent.trigger("clock:day:over");
+                    if(PAUSE_ON_DAY_END){
+                        this.factory.stopClock();
+                    }
                 }
             }
-            if(day === DAYS_IN_WEEK) {
-                App.vent.trigger("clock:week:over");
-                this.factory.stopClock();
-            }
-            App.vent.trigger("clock:tick", day, hour, minute);
-            App.vent.trigger("clock:tick:after");
         }
-
     });
 
 

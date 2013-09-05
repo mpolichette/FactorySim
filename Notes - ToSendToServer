@@ -1,0 +1,67 @@
+//Names and IDs of Students
+
+FName1
+
+LName1
+
+ID1
+
+FName2
+
+LName2
+
+ID2
+
+FName2
+
+LName2
+
+ID2
+
+//Computer Measures (captured at Westminster)
+
+IPAddress
+
+Time
+
+Date
+
+//Game Outcome Measures
+
+Profit
+
+CashAtEnd
+
+//Units Sold:
+
+W1Sold (Widget 1 units sold)
+
+W2Sold (Widget 2 units sold)
+
+W3Sold (Widget 3 units sold)
+
+//Utilization of Resources:
+
+AIdle (minutes Alice is idle)
+
+AWork (minutes Alice is working)
+
+ASetup (minutes Alice is setting up)
+
+AUnassign (minutes Alice is unassigned)
+
+AStop (minutes Alice is stopped)
+
+//(The resources have names beginning with the letters A-H, so there would be one of each of these
+
+//measures for each resource (A-H), at this level I can then create higher level calculations if I want)
+
+//Materials Purchased
+
+MatAPurch
+
+MatBPurch
+
+MatCPurch
+
+MatDPurch

@@ -2,3 +2,5 @@
 .DS_Store
 
 FactorySim.sublime-workspace
+
+node_modules/

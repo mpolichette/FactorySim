@@ -1,5 +1,7 @@
 FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _){
 
+    var TOTAL_OPERATING_EXPENSE = 11000;
+
     Entities.Factory = Backbone.Model.extend({
 
         defaults: {
@@ -15,7 +17,7 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
             cash: 12725,
             profit: 0,
             runningRevenue: 0,
-            purchaseExpense: 0,
+            purchaseExpense: 2725,
             operatingExpense: 0
         },
 
@@ -24,6 +26,25 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
             this.resources = App.request("new:resource:entities");
             this.jobs = App.request("new:job:entities");
             this.markets = App.request("new:market:entities");
+
+            this.bindClockEvents();
+        },
+
+        bindClockEvents: function() {
+            this.listenTo(App.vent, "clock:hour:over", this.payWorkers)
+        },
+
+        payWorkers: function () {
+            var hourlyRate = TOTAL_OPERATING_EXPENSE / 40, // 5 days * 8 hours
+                newOpperatingExpenses = this.get("operatingExpense") + hourlyRate,
+                newCash = this.get("cash") - hourlyRate,
+                newProfit = this.get("profit") - hourlyRate;
+
+            this.set({
+                "operatingExpense": newOpperatingExpenses,
+                "cash": newCash,
+                "profit": newProfit
+            });
         },
 
         getFloorItem: function (id) {
@@ -72,9 +93,11 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
         },
 
         addSale: function (cash, profit) {
-            this.set("cash", this.get("cash") + cash);
-            this.set("runningRevenue", this.get("runningRevenue") + cash);
-            this.set("profit", this.get("profit") + profit);
+            this.set({
+                "cash": this.get("cash") + cash,
+                "runningRevenue":  this.get("runningRevenue") + cash,
+                "profit": this.get("profit") + profit
+            });
         },
 
         startClock: function () {
