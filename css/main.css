@@ -143,27 +143,22 @@ textarea {
 }
 
 .job.assembler{
-    border-width: 2px;
     border-color: #d50065;
 }
 
 .job.chemist{
-    border-width: 2px;
     border-color: #00cc00;
 }
 
 .job.developer{
-    border-width: 2px;
     border-color: #ffad00;
 }
 
 .job.engineer{
-    border-width: 2px;
     border-color: #009999;
 }
 
 .job.fabricator{
-    border-width: 2px;
     border-color: #3415b0;
 }
 
