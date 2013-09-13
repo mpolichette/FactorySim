@@ -9,9 +9,21 @@ FactorySim.module("FactoryApp.WeekOver", function(WeekOver, App, Backbone, Mario
         },
 
         getView: function() {
-            return new WeekOver.ModalView({
+            var view = new WeekOver.ModalView({
                 model: this.factory
             });
+
+            this.listenTo(view, {
+                "start:over:clicked": this.onNewGame
+            });
+
+            return view;
+        },
+
+        onNewGame: function() {
+            this.region.close();
+            this.close();
+            App.vent.trigger("new:game");
         }
 
     });
