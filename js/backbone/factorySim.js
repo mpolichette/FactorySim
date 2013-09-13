@@ -2,7 +2,7 @@ window.FactorySim = (function FactorySim(Backbone, Marionette, $, _){
     var App = new Marionette.Application();
 
     // Debug
-    App.listenTo(App.vent, "all", function(){ console.log(arguments);});
+    // App.listenTo(App.vent, "all", function(){ console.log(arguments);});
 
     App.addRegions({
         headerRegion: "#header-region",

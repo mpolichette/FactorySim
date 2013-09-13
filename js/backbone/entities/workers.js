@@ -87,6 +87,7 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
             }
             // Update the workers' status
             this.set("status", newStatus);
+            this.logTime();
         },
 
         completeWork: function() {
@@ -108,6 +109,14 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
         completeTask: function (task) {
             this.get("job").completeTask(task);
             this.unset("task");
+        },
+
+        logTime: function() {
+            var counts = _.clone(this.get("counts")) || {},
+                status = this.get("status"),
+                newCount = (counts[status] || 0) + 1;
+            counts[status] = newCount;
+            this.set("counts", counts);
         }
 
     });

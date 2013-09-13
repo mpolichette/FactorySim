@@ -8,7 +8,8 @@ FactorySim.module("FactoryApp.WeekOver", function(WeekOver, App, Backbone, Mario
         },
 
         triggers: {
-            "click .js-start-over": "start:over:clicked"
+            "click .js-start-over": "start:over:clicked",
+            "click .js-submit": "submit:clicked"
         }
     });
 

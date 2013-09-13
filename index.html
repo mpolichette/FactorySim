@@ -31,12 +31,6 @@
         <div id="main-region" class="container"></div>
         <div id="modal-region" class="modal hide fade"></div>
 
-
-
-
-
-
-
         <!-- TEMPLATES -->
 
         <script id="header-template" type="text/template" >
@@ -291,33 +285,32 @@
         </script>
 
         <script id="week-over-template" type="text/template">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h3>You reached the end of the week!</h3>
-        </div>
-        <div class="modal-body">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>You reached the end of the week!</h3>
+            </div>
+            <div class="modal-body">
+                <% if(profit > 0){ %>
+                <p><strong>Congratulations!</strong> You are profitable!</p>
+                <% } else { %>
+                <p><strong>Sorry!</strong> You have gone bankrupt... try again!</p>
+                <% } %>
 
-          <% if(profit > 0){ %>
-            <p><strong>Congratulations!</strong> You're profitable!</p>
-          <% } else { %>
-            <p><strong>Sorry!</strong> You're bankrupt... try again!</p>
-          <% } %>
-
-          <dl class="dl-horizontal">
-            <dt>Current Profit:</dt>
-            <dd>$<%= profit %></dd>
-            <dt>Revenue:</dt>
-            <dd>$<%= runningRevenue %></dd>
-            <dt>Spent on Resources:</dt>
-            <dd>$<%= purchaseExpense %></dd>
-        </dl>
-        <p>Submit your score to get credit! </p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn js-start-over">Start Over</button>
-        <button class="btn btn-primary" data-dismiss="modal">Submit Scores</button>
-    </div>
-</script>
+                <dl class="dl-horizontal">
+                    <dt>Current Profit:</dt>
+                    <dd>$<%= profit %></dd>
+                    <dt>Revenue:</dt>
+                    <dd>$<%= runningRevenue %></dd>
+                    <dt>Spent on Resources:</dt>
+                    <dd>$<%= purchaseExpense %></dd>
+                </dl>
+                <p>Submit your score to get credit!</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn js-start-over">Start Over</button>
+                <button class="btn btn-primary js-submit">Submit Scores</button>
+            </div>
+        </script>
 
         <!-- Thirt-Party Libraries (Order matters) -->
         <script type="text/javascript" src="js/vendor/jquery-1.8.3.js"></script>
@@ -409,10 +402,10 @@
                 settings: {},
                 config: {
                     resources: [
-                        {"id":20, "x":0, "y":0, "name":"Raw Material A", "price":30, "purchased": 25},
-                        {"id":21, "x":2, "y":0,"name":"Raw Material B", "price":35, "purchased": 25},
-                        {"id":22, "x":4, "y":0, "name":"Raw Material C", "price":30, "purchased": 15},
-                        {"id":23, "x":6, "y":0, "name":"Raw Material D", "price":65, "purchased": 10}],
+                        {"id":20, "x":0, "y":0, "name":"Raw Material A", "price":30, "purchased": 25, "key": "MatAPurch"},
+                        {"id":21, "x":2, "y":0,"name":"Raw Material B", "price":35, "purchased": 25, "key": "MatBPurch"},
+                        {"id":22, "x":4, "y":0, "name":"Raw Material C", "price":30, "purchased": 15, "key": "MatCPurch"},
+                        {"id":23, "x":6, "y":0, "name":"Raw Material D", "price":65, "purchased": 10, "key": "MatDPurch"}],
                     jobs: [
                         {"id":1, "x":0, "y":1, "skillRequired":"Developer", "upstream":[20], "taskTime":4, "processed": 25},
                         {"id":2, "x":2, "y":1, "skillRequired":"Developer", "upstream":[21], "taskTime":5, "processed": 25},
@@ -439,9 +432,9 @@
                         {"id":18, "x":3, "y":6, "skillRequired":"Chemist", "upstream":[15], "taskTime":6},
                         {"id":19, "x":6, "y":6, "skillRequired":"Chemist", "upstream":[16], "taskTime":10}],
                     markets: [
-                        {"id":24, "x":0, "y":7, "name": "Widget 1", "upstream":[17], "unitPrice":180, "unitProfit":115, "demand":40},
-                        {"id":25, "x":3, "y":7, "name": "Widget 2", "upstream":[18], "unitPrice":240, "unitProfit":145, "demand":50},
-                        {"id":26, "x":6, "y":7, "name": "Widget 3", "upstream":[19], "unitPrice":180, "unitProfit":115, "demand":40}],
+                        {"id":24, "x":0, "y":7, "name": "Widget 1", "upstream":[17], "unitPrice":180, "unitProfit":115, "demand":40, "key": "W1Sold"},
+                        {"id":25, "x":3, "y":7, "name": "Widget 2", "upstream":[18], "unitPrice":240, "unitProfit":145, "demand":50, "key": "W2Sold"},
+                        {"id":26, "x":6, "y":7, "name": "Widget 3", "upstream":[19], "unitPrice":180, "unitProfit":115, "demand":40, "key": "W3Sold"}],
                     workers: [
                         {"name": "Alice", "skill": "Chemist", "gender": "female"},
                         {"name": "Bella", "skill": "Developer", "gender": "female"},

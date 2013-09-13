@@ -2,7 +2,7 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
 
     var PAUSE_ON_DAY_END = true,
         HOURS_PER_DAY = 8,
-        DAYS_IN_WEEK = 2,
+        STOP_ON_DAY = 6,
         SPEEDS = [ 2000, 1000, 500, 250, 100, 10];
 
     Game.GameRunner = Marionette.Controller.extend({
@@ -78,7 +78,7 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
 
             // Fire the more relavent of the time events
             if(newDay) {
-                if(day === DAYS_IN_WEEK){
+                if(day === STOP_ON_DAY){
                     App.vent.trigger("clock:week:over");
                     this.factory.stopClock();
                 } else {
@@ -91,10 +91,60 @@ FactorySim.module("Components.Game", function(Game, App, Backbone, Marionette, $
         }
     });
 
-
     App.vent.on("new:game", function(options){
         if(!Game.runner) Game.runner = new Game.GameRunner();
         Game.runner.newGame();
+    });
+
+    // This could be refactored... it was rushed a little bit
+    App.vent.on("submit:scores", function(){
+        var data = {};
+
+        // Add users
+        var users = App.request("user:entities");
+        users.each(function(user, index, users){
+            data["FName" + (index + 1)] = user.get("firstName");
+            data["LName" + (index + 1)] = user.get("lastName");
+            data["ID" + (index + 1)] = user.get("schoolId");
+        });
+
+        // Add Outcomes
+        var factory = App.request("current:factory");
+        data["Profit"] = factory.get("profit");
+        data["cashAtEnd"] = factory.get("cash");
+
+        // Add sales
+        factory.markets.each(function(market) {
+            data[market.get("key")] = market.get("produced");
+        });
+
+        factory.resources.each(function(resource) {
+            data[resource.get("key")] = resource.get("purchased");
+        });
+
+        // Last worker stats
+        factory.workers.each(function(worker){
+            var firstLetter = worker.get("name").substring(0,1),
+                counts = worker.get("counts");
+            data[firstLetter + "Idle"] = counts["Idle"] || 0;
+            data[firstLetter + "Work"] = counts["Working"] || 0;
+            data[firstLetter + "Unassign"] = counts["Unassigned"] || 0;
+            data[firstLetter + "Setup"] = counts["Setting Up"] || 0;
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "record_scores.cfm",
+            data: data,
+            success: function(data, status, jqXHR){
+                alert("Data submitted Succesfully!");
+            },
+            error: function(jqXHR, status, error){
+                alert("Score submit failed, try submitting again.");
+            }
+
+        });
+
     });
 
     /**

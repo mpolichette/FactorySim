@@ -14,7 +14,8 @@ FactorySim.module("FactoryApp.WeekOver", function(WeekOver, App, Backbone, Mario
             });
 
             this.listenTo(view, {
-                "start:over:clicked": this.onNewGame
+                "start:over:clicked": this.onNewGame,
+                "submit:clicked": this.onSubmitClicked
             });
 
             return view;
@@ -24,6 +25,10 @@ FactorySim.module("FactoryApp.WeekOver", function(WeekOver, App, Backbone, Mario
             this.region.close();
             this.close();
             App.vent.trigger("new:game");
+        },
+
+        onSubmitClicked: function() {
+            App.vent.trigger("submit:scores");
         }
 
     });

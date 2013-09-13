@@ -41,7 +41,8 @@ FactorySim.module("Entities", function(Entities, App, Backbone, Marionette, $, _
     });
 
     Entities.MarketCollection = Backbone.Collection.extend({
-        model: Entities.Market
+        model: Entities.Market,
+        comparator: "x"
     });
 
     var API = {
